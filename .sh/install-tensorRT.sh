@@ -5,9 +5,11 @@ CUDA_VERSION=11.8
 v="${TRT_VERSION}-1+cuda${CUDA_VERSION}"
 echo $v
 
+cat >/dev/null <<LABEL_1
+
 apt install -y wget software-properties-common cmake
 
-if [[ $1 != "-f" ]]; then read -p "(Re)install repo? (Y/n) " yn; else yn='y'; fi
+if [[ $1 == "-f" ]] || [[ $1 == "--docker" ]]; then yn='y'; else read -p "(Re)install repo? (Y/n) " yn; fi
 case $yn in 
 	[nN] ) ;;
 	* ) 
@@ -23,14 +25,19 @@ case $yn in
 		cd ..;
 esac
 
-if [[ $1 != "-f" ]]; then read -p "(Re)install python? (Y/n) " yn; else yn='y'; fi
-case $yn in 
-	[nN] ) ;;
+LABEL_1
+
+case $1 in 
+	"--docker") ;;
+	"-f")
+		.sh/install-python.sh ;;
 	* )
-		.sh/install-python.sh
+		read -p "(Re)install python? (Y/n) " yn
+		if [[ $yn == 'y' ]]; then .sh/install-python.sh; fi
+	;;
 esac
 
-if [[ $1 != "-f" ]]; then read -p "(Re)install cuda? (Y/n) " yn; else yn='y'; fi
+if ([ $1 != "-f" ] && [ $1 != "--docker"]); then read -p "(Re)install cuda? (Y/n) " yn; else yn='y'; fi
 case $yn in 
 	[nN] ) ;;
 	* )

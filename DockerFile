@@ -11,4 +11,6 @@ RUN git clone https://github.com/nVietUK/nVietUK.git && \
     chmod +x .sh/install-tensorflow.sh && \
     chmod +x .sh/install-tensorRT.sh && \
     chmod +x .sh/install-python.sh
-RUN cd nVietUK/ && .sh/install-tensorflow.sh -f
+RUN cd nVietUK/ && .sh/install-python.sh && ls
+RUN cd nVietUK/ && .sh/install-tensorRT.sh --docker 
+RUN cd nVietUK/ && .sh/install-tensorflow.sh --docker

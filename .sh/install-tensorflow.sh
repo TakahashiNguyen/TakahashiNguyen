@@ -1,5 +1,6 @@
-if [[ $1 != "-f" ]]; then read -p "(Re)install repo? (Y/n) " yn; else yn='y'; fi
-case $yn in 
+#!/usr/bin/bash
+if [[ $1 == "-f" ]] || [[ $1 == "--docker" ]]; then yn='y'; else read -p "(Re)install repo? (Y/n) " yn; fi
+case "$yn" in 
     [nN] ) ;;
     * ) 
         git submodule deinit -f tensorflow;
@@ -10,11 +11,18 @@ case $yn in
         cd ..
 esac
 
-if [[ $1 != "-f" ]]; then read -p "(Re)install tensorRT? (Y/n) " yn; else yn='y'; fi
-case $yn in 
-    [nN] ) ;;
-    * )
-        .sh/install-tensorRT.sh $1
+case "$1" in 
+    "--docker") ;;
+    "-f") 
+        .sh/install-tensorRT.sh $1 ;;
+    *) 
+        read -p "<(Re)install tensorRT? (Y/n) >" yn
+        case "$yn" in
+            [nN] ) ;;
+            * ) 
+                .sh/install-tensorRT.sh $1
+        esac
+    ;;
 esac
 
 apt install -y curl

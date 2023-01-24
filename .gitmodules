@@ -27,7 +27,7 @@
 [submodule "cpython"]
 	path = cpython
 	url = https://github.com/python/cpython.git
-	branch = mainx
+	branch = 3.10
 	ignore = dirty
 [submodule "tensorflow"]
 	path = tensorflow
