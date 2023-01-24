@@ -5,8 +5,6 @@ CUDA_VERSION=11.8
 v="${TRT_VERSION}-1+cuda${CUDA_VERSION}"
 echo $v
 
-cat >/dev/null <<LABEL_1
-
 apt install -y wget software-properties-common cmake
 
 if [[ $1 == "-f" ]] || [[ $1 == "--docker" ]]; then yn='y'; else read -p "(Re)install repo? (Y/n) " yn; fi
@@ -24,8 +22,6 @@ case $yn in
 		cd ../..;
 		cd ..;
 esac
-
-LABEL_1
 
 case $1 in 
 	"--docker") ;;
