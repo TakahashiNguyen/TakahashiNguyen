@@ -46,7 +46,7 @@ case $yn in
 		wget -O cuda.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
 		dpkg -i cuda.deb
 		apt update
-		apt install -y libcudnn8=8.7.0.*-1+cuda11.8 libcudnn8-dev=8.7.0.*-1+cuda11.8 \
+		DEBIAN_FRONTEND=noninteractive apt install -y libcudnn8=8.7.0.*-1+cuda11.8 libcudnn8-dev=8.7.0.*-1+cuda11.8 \
 			libnvinfer8=${v} libnvonnxparsers8=${v} libnvparsers8=${v} libnvinfer-plugin8=${v} \
         	libnvinfer-dev=${v} libnvonnxparsers-dev=${v} libnvparsers-dev=${v} libnvinfer-plugin-dev=${v} \
         	python3-libnvinfer=${v} cuda=11.8.0-1
