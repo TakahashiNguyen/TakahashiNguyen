@@ -33,5 +33,5 @@ pip install numpy
 
 cd tensorflow
 ./configure
-bazel build --config=cuda //tensorflow/tools/pip_package:build_pip_package
+bazel build --config=cuda --config=opt //tensorflow/tools/pip_package:build_pip_package
 cd ..
