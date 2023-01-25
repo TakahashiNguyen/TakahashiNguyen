@@ -50,8 +50,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: /home/runner/work/nVietUK/nVietUK
-          file: Dockerfile
+          context: .
+          file: /home/runner/work/nVietUK/nVietUK/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: nvietuk/mytensorflow
