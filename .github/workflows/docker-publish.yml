@@ -63,6 +63,7 @@ jobs:
         uses: docker/build-push-action@v3.3.0
         with:
           context: .
+          file: nVietUK/Dockerfile
           push: true
           tags: nvietuk/mytensorflow:latest, nvietuk/mytensorflow:${{ github.run_number }}
 
