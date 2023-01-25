@@ -52,9 +52,6 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: nvietuk/mytensorflow
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
 
       # Sign the resulting Docker image digest except on PRs.
