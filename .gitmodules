@@ -45,3 +45,6 @@
 [submodule ".cpp"]
 	path = .cpp
 	url = https://github.com/nVietUK/.cpp.git
+[submodule "myMinecraftPaper"]
+	path = myMinecraftPaper
+	url = https://github.com/nVietUK/myMinecraftPaper.git
