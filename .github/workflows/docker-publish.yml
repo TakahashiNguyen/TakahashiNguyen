@@ -56,9 +56,7 @@ jobs:
         uses: docker/build-push-action@v3.3.0
         with:
           push: true
-          file: ./Dockerfile
           tags: nvietuk/mytensorflow:latest, nvietuk/mytensorflow:${{ github.run_number }}
-          github-token: ${{ secrets.GIT_TOKEN }}
 
 
       # Sign the resulting Docker image digest except on PRs.
