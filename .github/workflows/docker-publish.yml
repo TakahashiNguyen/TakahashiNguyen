@@ -13,7 +13,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: mytensorflow
 
 jobs:
   build:
@@ -54,6 +54,7 @@ jobs:
         uses: docker/build-push-action@v3.3.0
         with:
           push: true
+          context: .
           file: ./Dockerfile
           tags: nvietuk/mytensorflow:latest, nvietuk/mytensorflow:${{ github.run_number }}
           github-token: ${{ secrets.GIT_TOKEN }}
