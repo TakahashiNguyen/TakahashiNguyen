@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v2.8.1 #v2.6.0
@@ -55,7 +57,6 @@ jobs:
           push: true
           file: ./Dockerfile
           tags: nvietuk/mytensorflow:latest, nvietuk/mytensorflow:${{ github.run_number }}
-          github-token: ${{ secrets.GIT_TOKEN }}
 
 
       # Sign the resulting Docker image digest except on PRs.
