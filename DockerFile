@@ -4,13 +4,12 @@ ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt update --fix-missing && \
-    apt upgrade && \
-    apt install -y git
-RUN git clone https://github.com/nVietUK/nVietUK.git
-RUN cd nVietUK/ && \
-    chmod +x .sh/install-tensorflow.sh && \
+    apt upgrade
+COPY . /nVietUK
+WORKDIR /nvietuk
+RUN chmod +x .sh/install-tensorflow.sh && \
     chmod +x .sh/install-tensorRT.sh && \
     chmod +x .sh/install-python.sh
-RUN cd nVietUK/ && .sh/install-python.sh && ls
-RUN cd nVietUK/ && .sh/install-tensorRT.sh --docker 
-RUN cd nVietUK/ && .sh/install-tensorflow.sh --docker
+RUN .sh/install-python.sh && ls
+RUN .sh/install-tensorRT.sh --docker 
+RUN .sh/install-tensorflow.sh --docker
