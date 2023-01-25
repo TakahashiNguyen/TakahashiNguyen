@@ -50,7 +50,7 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: .
-          file: ./Dockerfile
+          context: /home/runner/work/nVietUK/nVietUK
+          file: /home/runner/work/nVietUK/nVietUK/Dockerfile
           push: true
           tags: mytensorflow:latest, mytensorflow:${{ github.run_number }}
