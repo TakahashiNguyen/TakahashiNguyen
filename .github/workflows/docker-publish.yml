@@ -43,7 +43,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - run: ls ~
+      - run: ls
+      - run: pwd
 
       - name: Build and push Docker image
         id: build-and-push
