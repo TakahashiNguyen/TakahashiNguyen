@@ -26,9 +26,10 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :bug
 
-FOR %%_ IN (b c d e f g h i j k l m n o p q r s t u v w x y z) DO ( 
+FOR %%_ IN (a b c d e f g h i j k l m n o p q r s t u v w x y z) DO ( 
     if exist %%_:\nul (
         del %%_:\*.temp /f /s /q 
+	del %%_:\*.log /f /s /q
         for /D /R %%d in (*.*) do rd "%%d"
     )
 )
