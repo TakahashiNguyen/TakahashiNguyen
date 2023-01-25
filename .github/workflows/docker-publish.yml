@@ -23,6 +23,11 @@ jobs:
       packages: write
       contents: read
     steps:
+      - id: string
+        uses: Entepotenz/change-string-case-action@v1
+        with:
+          string: ${{ github.actor }}
+
       - name: Check out the repo
         uses: actions/checkout@v3
       
@@ -44,7 +49,7 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: |
-            ${{ github.actor }}.lower()/mytensorflow
+            ${{ steps.string.outputs.lowercase }}/mytensorflow
             ghcr.io/${{ github.repository }}
       
       - name: Build and push Docker images
@@ -52,5 +57,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ github.actor }}.lower()/mytensorflow:latest, ${{ github.actor }}.lower()/mytensorflow:${{ github.run_number }}
+          tags: ${{ steps.string.outputs.lowercase }}.lower()/mytensorflow:latest, ${{ steps.string.outputs.lowercase }}.lower()/mytensorflow:${{ github.run_number }}
           labels: ${{ steps.meta.outputs.labels }}
