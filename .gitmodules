@@ -39,9 +39,6 @@
 [submodule "gcc"]
 	path = gcc
 	url = git://gcc.gnu.org/git/gcc.git
-[submodule "NEATChessEngine"]
-	path = NEATChessEngine
-	url = https://github.com/nVietUK/NEATChessEngine.git
 [submodule ".cpp"]
 	path = .cpp
 	url = https://github.com/nVietUK/.cpp.git
