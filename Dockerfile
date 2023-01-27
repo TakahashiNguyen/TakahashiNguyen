@@ -13,3 +13,4 @@ RUN chmod +x .sh/install-tensorflow.sh && \
 RUN .sh/install-python.sh && ls
 RUN .sh/install-tensorRT.sh --docker 
 RUN .sh/install-tensorflow.sh --docker
+RUN apt -y remove nvidia-*
