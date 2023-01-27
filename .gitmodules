@@ -21,9 +21,6 @@
 [submodule "pygame"]
 	path = pygame
 	url = https://github.com/pygame/pygame.git
-[submodule "UKiChessEngine"]
-	path = UKiChessEngine
-	url = https://github.com/nVietUK/UKiChessEngine.git
 [submodule "cpython"]
 	path = cpython
 	url = https://github.com/python/cpython.git
