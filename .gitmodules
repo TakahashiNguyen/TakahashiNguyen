@@ -42,3 +42,6 @@
 [submodule "myMinecraftPaper"]
 	path = myMinecraftPaper
 	url = https://github.com/nVietUK/myMinecraftPaper.git
+[submodule "nvietuk.github.io"]
+	path = nvietuk.github.io
+	url = https://github.com/nVietUK/nvietuk.github.io.git
