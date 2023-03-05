@@ -10,7 +10,9 @@
                 "-o",
                 "${workspaceFolder}/bin/${fileBasenameNoExtension}",
                 "-std=c++11",
-                "-g"
+                "-g", 
+                "-Wall",
+                "-Wextra"
             ],
             "problemMatcher": [
                 "$gcc"
