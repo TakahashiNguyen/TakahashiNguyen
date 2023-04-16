@@ -1,8 +1,0 @@
-{
-    "git.ignoreLimitWarning": true,
-    "files.associations": {
-        "algorithm": "cpp",
-        "mutex": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "Disabled",
-}
