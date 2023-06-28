@@ -11,7 +11,7 @@
 </a>
 <a href="https://github.com/anuraghazra/convoychat" style="text-decoration: none;">
     <img height=200 align="center"
-        src="https://github-readme-stats.vercel.app/api/top-langs?username=nVietUK&layout=compact&langs_count=8&card_width=320&show_icons=true&locale=vi&hide_border=True&theme=swift" />
+        src="https://github-readme-stats.vercel.app/api/top-langs?username=nVietUK&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift" />
 </a>
 
 <h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết:</h3>
