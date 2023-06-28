@@ -1,4 +1,4 @@
-<h1 align="center">Xin chào, tôi là Nguyễn Việt Anh</h1>
+<h1 align="center">Xin chào, tôi là Nguyễn Việt Anh 👋</h1>
 <h3 align="center">Là một học sinh cấp ba đam mê làm việc và học những thứ mới</h3>
 
 <p>
