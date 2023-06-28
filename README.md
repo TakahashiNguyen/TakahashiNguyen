@@ -5,14 +5,14 @@
     &#x2022; 🔭 Hiện tại đang làm dự án về <a href="https://github.com/nVietUK/v2en">phiên dịch bằng A.I.</a>
 </p>
 
-<a href="https://github.com/anuraghazra/github-readme-stats" style="text-decoration: none;">
-    <img height=200 align="center"
-        src="https://github-readme-stats.vercel.app/api?username=nVietUK&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=450px" />
-</a>
-<a href="https://github.com/anuraghazra/convoychat" style="text-decoration: none;">
-    <img height=200 align="center"
-        src="https://github-readme-stats.vercel.app/api/top-langs?username=nVietUK&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift" />
-</a>
+<div style="display: flex; flex-direction: row;">
+    <img height=175 
+        src="https://github-readme-stats.vercel.app/api?username=nVietUK&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475" />
+    <img height=175
+        src="https://github-readme-stats.vercel.app/api/top-langs?username=nVietUK&layout=compact&langs_count=8&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=325" />
+    <img src="https://github-readme-streak-stats.herokuapp.com?user=nVietUK&theme=swift&hide_border=true&locale=vi&date_format=j%20M%5B%20Y%5D&card_width=900"
+        height="175" />
+</div>
 
 <h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết:</h3>
 <p align="left">
