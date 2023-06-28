@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "algorithm": "cpp"
-    }
+    },
+    "liquid.format.enable": true
 }
