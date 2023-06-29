@@ -83,3 +83,8 @@
     alt="vuejs"
     height="40" />
 </p>
+
+<h3 align="left">Hãy nghe nhạc với tôi 😻</h3>
+<a href='https://spotify-github-profile.vercel.app/api/view?uid=31qy6z7gz35jc5yccywp6eyumuxy&redirect=true'>
+  <img src="https://spotify-github-profile.vercel.app/api/view?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false">
+</a>
