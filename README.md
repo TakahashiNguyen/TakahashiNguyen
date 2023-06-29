@@ -1,5 +1,5 @@
 <h1 align="center">Xin chào, tôi là Nguyễn Việt Anh 👋</h1>
-<h3 align="center">Là một học sinh cấp ba đam mê làm việc và học những thứ mới</h3>
+<h3 align="center">Là một học sinh cấp ba đam mê làm việc và học những thứ mới 🌠</h3>
 
 <p>
   <p>&#x2022; 🔭 Hiện tại đang làm dự án về
@@ -13,6 +13,7 @@
   <p>&#x2022; ♒ Là một bảo bình 🐱</p>
 </p>
 
+<h3 align="left">Hoạt động trên github của tôi 🔥</h3>
 <div style="display: flex; flex-direction: row;">
   <img
     height=175
@@ -28,7 +29,7 @@
     href='https://github.com/nVietUK/' />
 </div>
 
-<h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết:</h3>
+<h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết 📖</h3>
 <p align="left">
   <img
     src="https://upload.wikimedia.org/wikipedia/commons/8/82/Gnu-bash-logo.svg"
