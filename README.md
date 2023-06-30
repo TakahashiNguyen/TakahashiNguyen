@@ -18,13 +18,13 @@
   <img
     height=175
     href='https://github.com/nVietUK/'
-    src="https://github-readme-stats.vercel.app/api?username=nVietUK&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475" />
+    src="https://github-readme-stats.vercel.app/api?username=TakahashiNguyen&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475" />
   <img
     height=175
     href='https://github.com/nVietUK/'
-    src="https://github-readme-stats.vercel.app/api/top-langs?username=nVietUK&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=275" />
+    src="https://github-readme-stats.vercel.app/api/top-langs?username=TakahashiNguyen&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=275" />
   <img
-    src="https://github-readme-streak-stats.herokuapp.com?user=nVietUK&theme=swift&hide_border=true&locale=vi&date_format=j%20M%5B%20Y%5D&card_width=900"
+    src="https://github-readme-streak-stats.herokuapp.com?user=TakahashiNguyen&theme=swift&hide_border=true&locale=vi&date_format=j%20M%5B%20Y%5D&card_width=900"
     height="175"
     href='https://github.com/nVietUK/' />
 </div>
