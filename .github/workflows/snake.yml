@@ -23,11 +23,16 @@ jobs:
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
 
-      - name: github-readme-stats
-        run: curl "https://github-readme-stats.vercel.app/api?username=TakahashiNguyen&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475" -o dist/GRS.svg
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content
 
-      - name: top-language-stats
-        run: curl "https://github-readme-stats.vercel.app/api/top-langs?username=TakahashiNguyen&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=275" -o dist/TLS.svg
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+
+      - name: get stats
+        run: python githubstats.py > dist/stats.svg
 
       # push the content of <build_dir> to a branch
       # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
