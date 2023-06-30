@@ -1,5 +1,5 @@
 <div align='center' style="position:absolute; z-index: 0">
-    <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=Xin%20chào,%20tôi%20là%20Nguyễn%20Việt%20Anh%20👋&fontSize=45&desc=Là%20một%20học%20sinh%20cấp%20ba%20đam%20mê%20làm%20việc%20và%20học%20những%20thứ%20mới%20🌠&descAlignY=62&descAlign=62"
+    <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Xin%20chào,%20tôi%20là%20Nguyễn%20Việt%20Anh%20👋&fontSize=45&desc=Là%20một%20học%20sinh%20cấp%20ba%20đam%20mê%20làm%20việc%20và%20học%20những%20thứ%20mới%20🌠&descAlignY=75&descAlign=62" width="100%"
         href='' />
 </div>
 
@@ -29,7 +29,7 @@
 <div align='center'>
     <img href='https://github.com/nVietUK/'
         src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg"
-        href='' />
+        href='' width="100%"/>
 </div>
 
 <h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết và có kỹ năng <img
@@ -37,8 +37,8 @@
         alt="Open Book" width="25" height="25" /></h3>
 <p align="center">
     <a href="">
-        <img src="https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode"
-            width='800' href='' />
+        <img src="https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode" width="100%"
+            href='' />
     </a>
 </p>
 </p>
@@ -48,6 +48,6 @@
         alt="Cat Face" width="25" height="25" /></h3>
 <div align='center'>
     <a href="https://www.data-card-for-spotify.com/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy">
-      <img src="https://www.data-card-for-spotify.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy" alt="Data Card for Spotify">
+      <img src="https://www.data-card-for-spotify.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy" alt="Data Card for Spotify" width="100%">
     </a>
 </div>
