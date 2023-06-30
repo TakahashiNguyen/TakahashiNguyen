@@ -14,7 +14,7 @@
 </p>
 
 <h3 align="left">Hoạt động trên github của tôi 🔥</h3>
-<div style="display: flex; flex-direction: row;">
+<div align='center'>
   <img
     height=175
     href='https://github.com/nVietUK/'
@@ -30,7 +30,7 @@
 </div>
 
 <h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết và có kỹ năng 📖</h3>
-<img src='https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode,'/>
+	<img src='https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode,'/>
 </p>
 
 <h3 align="left">Hãy nghe nhạc với tôi 😻</h3>
