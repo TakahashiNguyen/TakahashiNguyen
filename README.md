@@ -29,60 +29,8 @@
     href='https://github.com/nVietUK/' />
 </div>
 
-<h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết 📖</h3>
-<p align="left">
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/8/82/Gnu-bash-logo.svg"
-    alt="bash"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg"
-    alt="cplusplus"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg"
-    alt="css3"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/en/f/f4/Docker_logo.svg"
-    alt="docker"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg"
-    alt="git"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg"
-    alt="html5"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg"
-    alt="illustrator"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg"
-    alt="photoshop"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/7/76/Ubuntu-logo-2022.svg"
-    alt="linux"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/3/38/SQLite370.svg"
-    alt="sqlite"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/a/ab/TensorFlow_logo.svg"
-    alt="tensorflow"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Typescript.svg"
-    alt="typescript"
-    height="40" />
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg"
-    alt="vuejs"
-    height="40" />
+<h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết và có kỹ năng 📖</h3>
+<img src='https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode,'/>
 </p>
 
 <h3 align="left">Hãy nghe nhạc với tôi 😻</h3>
