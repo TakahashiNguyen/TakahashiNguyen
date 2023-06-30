@@ -27,7 +27,7 @@
         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png"
         alt="Fire" width="25" height="25" /></h3>
 <div align='center'>
-    <img height=552 href='https://github.com/nVietUK/'
+    <img href='https://github.com/nVietUK/'
         src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg"
         href='' />
 </div>
