@@ -47,8 +47,7 @@
         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png"
         alt="Cat Face" width="25" height="25" /></h3>
 <div align='center'>
-    <a href='https://spotify-github-profile.vercel.app/api/view?uid=31qy6z7gz35jc5yccywp6eyumuxy&redirect=true'>
-        <img src="https://spotify-recently-played-readme.vercel.app/api?user=31qy6z7gz35jc5yccywp6eyumuxy&width=800&unique=1"
-            href=''>
+    <a href="https://www.data-card-for-spotify.com/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy">
+      <img src="https://www.data-card-for-spotify.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy" alt="Data Card for Spotify">
     </a>
 </div>
