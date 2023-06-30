@@ -27,16 +27,9 @@
         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png"
         alt="Fire" width="25" height="25" /></h3>
 <div align='center'>
-    <img height=175 href='https://github.com/nVietUK/'
-        src="https://github-readme-stats.vercel.app/api?username=TakahashiNguyen&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475"
+    <img height=552 href='https://github.com/nVietUK/'
+        src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg"
         href='' />
-    <img height=175 href='https://github.com/nVietUK/'
-        src="https://github-readme-stats.vercel.app/api/top-langs?username=TakahashiNguyen&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=275"
-        href='' />
-    <img src="https://github-readme-streak-stats.herokuapp.com?user=TakahashiNguyen&theme=swift&hide_border=true&locale=vi&date_format=j%20M%5B%20Y%5D&card_width=900"
-        height="175" href='https://github.com/nVietUK/' href='' />
-    <img src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/github-contribution-grid-snake.svg"
-        href='' alt="Snake animation" width='800' />
 </div>
 
 <h3 align="left">Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết và có kỹ năng <img
