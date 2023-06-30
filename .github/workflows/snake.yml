@@ -3,23 +3,16 @@ name: generate animation
 on:
   # run automatically every 24 hours
   schedule:
-    - cron: "0 */24 * * *" 
-  
+    - cron: "0 */24 * * *"
+
   # allows to manually run the job at any time
   workflow_dispatch:
-  
-  # run on every push on the master branch
-  push:
-    branches:
-    - master
-    
-  
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       # generates a snake game from a github user (<github_user_name>) contributions graph, output a svg animation at <svg_out_path>
       - name: generate github-contribution-grid-snake.svg
@@ -27,8 +20,14 @@ jobs:
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+            /dist/github-contribution-grid-snake.svg
+            /dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: github-readme-stats
+        run: curl https://github-readme-stats.vercel.app/api?username=TakahashiNguyen&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=475 -o /dist/GRS.svg
+
+      - name: top-language-stats
+        run: curl https://github-readme-stats.vercel.app/api/top-langs?username=TakahashiNguyen&layout=compact&langs_count=6&show_icons=true&locale=vi&hide_border=True&theme=swift&card_width=275 -o /dist/TLS.svg
 
       # push the content of <build_dir> to a branch
       # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
@@ -36,6 +35,6 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: output
-          build_dir: dist
+          build_dir: /dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
