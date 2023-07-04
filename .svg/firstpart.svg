@@ -1,9 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="800" width="800">
-    <style>
-
-    </style>
-
-    <foreignObject width="800" height="100%">
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg" role="img">
+    <foreignObject width="100%" height="100%">
         <div xmlns="http://www.w3.org/1999/xhtml">
             <div align="center">
                 <img src="https://capsule-render.vercel.app/api?type=waving&amp;color=auto&amp;height=200&amp;section=header&amp;text=Xin%20chào,%20tôi%20là%20Nguyễn%20Việt%20Anh%20👋&amp;fontSize=45&amp;desc=Là%20một%20học%20sinh%20cấp%20ba%20đam%20mê%20làm%20việc%20và%20học%20những%20thứ%20mới&amp;descAlignY=65&amp;descAlign=62"

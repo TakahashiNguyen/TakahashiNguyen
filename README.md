@@ -1,4 +1,4 @@
-
+![](https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.svg/firstpart.svg)
 
 
   <h3 align="left">
