@@ -104,7 +104,6 @@
   </h3>
   <div align="center">
     <a
-      href="https://www.data-card-for-spotify.com/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy"
     >
       <img
         src="https://www.data-card-for-spotify.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy"
