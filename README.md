@@ -1,3 +1,4 @@
+ 
   <div align="center" >
     <img
       src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Xin%20chào,%20tôi%20là%20Nguyễn%20Việt%20Anh%20👋&fontSize=45&desc=Là%20một%20học%20sinh%20cấp%20ba%20đam%20mê%20làm%20việc%20và%20học%20những%20thứ%20mới&descAlignY=65&descAlign=62"
@@ -66,13 +67,7 @@
       height="25"
     />
   </h3>
-  <div align="center">
-    <img
-      href="https://github.com/nVietUK/"
-      src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg"
-      width="100%"
-    />
-  </div>
+
 
   <h3 align="left">
     Những ngôn ngữ lập trình, hệ điều hành và phần mềm đã biết và có kỹ năng
