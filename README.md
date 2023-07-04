@@ -103,7 +103,7 @@
     />
   </h3>
   <div align="center">
-    <a>
+    <a href='https://www.data-card-for-spotify.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy'>
       <img
         src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg"
         alt="Data Card for Spotify"
