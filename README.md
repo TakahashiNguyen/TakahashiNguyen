@@ -103,7 +103,7 @@
     />
   </h3>
   <div align="center">
-    <a href='https://data-card-for-spotify.herokuapp.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy'>
+    <a href='/'>
       <img
         src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg"
         alt="Data Card for Spotify"
