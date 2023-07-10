@@ -67,11 +67,12 @@
     />
   </h3>
   <div align="center">
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
     <img
-      href="https://github.com/nVietUK/"
       src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg"
       width="100%"
     />
+    </a>
   </div>
 
   <h3 align="left">
@@ -84,11 +85,11 @@
     />
   </h3>
   <p align="center">
-    <a href="">
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
       <img
         src="https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode"
         width="100%"
-        href=""
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       />
     </a>
   </p>
@@ -103,7 +104,7 @@
     />
   </h3>
   <div align="center">
-    <a href='/'>
+    <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>
       <img
         src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg"
         alt="Data Card for Spotify"
