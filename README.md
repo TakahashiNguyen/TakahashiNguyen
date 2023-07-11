@@ -44,7 +44,7 @@
       height="25"
     />
   </a>
-  Đang độc thân và chưa muốn tìm đối phương (có công việc ổn định rồi sẽ cua gắt
+  Đang say đôi mắt của ai đó
   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
     <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
@@ -53,7 +53,6 @@
       height="25"
     />
   </a>
-  <del>đang treo mối để cua</del>)
 </p>
 <p>
   &#x2022;
