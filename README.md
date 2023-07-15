@@ -44,7 +44,7 @@
       height="25"
     />
   </a>
-  Đang say đôi mắt của ai đó
+  Đang lên kế hoạch yêu dài hạn 
   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
     <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
