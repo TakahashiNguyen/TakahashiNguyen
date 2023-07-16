@@ -37,7 +37,7 @@ jobs:
           pip install requests beautifulsoup4
 
       - name: get stats
-        run: python githubstats.py > dist/stats.svg
+        run: python githubstats.py
 
       # push the content of <build_dir> to a branch
       # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
