@@ -16,25 +16,25 @@ jobs:
     steps:
       # generates a snake game from a github user (<github_user_name>) contributions graph, output a svg animation at <svg_out_path>
 
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content
-
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10' # install the python version needed
-
-      - name: install python packages
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
-
       - name: generate github-contribution-grid-snake.svg
         uses: Platane/snk@v2
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
             dist/github-contribution-grid-snake.svg
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10" # install the python version needed
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
 
       - name: get stats
         run: python githubstats.py > dist/stats.svg
