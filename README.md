@@ -56,7 +56,7 @@
       height="25"
     />
   </a>
-  Đang yêu
+  Đang 
   <a href="https://youtu.be/xvFZjo5PgG0">
     <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
