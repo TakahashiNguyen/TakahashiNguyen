@@ -61,8 +61,8 @@
     <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
       alt="Penguin"
-      width="25"
-      height="25"
+      width="0"
+      height="0"
     />
   </a>
 </p>
