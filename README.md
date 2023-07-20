@@ -38,26 +38,6 @@
   &#x2022;
   <a href="https://youtu.be/xvFZjo5PgG0">
     <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Heart%20with%20Arrow.png"
-      alt="Heart with Arrow"
-      width="25"
-      height="25"
-    />
-  </a>
-  Đang lên kế hoạch yêu dài hạn 
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
-      alt="Penguin"
-      width="25"
-      height="25"
-    />
-  </a>
-</p>
-<p>
-  &#x2022;
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Aquarius.png"
       alt="Aquarius"
       width="25"
