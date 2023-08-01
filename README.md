@@ -56,13 +56,13 @@
       height="25"
     />
   </a>
-  Đang treo 
+  Đang thầm thương, thầm nhớ ai đó ở phía gần thủ đô
   <a href="https://youtu.be/xvFZjo5PgG0">
     <img
       src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
       alt="Penguin"
-      width="25"
-      height="25"
+      width="0"
+      height="0"
     />
   </a>
 </p>
