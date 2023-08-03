@@ -46,27 +46,7 @@
   </a>
   Là một bảo bình
 </p>
-<p>
-  &#x2022;
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Heart%20with%20Arrow.png"
-      alt="Heart with Arrow"
-      width="25"
-      height="25"
-    />
-  </a>
-  Đang thầm thương, thầm nhớ ai đó ở phía gần thủ đô
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"
-      alt="Penguin"
-      width="0"
-      height="0"
-    />
-  </a>
-</p>
-
+<!--idk, có vẻ cứu được-->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
