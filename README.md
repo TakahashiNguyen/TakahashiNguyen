@@ -46,7 +46,7 @@
   </a>
   Là một bảo bình
 </p>
-<!--tôi nhớ ánh mắt đầy nhiệt huyết của người ấy, tôi chả còn tha thiết để yêu nữa. Tôi chỉ cần ai đó đồng hành thôi, liệu đó có phải là điều tôi cần hay không?-->
+<!--thuyền đi rồi nha, mission completed (nhờ ba mẹ và một đồng ý của tôi)-->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
