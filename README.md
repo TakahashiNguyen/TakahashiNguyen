@@ -46,7 +46,7 @@
   </a>
   Là một bảo bình
 </p>
-<!--thuyền đi rồi nha, mission completed (nhờ ba mẹ và một đồng ý của tôi)-->
+<!--tôi bắt đầu khúm núm với *** ** bầu không khí lớp ngày mai. Tôi hiểu đấy nhưng *** ** *** sao không thể là bạn bè nhở. Tôi cứ như bị động cho mọi người trêu vậy. Không hiểu? Đúng rồi vì bạn có phải là bạn tôi đâu-->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
