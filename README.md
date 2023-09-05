@@ -46,7 +46,7 @@
   </a>
   Là một bảo bình
 </p>
-<!-- The Ghost: Reborn (hmmmmmmmmmmm, yeah trờ về những năm tháng cũ không muốn) -->
+<!-- The Ghost: Reborn (hmmmmmmmmmmm, yeah trờ về những năm tháng cũ không muốn) (ps: thêm một chút chết chóc và đáng sợ ☠️) (yeah, năm cấp 3 kết thúc rồi LẠI hy vọng vào năm đại học, tuyệt vời cuộc đời (hmmmmmmmmmmmm, sau đại học là gì nhỉ? có vẻ là công ty và sau đó là viện dưỡng lão)) (Am i programmed or writing my own life?) -->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
