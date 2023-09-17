@@ -46,7 +46,6 @@
   </a>
   Là một bảo bình
 </p>
-<!-- The Ghost: Reborn (hmmmmmmmmmmm, yeah trờ về những năm tháng cũ không muốn) (ps: thêm một chút chết chóc và đáng sợ ☠️) (yeah, năm cấp 3 kết thúc rồi LẠI hy vọng vào năm đại học, tuyệt vời cuộc đời (hmmmmmmmmmmmm, sau đại học là gì nhỉ? có vẻ là công ty và sau đó là viện dưỡng lão)) (wait có gì đó sai sai, hmmmmmmmmm tôi tự viết cuộc đời mình nhưng idk, từ hồi apply model AI vào não và nhờ ba mẹ ra rules hộ thì hơi toang mà giờ mất não òi) -->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
