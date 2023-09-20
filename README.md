@@ -80,7 +80,7 @@
 <p align="center">
   <a href="https://youtu.be/xvFZjo5PgG0">
     <img
-      src="https://skillicons.dev/icons?i=bash,cpp,cloudflare,css,discord,django,docker,git,githubactions,html,ai,linux,pr,py,sqlite,tensorflow,ts,vim,vscode"
+      src="https://skillicons.dev/icons?i=github,githubactions,vscode,git,bash,linux,docker,cloudflare,py,tensorflow,vim,flutter,dart,nestjs,nodejs,androidstudio,mysql,sqlite&perline=9&theme=light"
       width="100%"
       href="https://youtu.be/xvFZjo5PgG0"
     />
