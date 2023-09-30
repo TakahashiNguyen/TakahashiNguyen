@@ -7,45 +7,7 @@
     />
   </a>
 </div>
-
-<p>
-  &#x2022;
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Alien%20Monster.png"
-      alt="Alien Monster"
-      width="25"
-      height="25"
-    />
-  </a>
-  Hiện tại đang làm dự án về
-  <a href="https://github.com/nVietUK/v2en">phiên dịch bằng A.I.</a>
-</p>
-
-<p>
-  &#x2022;
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/School.png"
-      alt="School"
-      width="25"
-      height="25"
-    />
-  </a>
-  Đang học tại trường Trung học Phổ thông Chuyên Lê Hồng Phong
-</p>
-<p>
-  &#x2022;
-  <a href="https://youtu.be/xvFZjo5PgG0">
-    <img
-      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Aquarius.png"
-      alt="Aquarius"
-      width="25"
-      height="25"
-    />
-  </a>
-  Là một bảo bình
-</p>
+<!-- 0p3r@ti0n k0mm4n@ -->
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://youtu.be/xvFZjo5PgG0">
