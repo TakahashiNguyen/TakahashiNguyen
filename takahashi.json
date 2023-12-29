@@ -14,8 +14,7 @@
       "down": "https://github.com/rileytestut/Delta/releases/download/v1.4/Delta_1_4.ipa",
       "category": "Emulators",
       "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
-      "bundleID": "com.altstoreio.Delta",
-      "enableBackup": true
+      "bundleID": "com.altstoreio.Delta"
     },
     {
       "name": "RetroArch",
@@ -24,8 +23,7 @@
       "down": "https://buildbot.libretro.com/nightly/apple/ios-arm64/RetroArch.ipa",
       "category": "Emulators",
       "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
-      "bundleID": "com.retroarch.retroarch",
-      "enableBackup": true
+      "bundleID": "com.retroarch.retroarch"
     },
   ],
   "Other": []
