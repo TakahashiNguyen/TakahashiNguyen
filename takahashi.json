@@ -17,6 +17,16 @@
       "bundleID": "com.altstoreio.Delta",
       "enableBackup": true
     },
+    {
+      "name": "Delta",
+      "version": "1.4",
+      "icon": "https://web.libretro.com/media/canvas.png",
+      "down": "https://buildbot.libretro.com/nightly/apple/ios-arm64/RetroArch.ipa",
+      "category": "Emulators",
+      "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
+      "bundleID": "com.retroarch.retroarch",
+      "enableBackup": true
+    },
   ],
   "Other": []
 }
