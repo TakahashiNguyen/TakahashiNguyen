@@ -18,7 +18,7 @@
       "enableBackup": true
     },
     {
-      "name": "Delta",
+      "name": "RetroArch",
       "version": "1.4",
       "icon": "https://web.libretro.com/media/canvas.png",
       "down": "https://buildbot.libretro.com/nightly/apple/ios-arm64/RetroArch.ipa",
