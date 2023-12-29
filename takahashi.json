@@ -1,0 +1,22 @@
+{
+  "META": {
+    "repoName": "Takahashi's Favorite Repo",
+    "repoIcon": "https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/myAvater.jpg"
+  },
+  "Games": [],
+  "Tweaked": [],
+  "Jailbreaks": [],
+  "Emulators": [
+    {
+      "name": "Delta",
+      "version": "1.4",
+      "icon": "https://raw.githubusercontent.com/rileytestut/Delta/main/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
+      "down": "hhttps://github.com/rileytestut/Delta/releases/download/v1.4/Delta_1_4.ipa",
+      "category": "Emulators",
+      "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
+      "bundleID": "com.altstoreio.Delta",
+      "enableBackup": true
+    },
+  ],
+  "Other": []
+}
