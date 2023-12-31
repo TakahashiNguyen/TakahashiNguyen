@@ -3,7 +3,20 @@
     "repoName": "Takahashi's Favorite Repo",
     "repoIcon": "https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/myAvater.jpg"
   },
-  "Games": [],
+  "Games": [
+        {
+            "name": "Flappy Bird",
+            "version": "4.3",
+            "icon": "https://raw.githubusercontent.com/brandonplank/flappybird/main/Flappy%20Bird/Assets.xcassets/AppLogo.imageset/1024.png",
+            "down": "https://github.com/brandonplank/flappybird/releases/download/4.3/org.brandonplank.flappybird.ipa",
+            "category": "Games",
+            "description": "",
+            "bundleID": "com.games.flappybird",
+            "contact": {
+                "web": "https://github.com/brandonplank/flappybird",
+            }
+        },
+  ],
   "Tweaked": [],
   "Jailbreaks": [],
   "Emulators": [
