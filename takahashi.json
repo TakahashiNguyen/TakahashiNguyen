@@ -4,20 +4,33 @@
     "repoIcon": "https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/myAvater.jpg"
   },
   "Games": [
-        {
-            "name": "Flappy Bird",
-            "version": "4.3",
-            "icon": "https://raw.githubusercontent.com/brandonplank/flappybird/main/Flappy%20Bird/Assets.xcassets/AppLogo.imageset/1024.png",
-            "down": "https://github.com/brandonplank/flappybird/releases/download/4.3/org.brandonplank.flappybird.ipa",
-            "category": "Games",
-            "description": "",
-            "bundleID": "com.games.flappybird",
-            "contact": {
-                "web": "https://github.com/brandonplank/flappybird",
-            }
-        },
+    {
+      "name": "Flappy Bird",
+      "version": "4.3",
+      "icon": "https://raw.githubusercontent.com/brandonplank/flappybird/main/Flappy%20Bird/Assets.xcassets/AppLogo.imageset/1024.png",
+      "down": "https://github.com/brandonplank/flappybird/releases/download/4.3/org.brandonplank.flappybird.ipa",
+      "category": "Games",
+      "description": "",
+      "bundleID": "com.game.flappybird",
+      "contact": {
+        "Github": "https://github.com/brandonplank/flappybird",
+      }
+    },
   ],
-  "Tweaked": [],
+  "Tweaked": [
+    {
+      "name": "WDBRemoveThreeAppLimit",
+      "version": "1.0",
+      "icon": "https://raw.githubusercontent.com/brandonplank/flappybird/main/Flappy%20Bird/Assets.xcassets/AppLogo.imageset/1024.png",
+      "down": "https://github.com/zhuowei/WDBRemoveThreeAppLimit/releases/download/v1.0/WDBRemoveThreeAppLimit-v1.0.ipa",
+      "category": "Tweaked",
+      "description": "",
+      "bundleID": "com.tweaked.WDBRemoveThreeAppLimit",
+      "contact": {
+        "Github": "https://github.com/zhuowei/WDBRemoveThreeAppLimit",
+      }
+    },
+  ],
   "Jailbreaks": [],
   "Emulators": [
     {
@@ -27,7 +40,10 @@
       "down": "https://github.com/rileytestut/Delta/releases/download/v1.4/Delta_1_4.ipa",
       "category": "Emulators",
       "description": "",
-      "bundleID": "com.altstoreio.Delta"
+      "bundleID": "com.emulator.Delta",
+      "contact": {
+        "Github": "https://github.com/rileytestut/Delta",
+      }
     },
     {
       "name": "PPSSPP",
@@ -36,7 +52,7 @@
       "down": "https://p.xx.wtf/PPSSPP_v1.16.6-758-g5a7db8aa1.ipa",
       "category": "Emulators",
       "description": "",
-      "bundleID": "com.PPSSPP.PPSSPP"
+      "bundleID": "com.emulator.PPSSPP"
     },
   ],
   "Other": []
