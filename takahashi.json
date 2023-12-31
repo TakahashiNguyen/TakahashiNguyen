@@ -13,26 +13,17 @@
       "icon": "https://raw.githubusercontent.com/rileytestut/Delta/main/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
       "down": "https://github.com/rileytestut/Delta/releases/download/v1.4/Delta_1_4.ipa",
       "category": "Emulators",
-      "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
+      "description": "",
       "bundleID": "com.altstoreio.Delta"
     },
     {
-      "name": "RetroArch",
-      "version": "1.4",
-      "icon": "https://web.libretro.com/media/canvas.png",
-      "down": "https://buildbot.libretro.com/nightly/apple/ios-arm64/RetroArch.ipa",
-      "category": "Emulators",
-      "description": "A Fan-build of Delta, an all-in-one classic video game emulator for non-jailbroken iOS devices",
-      "bundleID": "com.retroarch.retroarch"
-    },
-    {
-      "name": "Provenance",
-      "version": "2.2.0",
-      "icon": "https://www.gitbook.com/cdn-cgi/image/width=36,dpr=2,height=36,fit=contain,format=auto/https%3A%2F%2F1528256915-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-legacy-files%2Fo%2Fspaces%252F-LcssjTrcP7HWLfsYZCJ%252Favatar.png%3Fgeneration%3D1555732563803713%26alt%3Dmedia",
-      "down": "https://github.com/Provenance-Emu/Provenance/releases/download/2.2.0/Provenance.ipa",
+      "name": "PPSSPP",
+      "version": "1.16.6",
+      "icon": "https://raw.githubusercontent.com/hrydgard/ppsspp/master/ios/assets/Icon-72%403x.png",
+      "down": "https://p.xx.wtf/PPSSPP_v1.16.6-758-g5a7db8aa1.ipa",
       "category": "Emulators",
       "description": "",
-      "bundleID": "com.Provenance.Provenance"
+      "bundleID": "com.PPSSPP.PPSSPP"
     },
   ],
   "Other": []
