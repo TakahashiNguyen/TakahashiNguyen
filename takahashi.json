@@ -17,20 +17,7 @@
       }
     },
   ],
-  "Tweaked": [
-    {
-      "name": "WDBRemoveThreeAppLimit",
-      "version": "1.0",
-      "icon": "https://alexdunndev.files.wordpress.com/2020/01/empty_app_icon_512.png?w=512&h=510&crop=1",
-      "down": "https://github.com/zhuowei/WDBRemoveThreeAppLimit/releases/download/v1.0/WDBRemoveThreeAppLimit-v1.0.ipa",
-      "category": "Tweaked",
-      "description": "",
-      "bundleID": "com.tweaked.WDBRemoveThreeAppLimit",
-      "contact": {
-        "Github": "https://github.com/zhuowei/WDBRemoveThreeAppLimit",
-      }
-    },
-  ],
+  "Tweaked": [],
   "Jailbreaks": [],
   "Emulators": [
     {
