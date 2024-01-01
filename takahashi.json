@@ -32,15 +32,6 @@
         "web": "https://github.com/rileytestut/Delta",
       }
     },
-    {
-      "name": "PPSSPP",
-      "version": "1.16.6",
-      "icon": "https://raw.githubusercontent.com/hrydgard/ppsspp/master/ios/assets/Icon-72%403x.png",
-      "down": "https://p.xx.wtf/PPSSPP_v1.16.6-766-g8aa44b7e1.ipa",
-      "category": "Emulators",
-      "description": "",
-      "bundleID": "com.emulator.PPSSPP"
-    },
   ],
   "Other": []
 }
