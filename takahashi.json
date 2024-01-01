@@ -16,18 +16,6 @@
         "web": "https://github.com/brandonplank/flappybird",
       }
     },
-    {
-      "name": "GTA: Vice city",
-      "version": "1.72.41",
-      "icon": "https://raw.githubusercontent.com/brandonplank/flappybird/main/Flappy%20Bird/Assets.xcassets/AppLogo.imageset/1024.png",
-      "down": "https://dwdisc.com/fdl/291fa2af-da49-4d6c-9012-2677d9509d5e/48342-gta-vice-city-definitive-v1-72-41.ipa",
-      "category": "Games",
-      "description": "",
-      "bundleID": "com.game.gtaviceciry",
-      "contact": {
-        "web": "",
-      }
-    },
   ],
   "Tweaked": [],
   "Jailbreaks": [],
