@@ -13,7 +13,7 @@
       "description": "",
       "bundleID": "com.game.flappybird",
       "contact": {
-        "Github": "https://github.com/brandonplank/flappybird",
+        "web": "https://github.com/brandonplank/flappybird",
       }
     },
   ],
@@ -29,14 +29,14 @@
       "description": "",
       "bundleID": "com.emulator.Delta",
       "contact": {
-        "Github": "https://github.com/rileytestut/Delta",
+        "web": "https://github.com/rileytestut/Delta",
       }
     },
     {
       "name": "PPSSPP",
       "version": "1.16.6",
       "icon": "https://raw.githubusercontent.com/hrydgard/ppsspp/master/ios/assets/Icon-72%403x.png",
-      "down": "https://zjueducn-my.sharepoint.com/personal/21021161_zju_edu_cn/_layouts/15/download.aspx?UniqueId=8d2a3402-0754-4bb0-85e9-5dcfcd355e93&Translate=false&tempauth=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvemp1ZWR1Y24tbXkuc2hhcmVwb2ludC5jb21AZWI1ZmMwZjQtMjE2MS00MGQ4LTg0OTItNTE1OTQyNDQ5NzkzIiwiaXNzIjoiMDAwMDAwMDMtMDAwMC0wZmYxLWNlMDAtMDAwMDAwMDAwMDAwIiwibmJmIjoiMTcwNDAyOTU3MCIsImV4cCI6IjE3MDQwMzMxNzAiLCJlbmRwb2ludHVybCI6Im5ObmhKUDRGWHFYRzFuOGtmZXYvcUNqSE9IaUdJbWc3em1ERU9SV08xam89IiwiZW5kcG9pbnR1cmxMZW5ndGgiOiIxNTEiLCJpc2xvb3BiYWNrIjoiVHJ1ZSIsImNpZCI6InZITFBTNEhSVGt1MkZHZU4rS3NPUUE9PSIsInZlciI6Imhhc2hlZHByb29mdG9rZW4iLCJzaXRlaWQiOiJNalEyTURNeU56RXRObUkyWkMwMFlqSmxMV0kyTTJNdE9EZ3dNemhrTkdZMFlqRmgiLCJhcHBfZGlzcGxheW5hbWUiOiJPbmVEcml2ZSBmb3IgQVBJIiwiZ2l2ZW5fbmFtZSI6IlBsdXRvIiwiZmFtaWx5X25hbWUiOiJXYW5nIiwiYXBwaWQiOiI3OGQ0ZGMzNS03ZTQ2LTQyYzYtOTAyMy0yZDM5MzE0NDMzYTUiLCJ0aWQiOiJlYjVmYzBmNC0yMTYxLTQwZDgtODQ5Mi01MTU5NDI0NDk3OTMiLCJ1cG4iOiIyMTAyMTE2MUB6anUuZWR1LmNuIiwicHVpZCI6IjEwMDMyMDAwNUMzOEJDNUYiLCJjYWNoZWtleSI6IjBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMDVjMzhiYzVmQGxpdmUuY29tIiwic2NwIjoiYWxsZmlsZXMud3JpdGUgYWxscHJvZmlsZXMucmVhZCIsInR0IjoiMiIsImlwYWRkciI6IjIwLjE5MC4xNDEuNDMifQ.Z43I_dXDJ6tHdPTMzBCIqqf1Ho1oi5nifL3R-uugW3Q&ApiVersion=2.0",
+      "down": "https://p.xx.wtf/PPSSPP_v1.16.6-766-g8aa44b7e1.ipa",
       "category": "Emulators",
       "description": "",
       "bundleID": "com.emulator.PPSSPP"
