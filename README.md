@@ -1,6 +1,6 @@
 <div align="center">
     <img
-      src="https://capsule-render.vercel.app/api?type=waving&height=200&color=auto&text=Xin%20chào,%20tớ%20%20là%20Nguyễn%20Việt%20Anh👋&fontSize=45&fontAlignY=55&animation=fadeIn&desc=Là+một+học+sinh+(sắp+thành+sinh+viên)+đam+mê+Kỹ+thuật+Phần+mềm&descAlign=60&descAlignY=77"
+      src="https://capsule-render.vercel.app/api?type=waving&height=200&textBg=true&color=auto&text=Xin%20chào,%20tớ%20%20là%20Nguyễn%20Việt%20Anh👋&fontSize=45&fontAlignY=55&animation=fadeIn&desc=Là+một+học+sinh+(sắp+thành+sinh+viên)+đam+mê+Kỹ+thuật+Phần+mềm&descAlign=60&descAlignY=77"
       width="100%"
       href=""
     />
