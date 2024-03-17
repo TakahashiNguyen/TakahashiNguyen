@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://youtu.be/xvFZjo5PgG0">
     <img
-      src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Xin%20chào,%20tôi%20là%20Nguyễn%20Việt%20Anh%20👋&fontSize=45&desc=Là%20một%20học%20sinh%20cấp%20ba%20đam%20mê%20làm%20việc%20và%20học%20những%20thứ%20mới&descAlignY=65&descAlign=62"
+      src="https://capsule-render.vercel.app/api?type=waving&height=200&color=timeAuto&text=Xin%20chào,%20tớ%20%20là%20Nguyễn%20Việt%20Anh👋&section=header&textBg=false&animation=fadeIn&reversal=true&fontSize=45&fontAlign=50&fontAlignY=40&desc=Là+một+học+sinh+(sắp+thành+sinh+viên)+đam+mê+Kỹ+thuật+Phần+mềm&descAlign=60&descAlignY=58"
       width="100%"
       href=""
     />
