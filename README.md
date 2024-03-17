@@ -1,4 +1,4 @@
-<div style="width: 100%;">
+<div align="center">
   <a href="https://github.com/TakahashiNguyen">
     <img src="greeting.svg" style="width: 100%;" alt="Click to see the source">
   </a>
