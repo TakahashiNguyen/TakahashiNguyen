@@ -1,45 +1,38 @@
 name: generate animation
-
 on:
-  # run automatically every 24 hours
+  # run automatically every 10 minutes
   schedule:
     - cron: '*/10 * * * *'
-  # allows to manually run the job at any time
   workflow_dispatch:
-
 jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
-      # generates a snake game from a github user (<github_user_name>) contributions graph, output a svg animation at <svg_out_path>
-
-      - name: checkout repo content
+      - name: Checkout repo content
         uses: actions/checkout@v2 # checkout the repository content
 
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10" # install the python version needed
 
-      - name: install python packages
+      - name: Installing Python's packages
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
-      - name: generate github-contribution-grid-snake.svg
-        uses: aelassas/snk/svg-only@main
+
+      - name: Generating snake eat contribution streak
+        uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-      - name: get stats
+      - name: Get statistics
         run: python githubstats.py
 
-      # push the content of <build_dir> to a branch
-      # the content will be available at https://raw.githubusercontent.com/<github_user>/<repository>/<target_branch>/<file> , or as github page
-      - name: push github-contribution-grid-snake.svg to the output branch
+      - name: Push results to Github
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: output
