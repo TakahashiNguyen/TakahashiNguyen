@@ -37,7 +37,7 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
   console.log(event);
   if (event.data == YT.PlayerState.PLAYING) {
-    console.log("sus");
+    console.log("UK in his natural habitat");
   }
   if (event.data === -1) {
     document.getElementById("myVideo").remove();
