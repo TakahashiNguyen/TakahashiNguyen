@@ -14,7 +14,7 @@ function onYouTubeIframeAPIReady() {
   if (ran_value === 0) vid_id = "jNxUnXahFcg";
   else if (ran_value === 1) vid_id = "P7b6NOfJtPY";
   player = new YT.Player("myVideo", {
-    height: "99%",
+    height: "100%",
     width: "100%",
     videoId: vid_id,
     playerVars: {
@@ -39,7 +39,7 @@ function onPlayerStateChange(event) {
     console.log("UK is in his natural habitat");
   } else {
     document.getElementById("myVideo").remove();
-    document.getElementById("textDiv").classList.remove('myInvert');
-    myText.style.color='white';
+    document.getElementById("textDiv").classList.remove("myInvert");
+    myText.style.color = "white";
   }
 }
