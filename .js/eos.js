@@ -32,7 +32,6 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
   player.playVideo();
-  onPlayerStateChange(event);
 }
 
 function onPlayerStateChange(event) {
