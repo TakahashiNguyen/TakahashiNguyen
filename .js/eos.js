@@ -14,7 +14,7 @@ function onYouTubeIframeAPIReady() {
   if (ran_value === 0) vid_id = "jNxUnXahFcg";
   else if (ran_value === 1) vid_id = "P7b6NOfJtPY";
   player = new YT.Player("myVideo", {
-    height: "100%",
+    height: "99%",
     width: "100%",
     videoId: vid_id,
     playerVars: {
@@ -32,19 +32,15 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
   player.playVideo();
+  onPlayerStateChange(event);
 }
 
 function onPlayerStateChange(event) {
-  console.log(event);
-  if (event.data == YT.PlayerState.PLAYING) {
-    console.log("UK in his natural habitat");
-  }
-  if (event.data === -1) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    console.log("UK is in his natural habitat");
+  } else {
     document.getElementById("myVideo").remove();
-    myText.style.filter = "none";
-    subText.style.color = "white";
+    document.getElementById("textDiv").classList.remove('myInvert');
+    myText.style.color='white';
   }
-}
-function stopVideo() {
-  player.stopVideo();
 }

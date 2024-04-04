@@ -16,7 +16,7 @@ html {
 
 @font-face {
   font-family: myFont;
-  src: url(../fonts/MaginiaRegular-BWP6x.otf);
+  src: url(../.ttf/MaginiaRegular.ttf);
 }
 
 #myVideo {
@@ -30,7 +30,10 @@ html {
   position: fixed;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+.myInvert {
   filter: invert(70%);
   mix-blend-mode: difference;
-  object-fit: contain;
 }
