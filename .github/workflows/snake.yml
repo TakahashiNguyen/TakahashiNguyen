@@ -1,4 +1,4 @@
-name: generate animation
+name: Cập nhật Github Readme
 on:
   # run automatically every 10 minutes
   schedule:
