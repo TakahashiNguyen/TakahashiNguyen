@@ -20,6 +20,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Check for keyword in commit message
         run: |
           # Get the last commit message
@@ -33,9 +35,6 @@ jobs:
             echo "Keyword not found. Skipping actions."
             exit 1
           fi
-
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
