@@ -20,6 +20,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check for keyword in commit message
+        run: |
+          # Get the last commit message
+          commit_message=$(git log -1 --pretty=format:"%s")
+
+          # Check if the keyword is present (case-insensitive)
+          if [[ $(echo "$commit_message" | tr '[:upper:]' '[:lower:]') =~ "[ReDeploy]" ]]; then
+            echo "Keyword 'your_keyword' found in commit message. Running actions..."
+            # Add your action steps here
+          else
+            echo "Keyword not found. Skipping actions."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
@@ -27,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: "."
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
