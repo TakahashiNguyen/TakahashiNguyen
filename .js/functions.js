@@ -4,10 +4,31 @@ function preparePage() {
   // Add YouTube API video call
   var tag = document.createElement("script");
   var firstScriptTag = document.getElementsByTagName("script")[0];
-  
-	tag.src = "https://www.youtube.com/iframe_api";
+
+  tag.src = "https://www.youtube.com/iframe_api";
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
+
+function dynamicTextSizer() {
+  const windowHeight = window.innerHeight;
+  const windowWidth = window.innerWidth;
+  const squareSideLength = Math.min(windowHeight, windowWidth);
+  var textBox = document.getElementById("myText");
+
+  textBox.style.width = `${squareSideLength}px`;
+  textBox.style.height = `${squareSideLength}px`;
+  textBox.style.fontSize = `${squareSideLength / 18}px`;
+}
+
+// Execute on page finish loading
+document.addEventListener("DOMContentLoaded", function () {
+  dynamicTextSizer();
+});
+
+// Execute on page change size
+window.addEventListener("resize", function () {
+  dynamicTextSizer();
+});
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
