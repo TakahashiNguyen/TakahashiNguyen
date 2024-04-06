@@ -1,5 +1,29 @@
 var player;
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function randomImage() {
+  const imageUrls = [
+    "Akiyoshidai",
+    "CaoBằng",
+    "CátBà",
+    "Dorset",
+    "Dorset_1",
+    "Halnaker",
+    "HoàngCungTokyo",
+    "HồYamanaka",
+    "ISS",
+    "LâuĐàiHimeji",
+    "SôngCửuLong",
+    "VũngNapa",
+  ];
+  myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
+    imageUrls[getRandomInt(imageUrls.length)]
+  }.jpg`;
+}
+
 function preparePage() {
   // Add YouTube API video call
   var tag = document.createElement("script");
@@ -23,16 +47,13 @@ function dynamicTextSizer() {
 // Execute on page finish loading
 document.addEventListener("DOMContentLoaded", function () {
   dynamicTextSizer();
+  randomImage();
 });
 
 // Execute on page change size
 window.addEventListener("resize", function () {
   dynamicTextSizer();
 });
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
 
 function onYouTubeIframeAPIReady() {
   ran_value = getRandomInt(3);
