@@ -22,18 +22,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check for keyword in commit message
+      - name: Check for keyword
         run: |
-          # Get the last commit message
-          commit_message=$(git log -1 --pretty=format:"%s")
-
-          # Check if the keyword is present (case-insensitive)
-          if [[ $(echo "$commit_message" | tr '[:upper:]' '[:lower:]') =~ "[ReDeploy]" ]]; then
-            echo "Keyword 'your_keyword' found in commit message. Running actions..."
-            # Add your action steps here
+          keyword="ReDeploy"  # Replace with your desired keyword
+          message=$(git log -1 --pretty=%B)
+          if [[ $message =~ $keyword ]]; then
+              echo "Keyword found. Proceeding with actions."
+              # Add your desired actions here (within another step)
           else
-            echo "Keyword not found. Skipping actions."
-            exit 1
+              echo "Keyword not found. Terminating workflow."
+              exit 1
           fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
