@@ -27,10 +27,8 @@ function randomImage() {
 function preparePage() {
   // Add YouTube API video call
   var tag = document.createElement("script");
-  var firstScriptTag = document.getElementsByTagName("script")[0];
-
   tag.src = "https://www.youtube.com/iframe_api";
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  document.head.appendChild(tag);
 }
 
 function dynamicTextSizer() {
