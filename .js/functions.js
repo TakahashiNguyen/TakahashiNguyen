@@ -43,10 +43,11 @@ function dynamicTextSizer() {
 }
 
 // Execute on page finish loading
-document.addEventListener("DOMContentLoaded", function () {
+function scriptDOMContentLoaded() {
   dynamicTextSizer();
   randomImage();
-});
+}
+document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
 // Execute on page change size
 window.addEventListener("resize", function () {
