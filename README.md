@@ -57,3 +57,7 @@
     />
   </a>
 </div>
+<!---
+  Tạm biệt Github README và takahashi.github.io trong 3 tháng nha!
+  Tập trung thi Học Kì, Tốt Nghiệp THPT Quốc Gia và Đánh giá Năng lực đợt hai thôi.
+-->
