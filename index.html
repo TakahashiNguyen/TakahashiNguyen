@@ -1,68 +1,50 @@
 <!DOCTYPE html>
-<html>
-  <html>
-    <head>
-      <meta charset="utf-8" />
-      <script type="text/javascript" src=".js/functions.js"></script>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <title>mUKga ✨</title>
-      <link rel="icon" type="image/x-icon" href=".png/Larry_Chief_Mouser.png" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="stylesheet" href=".css/style.css" type="text/css" />
-      <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-    <body
-      oncopy="return false"
-      oncut="return false"
-      onpaste="return false"
-      style="margin: 0 0 0 0"
+    <title>mUKga ✨</title>
+
+    <link rel="icon" type="image/x-icon" href=".png/Larry_Chief_Mouser.png" />
+    <link rel="stylesheet" href=".css/style.css" type="text/css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src=".js/functions.js"></script>
+  </head>
+  <body class="bg-white dark:bg-black m-[0px]">
+    <div
+      class="flex flex-col absolute bottom-7 left-7 z-50 text-center select-none"
+      style="font-family: GarageGothicBold"
     >
-      <div
-        class="flex flex-col absolute bottom-7 left-7 z-50 text-center"
-        style="font-family: GarageGothicBold"
+      <p
+        class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold px-1 tracking-[4px] z-50"
       >
-        <div
-          class="bg-black text-white text-[15px] font-bold px-1 tracking-[3px]"
-        >
-          PRIORITIZE
-        </div>
-        <div
-          class="bg-white text-black text-[27px] font-bold tracking-[2px] px-2"
-        >
-          PERSONAL
-        </div>
-        <div
-          class="bg-black text-white text-[15px] font-bold px-1 tracking-[3px]"
-        >
-          WELL-BEING
-        </div>
-      </div>
-
-      <div
-        class="myInvert posCenter z-50 h-dvh w-full"
-        style="
-          -moz-user-select: none;
-          -webkit-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          -o-user-select: none;
-        "
-        unselectable="on"
-        onselectstart="return false;"
-        onmousedown="return false;"
-        id="textDiv"
+        PRIORITIZE
+      </p>
+      <p
+        class="dark:bg-black bg-white dark:text-white text-black text-[27px] font-bold tracking-[1px] px-2 mt-[-8px] mb-[-9px] z-40"
       >
-        <p
-          style="color: black; font-family: myFont"
-          class="posCenter"
-          id="myText"
-        >
-          <b>#makeUKgreatagain</b>
-        </p>
-      </div>
+        PERSONAL
+      </p>
+      <p
+        class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold px-1 tracking-[4px] z-50"
+      >
+        WELL-BEING
+      </p>
+    </div>
 
-      <div id="myVideo" class="-z-40 bg-black"></div>
-      <img class="posCenter -z-50 h-dvh object-contain w-full" id="myImg" />
-    </body>
-  </html>
+    <div class="myInvert posCenter z-40 h-dvh w-full select-none" id="textDiv">
+      <p style="font-family: myFont" class="posCenter" id="myText">
+        <b>#makeUKgreatagain</b>
+      </p>
+    </div>
+
+    <div id="myVideo" class="-z-40 bg-black"></div>
+    <img
+      class="posCenter -z-50 h-dvh object-contain w-full"
+      id="myImg"
+      title="randomImage"
+    />
+  </body>
 </html>
