@@ -20,6 +20,11 @@ html {
   src: url(../.ttf/MaginiaRegular.ttf);
 }
 
+@font-face {
+  font-family: GarageGothicBold;
+  src: url(../.otf/GarageGothic-Bold.otf);
+}
+
 .myInvert {
   filter: invert(70%);
   mix-blend-mode: difference;
