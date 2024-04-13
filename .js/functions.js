@@ -37,7 +37,7 @@ function dynamicTextSizer() {
   const squareSideLength = Math.min(windowHeight, windowWidth);
   var textBox = document.getElementById("myName");
   var nickName = document.getElementById("nickName");
-  var hashTag = document.getElementById("myHashTag")
+  var hashTag = document.getElementById("myHashTag");
 
   textBox.style.height = textBox.style.width = `${squareSideLength}px`;
   textBox.style.lineHeight = textBox.style.fontSize = `${
@@ -47,15 +47,23 @@ function dynamicTextSizer() {
   nickName.style.lineHeight = nickName.style.fontSize = `${
     squareSideLength / 20
   }px`;
-  nickName.style.marginBottom = `-${squareSideLength/74}px`
-  hashTag.style.lineHeight = hashTag.style.fontSize = `${squareSideLength/64}px`
-  hashTag.style.marginTop = `${squareSideLength/100}px`
+  hashTag.style.lineHeight = hashTag.style.fontSize = `${
+    squareSideLength / 64
+  }px`;
+
+  if (!isMobile) {
+    hashTag.style.marginTop = `${squareSideLength / 100}px`;
+    nickName.style.marginBottom = `-${squareSideLength / 74}px`;
+  }
 }
 
 // Execute on page finish loading
 function scriptDOMContentLoaded() {
   dynamicTextSizer();
   randomImage();
+
+  var img = document.getElementById("myImg");
+  img.style.objectFit = isMobile ? "fill" : "contain";
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
@@ -139,5 +147,7 @@ const countdown = setInterval(() => {
     // Perform any desired action when the countdown reaches zero
   }
 }, 1000);
+
+const isMobile = navigator.userAgentData.mobile;
 
 preparePage();
