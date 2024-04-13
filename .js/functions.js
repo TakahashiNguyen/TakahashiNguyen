@@ -64,6 +64,7 @@ function scriptDOMContentLoaded() {
 
   var img = document.getElementById("myImg");
   img.style.objectFit = isMobile ? "cover" : "contain";
+  if (isMobile) removeVideo();
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
@@ -98,14 +99,16 @@ function onPlayerReady(event) {
   player.playVideo();
 }
 
+function removeVideo() {
+  document.getElementById("myVideo").remove();
+  document.getElementById("textDiv").classList.remove("myInvert");
+  myText.style.color = "white";
+}
+
 function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.PLAYING) {
+  if (event.data === YT.PlayerState.PLAYING)
     console.log("UK is in his natural habitat");
-  } else {
-    document.getElementById("myVideo").remove();
-    document.getElementById("textDiv").classList.remove("myInvert");
-    myText.style.color = "white";
-  }
+  else removeVideo();
 }
 
 // Set the target date and time
