@@ -8,27 +8,16 @@ function randomImage() {
   const imageUrls = [
     "Akiyoshidai",
     "CaoBằng",
-    "CátBà",
-    "Dorset",
-    "Dorset_1",
     "Halnaker",
     "HoàngCungTokyo",
     "HồYamanaka",
     "ISS",
     "LâuĐàiHimeji",
-    "SôngCửuLong",
     "VũngNapa",
   ];
   myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
     imageUrls[getRandomInt(imageUrls.length)]
   }.jpg`;
-}
-
-function preparePage() {
-  // Add YouTube API video call
-  var tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
 }
 
 function dynamicTextSizer() {
@@ -58,6 +47,36 @@ function dynamicTextSizer() {
 function scriptDOMContentLoaded() {
   dynamicTextSizer();
   randomImage();
+  myImg.crossOrigin = "anonymous";
+  myImg.onload = function () {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = myImg.width;
+    canvas.height = myImg.height;
+
+    context.drawImage(myImg, 0, 0);
+
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    let r = 0,
+      g = 0,
+      b = 0;
+
+    for (let i = 0; i < data.length; i += 4) {
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
+    }
+
+    const pixelCount = data.length / 4;
+    const averageR = 255 - Math.floor(r / pixelCount);
+    const averageG = 255 - Math.floor(g / pixelCount);
+    const averageB = 255 - Math.floor(b / pixelCount);
+
+    const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
+    textDiv.style.color = averageColor;
+  };
 
   myImg.style.objectFit = isMobile ? "cover" : "contain";
   if (isMobile) removeVideo();
@@ -68,44 +87,6 @@ document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 window.addEventListener("resize", function () {
   dynamicTextSizer();
 });
-
-function onYouTubeIframeAPIReady() {
-  ran_value = getRandomInt(3);
-  vid_id = "IlVShjKur0I";
-  if (ran_value === 0) vid_id = "jNxUnXahFcg";
-  else if (ran_value === 1) vid_id = "P7b6NOfJtPY";
-  player = new YT.Player("myVideo", {
-    height: "100%",
-    width: "100%",
-    videoId: vid_id,
-    playerVars: {
-      playsinline: 1,
-      autoplay: 1,
-      loop: 1,
-      rel: 0,
-    },
-    events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange,
-    },
-  });
-}
-
-function onPlayerReady(event) {
-  player.playVideo();
-}
-
-function removeVideo() {
-  document.getElementById("myVideo").remove();
-  document.getElementById("textDiv").classList.remove("myInvert");
-  myText.style.color = "white";
-}
-
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.PLAYING)
-    console.log("UK is in his natural habitat");
-  else removeVideo();
-}
 
 // Set the target date and time
 const targetDate = new Date("2025-10-04T00:00:00").getTime();
@@ -140,5 +121,3 @@ const countdown = setInterval(() => {
 }, 1000);
 
 const isMobile = navigator.userAgentData.mobile;
-
-preparePage();

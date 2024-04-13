@@ -29,11 +29,6 @@ html {
   src: url(../.otf/GarageGothic.otf);
 }
 
-.myInvert {
-  filter: invert(37%);
-  mix-blend-mode: difference;
-}
-
 .posCenter {
   display: flex;
   align-items: center;
