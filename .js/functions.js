@@ -8,11 +8,13 @@ function randomImage() {
   const imageUrls = [
     "Akiyoshidai",
     "CaoBằng",
+    "CátBà",
+    "Dorset",
     "Halnaker",
-    "HoàngCungTokyo",
     "HồYamanaka",
     "ISS",
     "LâuĐàiHimeji",
+    "SôngCửuLong",
     "VũngNapa",
   ];
   myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
@@ -51,10 +53,24 @@ function scriptDOMContentLoaded() {
   myImg.onload = function () {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    canvas.width = myImg.width;
-    canvas.height = myImg.height;
+    const canvaSize = 400;
+    canvas.width = canvas.height = canvaSize;
+    var squareSize = Math.min(myImg.width, myImg.height);
+    var x = (canvas.width - squareSize) / 2;
+    var y = (canvas.height - squareSize) / 2;
 
-    context.drawImage(myImg, 0, 0);
+    // Draw the center square onto the canvas
+    context.drawImage(
+      myImg,
+      x,
+      y,
+      squareSize,
+      squareSize,
+      0,
+      0,
+      canvaSize,
+      canvaSize
+    );
 
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;

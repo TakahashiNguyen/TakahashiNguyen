@@ -37,6 +37,8 @@ jobs:
           fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Remove Unnessary
+        run: rm ./Góc học tập -fr
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
