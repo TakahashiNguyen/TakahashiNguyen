@@ -10,7 +10,9 @@ function randomImage() {
     "CaoBằng",
     "CátBà",
     "Dorset",
+    "Dorset_1",
     "Halnaker",
+    "HoàngCungTokyo",
     "HồYamanaka",
     "ISS",
     "LâuĐàiHimeji",
@@ -53,42 +55,41 @@ function scriptDOMContentLoaded() {
   myImg.onload = function () {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const canvaSize = 400;
-    canvas.width = canvas.height = canvaSize;
-    var squareSize = Math.min(myImg.width, myImg.height);
-    var x = (canvas.width - squareSize) / 2;
-    var y = (canvas.height - squareSize) / 2;
+    const canvaSize = 20;
+    canvas.width = canvaSize * 5;
+    canvas.height = canvaSize;
+    var x = (myImg.width - canvas.width) / 2;
+    var y = (myImg.height - canvas.height) / 2;
 
-    // Draw the center square onto the canvas
-    context.drawImage(
-      myImg,
-      x,
-      y,
-      squareSize,
-      squareSize,
-      0,
-      0,
-      canvaSize,
-      canvaSize
-    );
-
+    context.drawImage(myImg, -x, -y, myImg.width, myImg.height);
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
 
     let r = 0,
       g = 0,
-      b = 0;
+      b = 0,
+      avg = 0,
+      colorSum = 0;
 
     for (let i = 0; i < data.length; i += 4) {
       r += data[i];
       g += data[i + 1];
       b += data[i + 2];
+      avg = Math.floor((data[i] + data[i + 1] + data[i + 2]) / 3);
+      colorSum += avg;
     }
 
+    const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
     const pixelCount = data.length / 4;
-    const averageR = 255 - Math.floor(r / pixelCount);
-    const averageG = 255 - Math.floor(g / pixelCount);
-    const averageB = 255 - Math.floor(b / pixelCount);
+    const averageR = Math.abs(
+      (brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount)
+    );
+    const averageG = Math.abs(
+      (brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount)
+    );
+    const averageB = Math.abs(
+      (brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount)
+    );
 
     const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
     textDiv.style.color = averageColor;
