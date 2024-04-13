@@ -14,7 +14,6 @@ function randomImage() {
     "Dorset",
     "Dorset_1",
     "Halnaker",
-    "HoàngCungTokyo",
     "HồYamanaka",
     "ISS",
     "LâuĐàiHimeji",
@@ -58,8 +57,8 @@ function scriptDOMContentLoaded() {
   myImg.onload = function () {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const canvaSize = 20;
-    canvas.width = canvaSize * 5;
+    const canvaSize = 250;
+    canvas.width = canvaSize * 4;
     canvas.height = canvaSize;
     var x = (myImg.width - canvas.width) / 2;
     var y = (myImg.height - canvas.height) / 2;
