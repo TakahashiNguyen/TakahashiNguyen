@@ -1,7 +1,5 @@
 var player;
 
-const isMobile = navigator.userAgentData.mobile;
-
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -138,3 +136,5 @@ const countdown = setInterval(() => {
     // Perform any desired action when the countdown reaches zero
   }
 }, 1000);
+
+const isMobile = navigator.userAgentData.mobile;
