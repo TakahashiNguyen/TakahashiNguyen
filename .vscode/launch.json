@@ -27,7 +27,6 @@
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/NEATChessEngine/NEATChessEngine.py",
-      //"program": "${workspaceFolder}/UKiChessEngine/lichessbot.py",
       "cwd": "${workspaceFolder}/NEATChessEngine",
       "console": "integratedTerminal",
       "justMyCode": false
@@ -38,7 +37,13 @@
       "request": "launch",
       "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
       "cwd": "${workspaceFolder}/bin",
-      "preLaunchTask": "Terminal",
+      "preLaunchTask": "Terminal"
+    },
+    {
+      "type": "msedge",
+      "name": "http://127.0.0.1:3000/index.html",
+      "request": "launch",
+      "url": "http://127.0.0.1:3000/index.html"
     }
   ]
 }
