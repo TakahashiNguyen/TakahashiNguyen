@@ -14,24 +14,38 @@
   </head>
   <body class="bg-white dark:bg-black">
     <div
-      class="flex flex-col absolute bottom-7 left-7 z-50 text-center select-none"
+      class="flex flex-row absolute bottom-7 left-7 z-50 group/advisory text-center select-none"
       style="font-family: GarageGothicBold"
     >
-      <p
-        class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold px-1 tracking-[4px] z-50"
+      <div class="flex flex-col">
+        <span
+          class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold tracking-[4px] px-1"
+        >
+          PRIORITIZE
+        </span>
+        <span
+          class="leading-[17px] dark:bg-black bg-white dark:text-white text-black text-[27px] font-bold tracking-[1px]"
+        >
+          PERSONAL
+        </span>
+        <span
+          class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold tracking-[4px]"
+        >
+          WELL-BEING
+        </span>
+      </div>
+      <div
+        class="w-0 overflow-hidden group-hover/advisory:w-full transition-all duration-[2000ms] transform bg-[#370037] flex items-center justify-end"
       >
-        PRIORITIZE
-      </p>
-      <p
-        class="dark:bg-black bg-white dark:text-white text-black text-[27px] font-bold tracking-[1px] px-2 mt-[-8px] mb-[-9px] z-40"
-      >
-        PERSONAL
-      </p>
-      <p
-        class="leading-[14px] dark:bg-white bg-black dark:text-black text-white text-[15px] font-bold px-1 tracking-[4px] z-50"
-      >
-        WELL-BEING
-      </p>
+        <div class="text-white mx-[10px] text-[27px] flex-row flex">
+          <span class="pr-[5px]">Able</span><span class="pr-[5px]">to</span>
+          <span class="pr-[5px]">love</span><span class="pr-[5px]">after</span
+          ><span id="advisoryDays">00</span>:<span id="advisoryHours">00</span
+          >:<span id="advisoryMinutes">00</span>:<span id="advisorySeconds"
+            >00</span
+          >
+        </div>
+      </div>
     </div>
 
     <div class="myInvert posCenter z-40 h-dvh w-full select-none" id="textDiv">

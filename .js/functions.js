@@ -90,4 +90,44 @@ function onPlayerStateChange(event) {
   }
 }
 
+// Set the target date and time
+const targetDate = new Date("2025-10-04T00:00:00").getTime();
+
+// Update the countdown every second
+const countdown = setInterval(() => {
+  // Get the current date and time
+  const now = new Date().getTime();
+
+  // Calculate the remaining time
+  const remainingTime = targetDate - now;
+
+  // Calculate the days, hours, minutes, and seconds
+  const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+  // Update the HTML elements with the calculated time units
+  document.getElementById("advisoryDays").textContent = days
+    .toString()
+    .padStart(2, "0");
+  document.getElementById("advisoryHours").textContent = hours
+    .toString()
+    .padStart(2, "0");
+  document.getElementById("advisoryMinutes").textContent = minutes
+    .toString()
+    .padStart(2, "0");
+  document.getElementById("advisorySeconds").textContent = seconds
+    .toString()
+    .padStart(2, "0");
+
+  // Check if the countdown has reached zero
+  if (remainingTime < 0) {
+    clearInterval(countdown);
+    // Perform any desired action when the countdown reaches zero
+  }
+}, 1000);
+
 preparePage();
