@@ -35,11 +35,21 @@ function dynamicTextSizer() {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
   const squareSideLength = Math.min(windowHeight, windowWidth);
-  var textBox = document.getElementById("myText");
+  var textBox = document.getElementById("myName");
+  var nickName = document.getElementById("nickName");
+  var hashTag = document.getElementById("myHashTag")
 
-  textBox.style.width = `${squareSideLength}px`;
-  textBox.style.height = `${squareSideLength}px`;
-  textBox.style.fontSize = `${squareSideLength / 18}px`;
+  textBox.style.height = textBox.style.width = `${squareSideLength}px`;
+  textBox.style.lineHeight = textBox.style.fontSize = `${
+    squareSideLength / 18
+  }px`;
+
+  nickName.style.lineHeight = nickName.style.fontSize = `${
+    squareSideLength / 20
+  }px`;
+  nickName.style.marginBottom = `-${squareSideLength/74}px`
+  hashTag.style.lineHeight = hashTag.style.fontSize = `${squareSideLength/64}px`
+  hashTag.style.marginTop = `${squareSideLength/100}px`
 }
 
 // Execute on page finish loading

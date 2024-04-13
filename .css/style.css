@@ -15,13 +15,18 @@ html {
 }
 
 @font-face {
-  font-family: myFont;
-  src: url(../.ttf/MaginiaRegular.ttf);
+  font-family: Magnies;
+  src: url(../.otf/Magnies.otf);
 }
 
 @font-face {
-  font-family: GarageGothicBold;
-  src: url(../.otf/GarageGothic-Bold.otf);
+  font-family: Maginia;
+  src: url(../.ttf/Maginia.ttf);
+}
+
+@font-face {
+  font-family: GarageGothic;
+  src: url(../.otf/GarageGothic.otf);
 }
 
 .myInvert {
@@ -34,4 +39,45 @@ html {
   align-items: center;
   justify-content: center;
   position: fixed;
+}
+
+.shake:not(:hover) {
+  animation: shakeFrames 0.5s;
+  animation-iteration-count: 15;
+}
+
+@keyframes shakeFrames {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
 }
