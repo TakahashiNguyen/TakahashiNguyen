@@ -63,7 +63,7 @@ function scriptDOMContentLoaded() {
   randomImage();
 
   var img = document.getElementById("myImg");
-  img.style.objectFit = isMobile ? "fill" : "contain";
+  img.style.objectFit = isMobile ? "cover" : "contain";
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
