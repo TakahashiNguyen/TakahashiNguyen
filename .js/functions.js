@@ -1,5 +1,7 @@
 var player;
 
+const isMobile = navigator.userAgentData.mobile;
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -50,6 +52,7 @@ function dynamicTextSizer() {
 // Execute on page finish loading
 function scriptDOMContentLoaded() {
   dynamicTextSizer();
+
   randomImage();
   myImg.crossOrigin = "anonymous";
   myImg.onload = function () {
@@ -96,7 +99,6 @@ function scriptDOMContentLoaded() {
   };
 
   myImg.style.objectFit = isMobile ? "cover" : "contain";
-  if (isMobile) removeVideo();
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
@@ -136,5 +138,3 @@ const countdown = setInterval(() => {
     // Perform any desired action when the countdown reaches zero
   }
 }, 1000);
-
-const isMobile = navigator.userAgentData.mobile;
