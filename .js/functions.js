@@ -31,16 +31,10 @@ function dynamicTextSizer() {
   const squareSideLength = Math.min(windowHeight, windowWidth);
 
   myName.style.height = myName.style.width = `${squareSideLength}px`;
-  myName.style.lineHeight = myName.style.fontSize = `${
-    squareSideLength / 18
-  }px`;
+  myName.style.lineHeight = myName.style.fontSize = `${squareSideLength / 18}px`;
 
-  nickName.style.lineHeight = nickName.style.fontSize = `${
-    squareSideLength / 20
-  }px`;
-  myHashTag.style.lineHeight = myHashTag.style.fontSize = `${
-    squareSideLength / 64
-  }px`;
+  nickName.style.lineHeight = nickName.style.fontSize = `${squareSideLength / 20}px`;
+  myHashTag.style.lineHeight = myHashTag.style.fontSize = `${squareSideLength / 64}px`;
 
   if (!isMobile) {
     myHashTag.style.marginTop = `${squareSideLength / 100}px`;
@@ -83,15 +77,9 @@ function scriptDOMContentLoaded() {
 
     const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
     const pixelCount = data.length / 4;
-    const averageR = Math.abs(
-      (brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount)
-    );
-    const averageG = Math.abs(
-      (brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount)
-    );
-    const averageB = Math.abs(
-      (brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount)
-    );
+    const averageR = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount));
+    const averageG = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount));
+    const averageB = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount));
 
     const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
     textDiv.style.color = averageColor;
@@ -119,9 +107,7 @@ const countdown = setInterval(() => {
 
   // Calculate the days, hours, minutes, and seconds
   const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
+  const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
