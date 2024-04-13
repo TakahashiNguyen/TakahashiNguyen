@@ -1,34 +1,28 @@
 var player;
 
 const isMobile = navigator.userAgentData.mobile;
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-function randomImage() {
-  const imageUrls = [
-    "Akiyoshidai",
-    "CaoBằng",
-    "CátBà",
-    "Dorset",
-    "Dorset_1",
-    "Halnaker",
-    "HồYamanaka",
-    "ISS",
-    "LâuĐàiHimeji",
-    "SôngCửuLong",
-    "VũngNapa",
-  ];
+const getRandomInt = (max) => Math.floor(Math.random() * max);
+const imageUrls = [
+  "Akiyoshidai",
+  "CaoBằng",
+  "CátBà",
+  "Dorset",
+  "Dorset_1",
+  "Halnaker",
+  "HồYamanaka",
+  "ISS",
+  "LâuĐàiHimeji",
+  "SôngCửuLong",
+];
+const randomImage = () => {
   myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
     imageUrls[getRandomInt(imageUrls.length)]
   }.jpg`;
-}
+};
 
 function dynamicTextSizer() {
-  const windowHeight = window.innerHeight;
-  const windowWidth = window.innerWidth;
-  const squareSideLength = Math.min(windowHeight, windowWidth);
+  const { innerHeight, innerWidth } = window;
+  const squareSideLength = Math.min(innerHeight, innerWidth);
 
   myName.style.height = myName.style.width = `${squareSideLength}px`;
   myName.style.lineHeight = myName.style.fontSize = `${squareSideLength / 18}px`;
@@ -51,7 +45,7 @@ function scriptDOMContentLoaded() {
   myImg.onload = function () {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const canvaSize = 250;
+    const canvaSize = Math.min(myImg.width, myImg.height)/10;
     canvas.width = canvaSize * 4;
     canvas.height = canvaSize;
     var x = (myImg.width - canvas.width) / 2;
