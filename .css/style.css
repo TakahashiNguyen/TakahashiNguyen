@@ -30,7 +30,7 @@ html {
 }
 
 .myInvert {
-  filter: invert(70%);
+  filter: invert(37%);
   mix-blend-mode: difference;
 }
 
