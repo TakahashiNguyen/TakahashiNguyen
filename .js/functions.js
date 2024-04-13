@@ -35,24 +35,21 @@ function dynamicTextSizer() {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
   const squareSideLength = Math.min(windowHeight, windowWidth);
-  var textBox = document.getElementById("myName");
-  var nickName = document.getElementById("nickName");
-  var hashTag = document.getElementById("myHashTag");
 
-  textBox.style.height = textBox.style.width = `${squareSideLength}px`;
-  textBox.style.lineHeight = textBox.style.fontSize = `${
+  myName.style.height = myName.style.width = `${squareSideLength}px`;
+  myName.style.lineHeight = myName.style.fontSize = `${
     squareSideLength / 18
   }px`;
 
   nickName.style.lineHeight = nickName.style.fontSize = `${
     squareSideLength / 20
   }px`;
-  hashTag.style.lineHeight = hashTag.style.fontSize = `${
+  myHashTag.style.lineHeight = myHashTag.style.fontSize = `${
     squareSideLength / 64
   }px`;
 
   if (!isMobile) {
-    hashTag.style.marginTop = `${squareSideLength / 100}px`;
+    myHashTag.style.marginTop = `${squareSideLength / 100}px`;
     nickName.style.marginBottom = `-${squareSideLength / 74}px`;
   }
 }
@@ -62,8 +59,7 @@ function scriptDOMContentLoaded() {
   dynamicTextSizer();
   randomImage();
 
-  var img = document.getElementById("myImg");
-  img.style.objectFit = isMobile ? "cover" : "contain";
+  myImg.style.objectFit = isMobile ? "cover" : "contain";
   if (isMobile) removeVideo();
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
@@ -131,18 +127,10 @@ const countdown = setInterval(() => {
   const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
   // Update the HTML elements with the calculated time units
-  document.getElementById("advisoryDays").textContent = days
-    .toString()
-    .padStart(2, "0");
-  document.getElementById("advisoryHours").textContent = hours
-    .toString()
-    .padStart(2, "0");
-  document.getElementById("advisoryMinutes").textContent = minutes
-    .toString()
-    .padStart(2, "0");
-  document.getElementById("advisorySeconds").textContent = seconds
-    .toString()
-    .padStart(2, "0");
+  advisoryDays.textContent = days.toString().padStart(2, "0");
+  advisoryHours.textContent = hours.toString().padStart(2, "0");
+  advisoryMinutes.textContent = minutes.toString().padStart(2, "0");
+  advisorySeconds.textContent = seconds.toString().padStart(2, "0");
 
   // Check if the countdown has reached zero
   if (remainingTime < 0) {
