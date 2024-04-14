@@ -18,6 +18,24 @@ const randomImage = () => {
   }.jpg`;
 };
 
+function tailwindConfig() {
+  tailwind.config = {
+    theme: {
+      extend: {
+        keyframes: {
+          slide: {
+            "0%, 100%": { transform: "translateX(-10%) scale(1.30);" },
+            "50%": { transform: "translateX(10%) scale(1.30);" },
+          },
+        },
+        animation: {
+          slide: "slide 37s ease-in-out infinite",
+        },
+      },
+    },
+  };
+}
+
 function dynamicTextSizer() {
   const { innerHeight, innerWidth } = window;
   const squareSideLength = Math.min(innerHeight, innerWidth);
@@ -77,7 +95,6 @@ function scriptDOMContentLoaded() {
     textDiv.style.color = averageColor;
   };
 }
-document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 
 // Execute on page change size
 window.addEventListener("resize", function () {
@@ -113,3 +130,8 @@ const countdown = setInterval(() => {
     // Perform any desired action when the countdown reaches zero
   }
 }, 1000);
+
+window.addEventListener("DOMContentLoaded", function () {
+  scriptDOMContentLoaded();
+  tailwindConfig();
+});
