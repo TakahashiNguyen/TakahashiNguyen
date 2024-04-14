@@ -43,7 +43,7 @@ function scriptDOMContentLoaded() {
   myImg.onload = function () {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const canvaSize = Math.min(myImg.width, myImg.height)/10;
+    const canvaSize = Math.min(myImg.width, myImg.height) / 10;
     canvas.width = canvaSize * 4;
     canvas.height = canvaSize;
     var x = (myImg.width - canvas.width) / 2;
@@ -76,8 +76,6 @@ function scriptDOMContentLoaded() {
     const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
     textDiv.style.color = averageColor;
   };
-
-  myImg.style.objectFit = isMobile ? "cover" : "contain";
 }
 document.addEventListener("DOMContentLoaded", scriptDOMContentLoaded);
 

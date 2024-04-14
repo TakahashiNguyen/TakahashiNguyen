@@ -36,9 +36,11 @@ html {
   position: fixed;
 }
 
-.shake:not(:hover) {
-  animation: shakeFrames 0.5s;
-  animation-iteration-count: 15;
+@media (min-width: 640px) {
+  .shake:not(:hover) {
+    animation: shakeFrames 0.5s;
+    animation-iteration-count: 15;
+  }
 }
 
 @keyframes shakeFrames {
