@@ -135,7 +135,7 @@ const updateTailwindConfig = setInterval(() => {
   tailwindConfig();
 }, 2000);
 setTimeout(function () {
-  clearInterval(intervalId);
+  clearInterval(updateTailwindConfig);
 }, 10000);
 
 window.addEventListener("DOMContentLoaded", function () {
