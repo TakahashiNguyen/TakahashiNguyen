@@ -24,8 +24,9 @@ function tailwindConfig() {
       extend: {
         keyframes: {
           slide: {
-            "0%, 100%": { transform: "translateX(-10%) scale(1.30);" },
-            "50%": { transform: "translateX(10%) scale(1.30);" },
+            "0%, 100%": { transform: "translateX(0%) scale(1.30);" },
+            "25%": { transform: "translateX(10%) scale(1.30);" },
+            "75%": { transform: "translateX(-10%) scale(1.30);" },
           },
         },
         animation: {
@@ -52,7 +53,6 @@ function dynamicTextSizer() {
   }
 }
 
-// Execute on page finish loading
 function scriptDOMContentLoaded() {
   dynamicTextSizer();
 
@@ -131,7 +131,13 @@ const countdown = setInterval(() => {
   }
 }, 1000);
 
+const updateTailwindConfig = setInterval(() => {
+  tailwindConfig();
+}, 2000);
+setTimeout(function () {
+  clearInterval(intervalId);
+}, 10000);
+
 window.addEventListener("DOMContentLoaded", function () {
   scriptDOMContentLoaded();
-  tailwindConfig();
 });
