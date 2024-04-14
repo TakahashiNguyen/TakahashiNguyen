@@ -11,6 +11,7 @@ const imageUrls = [
   "ISS",
   "LâuĐàiHimeji",
   "SôngCửuLong",
+  "California"
 ];
 const randomImage = () => {
   myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
