@@ -15,6 +15,25 @@
     <script type="text/javascript" src=".js/functions.js"></script>
   </head>
   <body class="bg-white dark:bg-black select-none">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            keyframes: {
+              slide: {
+                "0%, 100%": { transform: "translateX(0%) scale(1.30);" },
+                "25%": { transform: "translateX(10%) scale(1.30);" },
+                "75%": { transform: "translateX(-10%) scale(1.30);" },
+              },
+            },
+            animation: {
+              slide: "slide 37s ease-in-out infinite",
+            },
+          },
+        },
+      };
+    </script>
+
     <div
       class="flex flex-row absolute bottom-7 left-7 z-50 group/advisory text-center shake"
       style="font-family: GarageGothic"
@@ -58,6 +77,7 @@
       class="posCenter -z-50 h-dvh w-full bg-white dark:bg-black blur-[2px] lg:object-contain object-cover lg:scale-[1.01] scale-[1.3] lg:animate-none animate-slide"
       id="myImg"
       title="myImg"
+      crossorigin="anonymous"
       onload="changeTextColor()"
       onresize="changeTextColor()"
     />

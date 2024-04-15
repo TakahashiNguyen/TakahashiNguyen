@@ -1,6 +1,7 @@
 const isMobile = navigator.userAgentData.mobile;
+const targetDate = new Date("2025-10-04T00:00:00").getTime();
 const getRandomInt = (max) => Math.floor(Math.random() * max);
-const imageUrls = [
+const images = [
   "Akiyoshidai",
   "CaoBằng",
   "CátBà",
@@ -12,31 +13,28 @@ const imageUrls = [
   "LâuĐàiHimeji",
   "SôngCửuLong",
   "California",
-];
-const randomImage = () => {
-  myImg.crossOrigin = "anonymous";
-  myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
-    imageUrls[getRandomInt(imageUrls.length)]
-  }.jpg`;
+].map((imageName) => {
+  var reader = new FileReader();
+  fetch(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`)
+    .then((response) => response.blob())
+    .then((blob) => reader.readAsDataURL(blob));
+  return reader;
+});
+const imageDuration = 150000;
+const randomImage = async () => {
+  var data = images[getRandomInt(images.length)].result;
+  var bool = data !== null;
+
+  if (bool) {
+    myImg.src = data;
+  } else {
+    await delay(250);
+    randomImage();
+  }
 };
 
-function tailwindConfig() {
-  tailwind.config = {
-    theme: {
-      extend: {
-        keyframes: {
-          slide: {
-            "0%, 100%": { transform: "translateX(0%) scale(1.30);" },
-            "25%": { transform: "translateX(10%) scale(1.30);" },
-            "75%": { transform: "translateX(-10%) scale(1.30);" },
-          },
-        },
-        animation: {
-          slide: "slide 37s ease-in-out infinite",
-        },
-      },
-    },
-  };
+async function delay(ms) {
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function dynamicTextSizer() {
@@ -97,17 +95,7 @@ function scriptDOMContentLoaded() {
   randomImage();
 }
 
-// Execute on page change size
-window.addEventListener("resize", function () {
-  dynamicTextSizer();
-});
-
-// Set the target date and time
-const targetDate = new Date("2025-10-04T00:00:00").getTime();
-
-// Update the countdown every second
 const countdown = setInterval(() => {
-  // Get the current date and time
   const now = new Date().getTime();
 
   // Calculate the remaining time
@@ -128,11 +116,18 @@ const countdown = setInterval(() => {
   // Check if the countdown has reached zero
   if (remainingTime < 0) {
     clearInterval(countdown);
-    // Perform any desired action when the countdown reaches zero
   }
 }, 1000);
 
+setInterval(() => {
+  randomImage();
+}, imageDuration);
+
 window.addEventListener("DOMContentLoaded", function () {
   scriptDOMContentLoaded();
-  tailwindConfig();
+});
+
+// Execute on page change size
+window.addEventListener("resize", function () {
+  dynamicTextSizer();
 });
