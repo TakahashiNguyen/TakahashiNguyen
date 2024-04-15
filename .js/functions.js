@@ -11,9 +11,10 @@ const imageUrls = [
   "ISS",
   "LâuĐàiHimeji",
   "SôngCửuLong",
-  "California"
+  "California",
 ];
 const randomImage = () => {
+  myImg.crossOrigin = "anonymous";
   myImg.src = `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${
     imageUrls[getRandomInt(imageUrls.length)]
   }.jpg`;
@@ -54,47 +55,46 @@ function dynamicTextSizer() {
   }
 }
 
+function changeTextColor() {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const canvaSize = Math.min(myImg.width, myImg.height) / 9;
+  canvas.width = canvaSize * 5;
+  canvas.height = canvaSize;
+  var x = (myImg.width - canvas.width) / 2;
+  var y = (myImg.height - canvas.height) / 2;
+
+  context.drawImage(myImg, -x, -y, myImg.width, myImg.height);
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  let r = 0,
+    g = 0,
+    b = 0,
+    avg = 0,
+    colorSum = 0;
+
+  for (let i = 0; i < data.length; i += 4) {
+    r += data[i];
+    g += data[i + 1];
+    b += data[i + 2];
+    avg = Math.floor((data[i] + data[i + 1] + data[i + 2]) / 3);
+    colorSum += avg;
+  }
+
+  const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
+  const pixelCount = data.length / 4;
+  const averageR = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount));
+  const averageG = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount));
+  const averageB = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount));
+
+  const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
+  textDiv.style.color = averageColor;
+}
+
 function scriptDOMContentLoaded() {
   dynamicTextSizer();
-
   randomImage();
-  myImg.crossOrigin = "anonymous";
-  myImg.onload = function () {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    const canvaSize = Math.min(myImg.width, myImg.height) / 10;
-    canvas.width = canvaSize * 4;
-    canvas.height = canvaSize;
-    var x = (myImg.width - canvas.width) / 2;
-    var y = (myImg.height - canvas.height) / 2;
-
-    context.drawImage(myImg, -x, -y, myImg.width, myImg.height);
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-
-    let r = 0,
-      g = 0,
-      b = 0,
-      avg = 0,
-      colorSum = 0;
-
-    for (let i = 0; i < data.length; i += 4) {
-      r += data[i];
-      g += data[i + 1];
-      b += data[i + 2];
-      avg = Math.floor((data[i] + data[i + 1] + data[i + 2]) / 3);
-      colorSum += avg;
-    }
-
-    const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
-    const pixelCount = data.length / 4;
-    const averageR = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount));
-    const averageG = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount));
-    const averageB = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount));
-
-    const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
-    textDiv.style.color = averageColor;
-  };
 }
 
 // Execute on page change size
@@ -132,13 +132,7 @@ const countdown = setInterval(() => {
   }
 }, 1000);
 
-const updateTailwindConfig = setInterval(() => {
-  tailwindConfig();
-}, 2000);
-setTimeout(function () {
-  clearInterval(updateTailwindConfig);
-}, 10000);
-
 window.addEventListener("DOMContentLoaded", function () {
   scriptDOMContentLoaded();
+  tailwindConfig();
 });
