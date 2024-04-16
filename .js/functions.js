@@ -20,11 +20,17 @@ const images = [
     .then((blob) => reader.readAsDataURL(blob));
   return reader;
 });
-const imageDuration = 150000;
+const imageDuration = 15000;
 const randomImage = async () => {
   const width = window.innerWidth;
   if (width >= 1024 && myImg.src != "") return;
-  var data = images[getRandomInt(images.length)].result;
+
+  await fadeOut(myImg);
+  var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
+  do {
+    var newIndex = getRandomInt(images.length);
+  } while (newIndex == currentIndex);
+  var data = images[newIndex].result;
   var bool = data !== null;
 
   if (bool) {
@@ -33,10 +39,37 @@ const randomImage = async () => {
     await delay(100);
     randomImage();
   }
+  await fadeIn(myImg);
 };
 
 async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fadeIn(element) {
+  let opacity = 0;
+  const interval = setInterval(() => {
+    if (opacity < 1) {
+      opacity += 0.02; // Increase opacity by 0.01 (adjust as needed)
+      element.style.opacity = opacity;
+    } else {
+      clearInterval(interval);
+    }
+  }, 20); // Interval in milliseconds (adjust as needed)
+  await delay(1000);
+}
+
+async function fadeOut(element) {
+  let opacity = 1;
+  const interval = setInterval(() => {
+    if (opacity > 0) {
+      opacity -= 0.02; // Decrease opacity by 0.01 (adjust as needed)
+      element.style.opacity = opacity;
+    } else {
+      clearInterval(interval);
+    }
+  }, 20); // Interval in milliseconds (adjust as needed)
+  await delay(1000);
 }
 
 function dynamicTextSizer() {
@@ -60,7 +93,7 @@ function changeTextColor() {
   const context = canvas.getContext("2d");
   const canvaSize = Math.min(myImg.width, myImg.height) / 9;
   canvas.width = canvaSize * 5;
-  canvas.height = canvaSize;
+  canvas.height = canvaSize * 2;
   var x = (myImg.width - canvas.width) / 2;
   var y = (myImg.height - canvas.height) / 2;
 
@@ -89,7 +122,7 @@ function changeTextColor() {
   const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
 
   const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
-  textDiv.style.color = averageColor;
+  myName.style.color = averageColor;
 }
 
 function scriptDOMContentLoaded() {
