@@ -33,11 +33,11 @@ const randomImage = async () => {
   var bool = data !== null;
 
   if (bool) {
-    await Promise.all([fadeOut(myImg, 1000), fadeOut(myName, 1200)]);
+    await Promise.all([fade(myImg, 1000, 1, 0, 60), fade(myName, 1200, 1, 0, 60)]);
 
     myImg.src = data;
 
-    await Promise.all([fadeIn(myImg, 1000), fadeIn(myName, 1200)]);
+    await Promise.all([fade(myImg, 1000, 0, 1, 60), fade(myName, 1200, 0, 1, 60)]);
   } else {
     await delay(100);
     randomImage();
@@ -48,34 +48,18 @@ async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function fadeIn(element, duration) {
-  return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      var l = parseFloat(element.style.opacity);
-      if (l < 1) {
-        l += 0.02;
-        element.style.opacity = l;
-      } else {
-        clearInterval(interval);
-        resolve();
-      }
-    }, duration / 50);
-  });
-}
-
-function fadeOut(element, duration, callafter = () => {}) {
-  return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      var l = parseFloat(element.style.opacity);
-      if (l > 0) {
-        l -= 0.02;
-        element.style.opacity = l;
-      } else {
-        clearInterval(interval);
-        callafter();
-        resolve();
-      }
-    }, duration / 50);
+function fade(element, duration, from, to, fps, callafter = () => {}) {
+  return new Promise(async (resolve) => {
+    var l = from,
+      i = (from > to ? -1 : 1) * (1 / (duration * (fps / 1000)));
+    while (from < to ? l < to : l > to) {
+      element.style.opacity = l;
+      l += i;
+      await delay((1 / fps) * 1000);
+    }
+    element.style.opacity = to;
+    callafter();
+    resolve();
   });
 }
 
@@ -171,7 +155,11 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", () => {
-  fadeOut(loadingPage, 1500, () => {
+  githubButton.addEventListener("click", () => {
+    window.location.href = "https://github.com/TakahashiNguyen";
+  });
+
+  fade(loadingPage, 1500, 1, 0, 144, () => {
     loadingPage.classList.add("hidden");
   });
 });
