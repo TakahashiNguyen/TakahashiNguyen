@@ -22,13 +22,15 @@ const images = [
 });
 const imageDuration = 150000;
 const randomImage = async () => {
+  const width = window.innerWidth;
+  if (width >= 1024 && myImg.src != "") return;
   var data = images[getRandomInt(images.length)].result;
   var bool = data !== null;
 
   if (bool) {
     myImg.src = data;
   } else {
-    await delay(250);
+    await delay(100);
     randomImage();
   }
 };
@@ -82,9 +84,9 @@ function changeTextColor() {
 
   const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
   const pixelCount = data.length / 4;
-  const averageR = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(r / pixelCount));
-  const averageG = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(g / pixelCount));
-  const averageB = Math.abs((brightness < 128 ? 290 : 180) - Math.floor(b / pixelCount));
+  const averageR = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(r / pixelCount));
+  const averageG = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
+  const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
 
   const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
   textDiv.style.color = averageColor;
