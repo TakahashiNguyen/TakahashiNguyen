@@ -33,13 +33,11 @@ const randomImage = async () => {
   var bool = data !== null;
 
   if (bool) {
-    fadeOut(myImg, 1000);
-    await fadeOut(myName, 1200);
+    await Promise.all([fadeOut(myImg, 1000), fadeOut(myName, 1200)]);
 
     myImg.src = data;
 
-    fadeIn(myImg, 1000);
-    await fadeIn(myName, 1200);
+    await Promise.all([fadeIn(myImg, 1000), fadeIn(myName, 1200)]);
   } else {
     await delay(100);
     randomImage();
@@ -50,30 +48,35 @@ async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fadeIn(element, duration) {
-  const interval = setInterval(() => {
-    var l = parseFloat(element.style.opacity);
-    if (l < 1) {
-      l += 0.02;
-      element.style.opacity = l;
-    } else {
-      clearInterval(interval);
-    }
-  }, duration / 50); // Interval in milliseconds (adjust as needed)
-  await delay(duration + 20);
+function fadeIn(element, duration) {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      var l = parseFloat(element.style.opacity);
+      if (l < 1) {
+        l += 0.02;
+        element.style.opacity = l;
+      } else {
+        clearInterval(interval);
+        resolve();
+      }
+    }, duration / 50);
+  });
 }
 
-async function fadeOut(element, duration) {
-  const interval = setInterval(() => {
-    var l = parseFloat(element.style.opacity);
-    if (l > 0) {
-      l -= 0.02;
-      element.style.opacity = l;
-    } else {
-      clearInterval(interval);
-    }
-  }, duration / 50); // Interval in milliseconds (adjust as needed)
-  await delay(duration + 20);
+function fadeOut(element, duration, callafter = () => {}) {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      var l = parseFloat(element.style.opacity);
+      if (l > 0) {
+        l -= 0.02;
+        element.style.opacity = l;
+      } else {
+        clearInterval(interval);
+        callafter();
+        resolve();
+      }
+    }, duration / 50);
+  });
 }
 
 function dynamicTextSizer(name, nickname, hashtag) {
@@ -168,7 +171,9 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", () => {
-  fadeOut(loadingPage, 1500);
+  fadeOut(loadingPage, 1500, () => {
+    loadingPage.classList.add("hidden");
+  });
 });
 
 window.addEventListener("resize", function () {
