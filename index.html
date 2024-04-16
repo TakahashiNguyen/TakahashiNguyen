@@ -15,6 +15,8 @@
     <script type="text/javascript" src=".js/functions.js"></script>
   </head>
   <body class="bg-white dark:bg-black select-none subpixel-antialiased">
+    <div class="z-[100] dark:bg-black bg-white h-dvh w-full fixed" id="loadingPage" style="opacity: 1"></div>
+
     <script>
       tailwind.config = {
         theme: {
@@ -47,11 +49,19 @@
     </script>
 
     <div class="fixed justify-center h-dvh w-full flex items-center justify-center">
-      <div class="flex flex-col items-center justify-center z-40" id="myName">
+      <div class="fixed flex flex-col items-center justify-center z-40" id="myName" style="opacity: 0">
         <div class="flex flex-col justify-items-stretch">
           <div style="font-family: Maginia" id="nickName">Takahashi</div>
           <div style="font-family: Magnies">Nguyễn Việt Anh</div>
           <div style="font-family: consolas" id="myHashTag" class="flex justify-end">#makeUKgreatagain</div>
+        </div>
+      </div>
+
+      <div class="fixed flex flex-col items-center justify-center -z-50 dark:text-white text-black" id="myNameSub">
+        <div class="flex flex-col justify-items-stretch">
+          <div style="font-family: Maginia" id="nickNameSub">Takahashi</div>
+          <div style="font-family: Magnies">Nguyễn Việt Anh</div>
+          <div style="font-family: consolas" id="myHashTagSub" class="flex justify-end">#makeUKgreatagain</div>
         </div>
       </div>
 
@@ -84,11 +94,12 @@
       </div>
 
       <img
-        class="fixed -z-50 h-dvh w-full bg-white dark:bg-black blur-[2px] lg:object-contain object-cover lg:scale-[1.01] scale-[1.3] lg:animate-none animate-slide"
+        class="fixed -z-40 h-dvh w-full bg-white dark:bg-black blur-[2px] lg:object-contain object-cover lg:scale-[1.01] scale-[1.3] lg:animate-none animate-slide"
         id="myImg"
         title="myImg"
         crossorigin="anonymous"
         onload="changeTextColor()"
+        style="opacity: 0"
       />
     </div>
   </body>

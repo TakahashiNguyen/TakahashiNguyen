@@ -25,7 +25,6 @@ const randomImage = async () => {
   const width = window.innerWidth;
   if (width >= 1024 && myImg.src != "") return;
 
-  await fadeOut(myImg);
   var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
   do {
     var newIndex = getRandomInt(images.length);
@@ -34,57 +33,62 @@ const randomImage = async () => {
   var bool = data !== null;
 
   if (bool) {
+    fadeOut(myImg, 1000);
+    await fadeOut(myName, 1200);
+
     myImg.src = data;
+
+    fadeIn(myImg, 1000);
+    await fadeIn(myName, 1200);
   } else {
     await delay(100);
     randomImage();
   }
-  await fadeIn(myImg);
 };
 
 async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fadeIn(element) {
-  let opacity = 0;
+async function fadeIn(element, duration) {
   const interval = setInterval(() => {
-    if (opacity < 1) {
-      opacity += 0.02; // Increase opacity by 0.01 (adjust as needed)
-      element.style.opacity = opacity;
+    var l = parseFloat(element.style.opacity);
+    if (l < 1) {
+      l += 0.02;
+      element.style.opacity = l;
     } else {
       clearInterval(interval);
     }
-  }, 20); // Interval in milliseconds (adjust as needed)
-  await delay(1000);
+  }, duration / 50); // Interval in milliseconds (adjust as needed)
+  await delay(duration + 20);
 }
 
-async function fadeOut(element) {
-  let opacity = 1;
+async function fadeOut(element, duration) {
   const interval = setInterval(() => {
-    if (opacity > 0) {
-      opacity -= 0.02; // Decrease opacity by 0.01 (adjust as needed)
-      element.style.opacity = opacity;
+    var l = parseFloat(element.style.opacity);
+    if (l > 0) {
+      l -= 0.02;
+      element.style.opacity = l;
     } else {
       clearInterval(interval);
     }
-  }, 20); // Interval in milliseconds (adjust as needed)
-  await delay(1000);
+  }, duration / 50); // Interval in milliseconds (adjust as needed)
+  await delay(duration + 20);
 }
 
-function dynamicTextSizer() {
+function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   const squareSideLength = Math.min(innerHeight, innerWidth);
 
-  myName.style.height = myName.style.width = `${squareSideLength}px`;
-  myName.style.lineHeight = myName.style.fontSize = `${squareSideLength / 18}px`;
+  name.style.height = name.style.width = `${squareSideLength}px`;
+  name.style.lineHeight = name.style.fontSize = `${squareSideLength / 18}px`;
 
-  nickName.style.lineHeight = nickName.style.fontSize = `${squareSideLength / 20}px`;
-  myHashTag.style.lineHeight = myHashTag.style.fontSize = `${squareSideLength / 64}px`;
+  nickname.style.lineHeight = nickname.style.fontSize = `${squareSideLength / 20}px`;
+  hashtag.style.lineHeight = hashtag.style.fontSize = `${squareSideLength / 64}px`;
 
   if (!isMobile) {
-    myHashTag.style.marginTop = `${squareSideLength / 100}px`;
-    nickName.style.marginBottom = `-${squareSideLength / 74}px`;
+    hashtag.style.marginTop = `${squareSideLength / 100}px`;
+    nickname.style.marginBottom = `-${squareSideLength / 74}px`;
   }
 }
 
@@ -126,7 +130,8 @@ function changeTextColor() {
 }
 
 function scriptDOMContentLoaded() {
-  dynamicTextSizer();
+  dynamicTextSizer(myName, nickName, myHashTag);
+  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
   randomImage();
 }
 
@@ -162,7 +167,11 @@ window.addEventListener("DOMContentLoaded", function () {
   scriptDOMContentLoaded();
 });
 
-// Execute on page change size
+window.addEventListener("load", () => {
+  fadeOut(loadingPage, 1500);
+});
+
 window.addEventListener("resize", function () {
-  dynamicTextSizer();
+  dynamicTextSizer(myName, nickName, myHashTag);
+  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
 });
