@@ -1,4 +1,4 @@
-const isMobile = navigator.userAgentData.mobile;
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const targetDate = new Date("2025-10-04T00:00:00").getTime();
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 const images = [
