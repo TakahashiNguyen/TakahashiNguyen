@@ -156,7 +156,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
 window.addEventListener("load", () => {
   githubButton.addEventListener("click", () => {
-    window.location.href = "https://github.com/TakahashiNguyen";
+    window.open("https://github.com/TakahashiNguyen", "_blank");
   });
 
   fade(loadingPage, 1500, 1, 0, 144, () => {
