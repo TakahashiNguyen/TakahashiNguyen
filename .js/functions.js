@@ -20,11 +20,8 @@ const images = [
     .then((blob) => reader.readAsDataURL(blob));
   return reader;
 });
-const imageDuration = 15000;
-const randomImage = async () => {
-  const width = window.innerWidth;
-  if (width >= 1024 && myImg.src != "") return;
-
+const imageDuration = 23000;
+const randomImage = async (dur) => {
   var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
   do {
     var newIndex = getRandomInt(images.length);
@@ -33,11 +30,19 @@ const randomImage = async () => {
   var bool = data !== null;
 
   if (bool) {
-    await Promise.all([fade(myImg, 1000, 1, 0, 60), fade(myName, 1200, 1, 0, 60)]);
+    await Promise.all([
+      fade(myImg, (dur * 3) / 50, 1, 0),
+      fade(myName, (dur * 2) / 13, 1, 0),
+      fade(myNameSub, (dur * 2) / 31, 0, 1),
+    ]);
 
     myImg.src = data;
 
-    await Promise.all([fade(myImg, 1000, 0, 1, 60), fade(myName, 1200, 0, 1, 60)]);
+    await Promise.all([
+      fade(myImg, (dur * 2) / 13, 0, 1),
+      fade(myName, (dur * 3) / 31, 0, 1),
+      fade(myNameSub, (dur * 2) / 50, 1, 0),
+    ]);
   } else {
     await delay(100);
     randomImage();
@@ -48,7 +53,7 @@ async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function fade(element, duration, from, to, fps, callafter = () => {}) {
+function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   return new Promise(async (resolve) => {
     var l = from,
       i = (from > to ? -1 : 1) * (1 / (duration * (fps / 1000)));
@@ -112,14 +117,8 @@ function changeTextColor() {
   const averageG = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
   const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
 
-  const averageColor = `rgb(${averageR}, ${averageG}, ${averageB})`;
+  const averageColor = `rgb(${averageB}, ${averageR}, ${averageG})`;
   myName.style.color = averageColor;
-}
-
-function scriptDOMContentLoaded() {
-  dynamicTextSizer(myName, nickName, myHashTag);
-  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
-  randomImage();
 }
 
 const countdown = setInterval(() => {
@@ -147,11 +146,21 @@ const countdown = setInterval(() => {
 }, 1000);
 
 setInterval(() => {
-  randomImage();
+  if (document.visibilityState === "visible") {
+    randomImage(imageDuration);
+  } else {
+    myImg.src = "";
+    myImg.style.opacity = "0";
+    myName.style.opacity = "0";
+    myNameSub.style.opacity = "1";
+  }
+  document.getElementById("mySpotify").src += "";
 }, imageDuration);
 
 window.addEventListener("DOMContentLoaded", function () {
-  scriptDOMContentLoaded();
+  dynamicTextSizer(myName, nickName, myHashTag);
+  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
+  randomImage();
 });
 
 window.addEventListener("load", () => {
