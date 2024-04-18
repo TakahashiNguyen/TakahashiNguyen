@@ -67,13 +67,13 @@
         </div>
       </div>
 
-      <div class="absolute top-14 right-12 flex items-center justify-center z-50" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="dark:opacity-100 opacity-0 fixed w-9" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="opacity-100 dark:opacity-0 fixed w-9" alt="Github" />
+      <div class="absolute top-8 right-8 flex flex-col items-center justify-center z-50" id="githubButton">
+        <img src="./.svg/github-mark-white.svg" class="dark:opacity-100 opacity-0 w-9" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="absolute opacity-100 dark:opacity-0 w-9" alt="Github" />
       </div>
 
       <div
-        class="flex flex-row absolute bottom-8 left-8 z-50 group/advisory text-center hover:animate-none sm:animate-shake"
+        class="flex flex-col-reverse sm:flex-row absolute bottom-8 left-8 z-50 group/advisory text-center hover:animate-none animate-shake"
         style="font-family: GarageGothic"
       >
         <div class="flex flex-col w-[6.25rem]">
@@ -117,18 +117,22 @@
         </div>
         <div>
           <div
-            class="w-0 h-full overflow-hidden sm:group-hover/advisory:w-full transition-all duration-[2000ms] transform bg-[#370037] flex items-center justify-end"
+            class="sm:w-0 sm:group-hover/advisory:w-full sm:h-full max-sm:h-0 max-sm:group-hover/advisory:h-10 overflow-hidden max-sm:w-full duration-[2000ms] bg-[#370037] flex sm:items-center max-sm:items-start sm:justify-end justify-center"
           >
             <div class="text-white mx-[10px] text-[27px] flex-row flex">
               <span class="pr-[5px]">Able</span><span class="pr-[5px]">to</span> <span class="pr-[5px]">love</span
-              ><span class="pr-[5px]">after</span><span id="advisoryDays"></span>:<span id="advisoryHours"></span
-              >:<span id="advisoryMinutes"></span>:<span id="advisorySeconds"></span>
+              ><span class="pr-[5px]">after</span><span id="advisoryDays"></span>:<span id="advisoryHours"></span>:<span
+                id="advisoryMinutes"
+              ></span
+              >:<span id="advisorySeconds"></span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="absolute top-5 left-8 flex items-center justify-center">
+      <div
+        class="absolute top-5 left-8 flex items-center justify-center rotate-90 origin-top-left translate-x-[74px] translate-y-[12px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0"
+      >
         <iframe
           src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=false&bar_color=53b14f&bar_color_cover=true"
           frameborder="0"
@@ -137,13 +141,13 @@
           height="84px"
           style="width: 100%"
           sandbox
-          class="select-none"
+          class="select-none ml-[-20px]"
         ></iframe>
         <div class="absolute select-none bg-transparent h-full w-full"></div>
       </div>
 
       <img
-        class="fixed -z-40 h-dvh w-full bg-white dark:bg-black blur lg:object-contain object-cover lg:scale-[1.1] scale-[1.2] lg:animate-none animate-slide touch-none"
+        class="fixed -z-40 h-dvh w-full bg-white dark:bg-black blur lg:object-contain object-cover lg:scale-[1.1] scale-[1.4] lg:animate-none animate-slide touch-none"
         id="myImg"
         title="myImg"
         crossorigin="anonymous"
