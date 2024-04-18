@@ -163,13 +163,42 @@ window.addEventListener("DOMContentLoaded", function () {
   randomImage();
 });
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
   githubButton.addEventListener("click", () => {
     window.open("https://github.com/TakahashiNguyen", "_blank");
   });
 
   fade(loadingPage, 1500, 1, 0, 144, () => {
     loadingPage.classList.add("hidden");
+  });
+
+  Notification.requestPermission().then((status) => {
+    if (status === "granted") {
+      setTimeout(() => {
+        const title = "Hi, How are you?";
+        const img = "./.png/Larry_Chief_Mouser.png";
+        const text = `Wish you a good day (。・ω・。)`;
+
+        const options = {
+          body: text,
+          icon: img,
+          image: myImg.src,
+          vibrate: [200, 100, 200],
+          badge: img,
+        };
+
+        const notification = new Notification(title, options);
+
+        notification.onclick = function (event) {
+          event.preventDefault();
+          window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+        };
+
+        navigator.serviceWorker.ready.then(function (serviceWorker) {
+          serviceWorker.showNotification(title, options);
+        });
+      }, 6000);
+    }
   });
 });
 
