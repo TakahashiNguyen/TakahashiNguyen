@@ -1,8 +1,7 @@
 name: Cập nhật Github Readme
 on:
-  # run automatically every 10 minutes
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '*/20 * * * *'
   workflow_dispatch:
 jobs:
   generate:
