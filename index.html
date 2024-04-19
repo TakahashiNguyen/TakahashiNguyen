@@ -119,12 +119,9 @@
           <div
             class="sm:w-0 sm:group-hover/advisory:w-full sm:h-full max-sm:h-0 max-sm:group-hover/advisory:h-10 overflow-hidden max-sm:w-full duration-[2000ms] bg-[#370037] flex sm:items-center max-sm:items-start sm:justify-end justify-center"
           >
-            <div class="text-white mx-[10px] text-[27px] flex-row flex">
-              <span class="pr-[5px]">Able</span><span class="pr-[5px]">to</span> <span class="pr-[5px]">love</span
-              ><span class="pr-[5px]">after</span><span id="advisoryDays"></span>:<span id="advisoryHours"></span>:<span
-                id="advisoryMinutes"
-              ></span
-              >:<span id="advisorySeconds"></span>
+            <div class="text-white mx-[10px] text-[27px] flex-row flex text-nowrap">
+              Grounded from love for <span id="advisoryDays" class="pl-[5px]"></span>:<span id="advisoryHours"></span
+              >:<span id="advisoryMinutes"></span>:<span id="advisorySeconds"></span>
             </div>
           </div>
         </div>
@@ -140,8 +137,7 @@
           id="mySpotify"
           height="84px"
           style="width: 100%"
-          sandbox
-          class="select-none ml-[-20px]"
+          class="ml-[-20px]"
         ></iframe>
         <div class="absolute select-none bg-transparent h-full w-full"></div>
       </div>

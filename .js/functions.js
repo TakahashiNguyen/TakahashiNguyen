@@ -1,6 +1,13 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const targetDate = new Date("2025-10-04T00:00:00").getTime();
 const getRandomInt = (max) => Math.floor(Math.random() * max);
+const imgUrltoData = (url) => {
+  var reader = new FileReader();
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => reader.readAsDataURL(blob));
+  return reader;
+};
 const images = [
   "Akiyoshidai",
   "CaoBằng",
@@ -14,11 +21,7 @@ const images = [
   "SôngCửuLong",
   "California",
 ].map((imageName) => {
-  var reader = new FileReader();
-  fetch(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`)
-    .then((response) => response.blob())
-    .then((blob) => reader.readAsDataURL(blob));
-  return reader;
+  return imgUrltoData(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`);
 });
 const imageDuration = 23000;
 const randomImage = async (dur) => {
@@ -53,7 +56,7 @@ async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
+async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   return new Promise(async (resolve) => {
     var l = from,
       i = (from > to ? -1 : 1) * (1 / (duration * (fps / 1000)));
@@ -68,7 +71,7 @@ function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   });
 }
 
-function dynamicTextSizer(name, nickname, hashtag) {
+async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   const squareSideLength = Math.min(innerHeight, innerWidth);
 
@@ -145,7 +148,7 @@ const countdown = setInterval(() => {
   }
 }, 1000);
 
-setInterval(() => {
+setInterval(async () => {
   if (document.visibilityState === "visible") {
     randomImage(imageDuration);
   } else {
@@ -157,7 +160,7 @@ setInterval(() => {
   document.getElementById("mySpotify").src += "";
 }, imageDuration);
 
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", async () => {
   dynamicTextSizer(myName, nickName, myHashTag);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
   randomImage();
@@ -175,34 +178,66 @@ window.addEventListener("load", async () => {
   Notification.requestPermission().then((status) => {
     if (status === "granted") {
       setTimeout(() => {
-        const title = "Hi, How are you?";
-        const img = "./.png/Larry_Chief_Mouser.png";
-        const text = `Wish you a good day (。・ω・。)`;
+        fetch("https://api.quotable.io/random")
+          .then((response) => response.json())
+          .then(async (response) => {
+            const title = "Hi, How are you?";
+            const img = "./.png/Larry_Chief_Mouser.png";
+            const text = `Wish you a good day (。・ω・。)`;
 
-        const options = {
-          body: text,
-          icon: img,
-          image: myImg.src,
-          vibrate: [200, 100, 200],
-          badge: img,
-        };
+            var cat = imgUrltoData(`https://cataas.com/cat`);
+            do await delay(100);
+            while (cat.result == null);
+            const imgData =
+              "data:image/svg+xml;base64," +
+              btoa(`
+      <svg viewBox="0 0 2700 1500" class="invisible" xmlns="http://www.w3.org/2000/svg" id="quoteSVG">
+        <style>
+          .fixed {position: fixed;}.flex {display: flex;}.h-full {height: 100%;}.w-full {width: 100%;}.flex-col {flex-direction: column;}.items-center {align-items: center;}.justify-center {justify-content: center;}.bg-white {--tw-bg-opacity: 1;background-color: rgb(255 255 255 / var(--tw-bg-opacity));}.px-60 {padding-left: 15rem;padding-right: 15rem;}.text-6xl {font-size: 3.75rem;line-height: 1;}.text-9xl {font-size: 8rem;line-height: 1;}.bg-black {--tw-bg-opacity: 1;background-color: rgb(0 0 0 / var(--tw-bg-opacity));}.text-white {--tw-text-opacity: 1;color: rgb(255 255 255 / var(--tw-text-opacity));}
+        </style>
+        <foreignObject x="0" y="0" width="100%" height="100%">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="${
+            window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "bg-black text-white"
+              : "bg-white"
+          } fixed w-full h-full flex items-center justify-center">
+            <div class="fixed flex flex-col items-center justify-center text-9xl">
+              <blockquote class="px-60">
+                <p id="quoteMain">${response.content}</p>
+                <footer class="text-6xl">
+                  <cite title="Source Title" id="quoteAuthor">${response.author}</cite>
+                </footer>
+              </blockquote>
+            </div>
+          </div>
+        </foreignObject>
+      </svg>`);
 
-        const notification = new Notification(title, options);
+            const options = {
+              body: text,
+              icon: cat.result,
+              image: imgData,
+              vibrate: [200, 100, 200],
+              badge: img,
+            };
 
-        notification.onclick = function (event) {
-          event.preventDefault();
-          window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
-        };
+            const notification = new Notification(title, options);
 
-        navigator.serviceWorker.ready.then(function (serviceWorker) {
-          serviceWorker.showNotification(title, options);
-        });
+            notification.onclick = function (event) {
+              event.preventDefault();
+              window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+            };
+
+            navigator.serviceWorker.ready.then(function (serviceWorker) {
+              serviceWorker.showNotification(title, options);
+            });
+          });
       }, 6000);
     }
   });
 });
 
-window.addEventListener("resize", function () {
+window.addEventListener("resize", async () => {
   dynamicTextSizer(myName, nickName, myHashTag);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
 });
