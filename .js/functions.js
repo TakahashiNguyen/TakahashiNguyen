@@ -41,7 +41,7 @@ const randomImage = async (dur) => {
 
     myImg.src = data;
 
-    await Promise.all([
+    Promise.all([
       fade(myImg, (dur * 2) / 13, 0, 1),
       fade(myName, (dur * 3) / 31, 0, 1),
       fade(myNameSub, (dur * 2) / 50, 1, 0),
@@ -148,22 +148,27 @@ const countdown = setInterval(() => {
   }
 }, 1000);
 
-setInterval(async () => {
-  if (document.visibilityState === "visible") {
-    randomImage(imageDuration);
-  } else {
-    myImg.src = "";
-    myImg.style.opacity = "0";
-    myName.style.opacity = "0";
-    myNameSub.style.opacity = "1";
-  }
+var randomImageInvertal;
+const dynamicFunctions = async () => {
+  randomImage(dynamicDuration);
   document.getElementById("mySpotify").src += "";
-}, imageDuration);
+};
+const startRandomImage = () => {
+  randomImage();
+  randomImageInvertal = setInterval(dynamicFunctions, dynamicDuration);
+};
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(randomImageInvertal);
+  } else {
+    startRandomImage();
+  }
+});
 
 window.addEventListener("DOMContentLoaded", async () => {
   dynamicTextSizer(myName, nickName, myHashTag);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
-  randomImage();
+  startRandomImage();
 });
 
 window.addEventListener("load", async () => {
