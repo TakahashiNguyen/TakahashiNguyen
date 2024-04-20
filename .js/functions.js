@@ -10,6 +10,7 @@ const imgUrltoData = (url) => {
 };
 const images = [
   "Akiyoshidai",
+  "California",
   "CaoBằng",
   "CátBà",
   "Dorset",
@@ -19,11 +20,13 @@ const images = [
   "ISS",
   "LâuĐàiHimeji",
   "SôngCửuLong",
-  "California",
+  "UnionSquare",
+  "VũngNapa",
 ].map((imageName) => {
   return imgUrltoData(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`);
 });
-const dynamicDuration = 23000;
+const dynamicDuration = 140000;
+const randomImageDuration = 23000;
 const randomImage = async (dur) => {
   var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
   do {
@@ -41,15 +44,14 @@ const randomImage = async (dur) => {
 
     myImg.src = data;
 
-    Promise.all([
+    await Promise.all([
       fade(myImg, (dur * 2) / 13, 0, 1),
       fade(myName, (dur * 3) / 31, 0, 1),
       fade(myNameSub, (dur * 2) / 50, 1, 0),
     ]);
-  } else {
-    await delay(100);
-    randomImage();
   }
+  await delay(bool ? dur : 100);
+  randomImage(dur);
 };
 
 async function delay(ms) {
@@ -148,27 +150,26 @@ const countdown = setInterval(() => {
   }
 }, 1000);
 
-var randomImageInvertal;
+var dynamicInvertal;
 const dynamicFunctions = async () => {
-  randomImage(dynamicDuration);
   document.getElementById("mySpotify").src += "";
 };
-const startRandomImage = () => {
-  randomImage();
-  randomImageInvertal = setInterval(dynamicFunctions, dynamicDuration);
+const startDynamicFunction = () => {
+  dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
 };
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    clearInterval(randomImageInvertal);
+    clearInterval(dynamicInvertal);
   } else {
-    startRandomImage();
+    startDynamicFunction();
   }
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
   dynamicTextSizer(myName, nickName, myHashTag);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
-  startRandomImage();
+  startDynamicFunction();
+  randomImage(randomImageDuration);
 });
 
 window.addEventListener("load", async () => {

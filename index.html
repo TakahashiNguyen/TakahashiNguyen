@@ -49,7 +49,7 @@
     </script>
 
     <div class="fixed justify-center h-dvh w-full flex items-center justify-center">
-      <div class="fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100">
+      <div class="z-50 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100">
         <div class="fixed flex flex-col items-center justify-center z-40" id="myName">
           <div class="flex flex-col justify-items-stretch">
             <div style="font-family: Maginia" id="nickName">Takahashi</div>
@@ -67,9 +67,9 @@
         </div>
       </div>
 
-      <div class="absolute top-8 right-8 flex flex-col items-center justify-center z-50" id="githubButton">
+      <div class="absolute top-8 right-8 flex flex-row z-50" id="githubButton">
         <img src="./.svg/github-mark-white.svg" class="dark:opacity-100 opacity-0 w-9" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="absolute opacity-100 dark:opacity-0 w-9" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="opacity-100 dark:opacity-0 w-9 fixed" alt="Github" />
       </div>
 
       <div
@@ -128,18 +128,18 @@
       </div>
 
       <div
-        class="absolute top-5 left-8 flex items-center justify-center rotate-90 origin-top-left translate-x-[74px] translate-y-[12px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0"
+        class="absolute top-8 left-8 z-40 flex items-center justify-center rotate-90 origin-top-left translate-x-[84px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0"
       >
         <iframe
-          src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=false&bar_color=53b14f&bar_color_cover=true"
+          src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=true&bar_color=53b14f&bar_color_cover=true"
           frameborder="0"
           title="mySpotify"
           id="mySpotify"
           height="84px"
-          style="width: 100%"
-          class="ml-[-20px]"
+          width="320px"
+          class="z-40 bg-white/[.32] dark:bg-black/[.32] backdrop-blur-md"
         ></iframe>
-        <div class="absolute select-none bg-transparent h-full w-full"></div>
+        <div class="absolute select-none bg-transparent h-full w-full z-50"></div>
       </div>
 
       <img
