@@ -13,6 +13,7 @@ const images = [
   "California",
   "CaoBằng",
   "CátBà",
+  "Centre-ValDeLoire",
   "Dorset",
   "Dorset_1",
   "Halnaker",
