@@ -53,11 +53,9 @@
     </script>
 
     <div class="fixed justify-center h-dvh w-full flex items-center justify-center">
-      <div
-        class="z-40 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100 -skew-y-6 cursor-help"
-      >
+      <div class="z-40 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100 -skew-y-6">
         <div class="fixed flex flex-col items-center justify-center z-40" id="myName">
-          <div class="flex flex-col justify-items-stretch">
+          <div class="flex flex-col justify-items-stretch cursor-help hover:animate-pulse">
             <div style="font-family: Maginia" id="nickName">Takahashi</div>
             <div style="font-family: Magnies">Nguyễn Việt Anh</div>
             <div style="font-family: consolas" id="myHashTag" class="flex justify-end">#makeUKgreatagain</div>
@@ -74,10 +72,10 @@
       </div>
 
       <div class="absolute top-8 right-8 flex flex-row z-50 cursor-grabbing" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="hidden dark:visible dark:block w-9" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="dark:hidden visible w-9" alt="Github" />
+        <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block w-9 h-9" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="z-50 dark:hidden visible w-9 h-9" alt="Github" />
         <div
-          class="outline-dashed outline-2 dark:outline-black outline-white outline-offset-2 rounded-full animate-spin w-[2.25rem] h-[2.25rem] fixed"
+          class="outline-dashed outline-2 dark:outline-black outline-white outline-offset-2 rounded-full animate-spin w-9 h-9 fixed bg-white/[.64] dark:bg-black/[.32] -z-50"
         ></div>
       </div>
 

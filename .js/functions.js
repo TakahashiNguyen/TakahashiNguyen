@@ -44,6 +44,7 @@ const randomImage = async (dur) => {
     ]);
 
     myImg.src = data;
+    mySpotify.src += "";
 
     await Promise.all([
       fade(myImg, (dur * 2) / 13, 0, 1),
@@ -153,9 +154,7 @@ const countdown = setInterval(() => {
 }, 1000);
 
 var dynamicInvertal;
-const dynamicFunctions = async () => {
-  document.getElementById("mySpotify").src += "";
-};
+const dynamicFunctions = async () => {};
 const startDynamicFunction = () => {
   dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
 };
