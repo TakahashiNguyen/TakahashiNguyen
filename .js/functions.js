@@ -47,7 +47,6 @@ const randomImage = async (dur) => {
 
       fade(myName, (dur * 2) / 13, 1, 0),
       fade(githubSpin, (dur * 2) / 13, 1, 0),
-      fade(spotifyBackground, (dur * 2) / 13, 1, 0),
     ]);
 
     myImg.src = data;
@@ -60,7 +59,6 @@ const randomImage = async (dur) => {
 
       fade(myName, (dur * 3) / 32, 0, 1),
       fade(githubSpin, (dur * 3) / 32, 0, 1),
-      fade(spotifyBackground, (dur * 3) / 32, 0, 1),
     ]);
   }
   await delay(bool ? dur : 100);
@@ -143,7 +141,6 @@ function changeTextColor() {
 
   updateClass(myName, "text", averageColor);
   updateClass(githubSpin, "outline", averageColor);
-  updateClass(spotifyBackground, "bg", averageColor, "/[.32]");
 }
 
 targetDate.setMonth(targetDate.getMonth() + 19);
