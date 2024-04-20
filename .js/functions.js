@@ -23,7 +23,7 @@ const images = [
 ].map((imageName) => {
   return imgUrltoData(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`);
 });
-const imageDuration = 23000;
+const dynamicDuration = 23000;
 const randomImage = async (dur) => {
   var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
   do {
