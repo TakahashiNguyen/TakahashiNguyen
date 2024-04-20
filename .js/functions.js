@@ -8,6 +8,10 @@ const imgUrltoData = (url) => {
     .then((blob) => reader.readAsDataURL(blob));
   return reader;
 };
+const RGBToHex = (r, g, b) => {
+  const hex = "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+  return hex;
+};
 const images = [
   "Akiyoshidai",
   "California",
@@ -39,17 +43,24 @@ const randomImage = async (dur) => {
   if (bool) {
     await Promise.all([
       fade(myImg, (dur * 3) / 50, 1, 0),
+      fade(myNameSub, (dur * 2) / 32, 0, 1),
+
       fade(myName, (dur * 2) / 13, 1, 0),
-      fade(myNameSub, (dur * 2) / 31, 0, 1),
+      fade(githubSpin, (dur * 2) / 13, 1, 0),
+      fade(spotifyBackground, (dur * 2) / 13, 1, 0),
     ]);
 
     myImg.src = data;
     mySpotify.src += "";
+    await delay(dur / 17);
 
     await Promise.all([
       fade(myImg, (dur * 2) / 13, 0, 1),
-      fade(myName, (dur * 3) / 31, 0, 1),
       fade(myNameSub, (dur * 2) / 50, 1, 0),
+
+      fade(myName, (dur * 3) / 32, 0, 1),
+      fade(githubSpin, (dur * 3) / 32, 0, 1),
+      fade(spotifyBackground, (dur * 3) / 32, 0, 1),
     ]);
   }
   await delay(bool ? dur : 100);
@@ -123,9 +134,16 @@ function changeTextColor() {
   const averageR = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(r / pixelCount));
   const averageG = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
   const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
+  const averageColor = RGBToHex(averageB, averageR, averageG);
+  const updateClass = (obj, prefix, main, suffix = "") => {
+    const classes = obj.classList;
+    classes.remove(classes[classes.length - 1]);
+    classes.add(`${prefix}-[${main}]${suffix}`);
+  };
 
-  const averageColor = `rgb(${averageB}, ${averageR}, ${averageG})`;
-  myName.style.color = averageColor;
+  updateClass(myName, "text", averageColor);
+  updateClass(githubSpin, "outline", averageColor);
+  updateClass(spotifyBackground, "bg", averageColor, "/[.32]");
 }
 
 targetDate.setMonth(targetDate.getMonth() + 19);
