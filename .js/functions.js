@@ -1,5 +1,5 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-const targetDate = new Date("2025-10-04T00:00:00").getTime();
+const targetDate = new Date("2024-01-28T00:00:00");
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 const imgUrltoData = (url) => {
   var reader = new FileReader();
@@ -126,17 +126,18 @@ function changeTextColor() {
   myName.style.color = averageColor;
 }
 
+targetDate.setMonth(targetDate.getMonth() + 19);
 const countdown = setInterval(() => {
   const now = new Date().getTime();
 
   // Calculate the remaining time
-  const remainingTime = targetDate - now;
+  const remainingTime = targetDate.getTime() - now;
 
   // Calculate the days, hours, minutes, and seconds
-  const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  const days = Math.abs(Math.floor(remainingTime / (1000 * 60 * 60 * 24)));
+  const hours = Math.abs(Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  const minutes = Math.abs(Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)));
+  const seconds = Math.abs(Math.floor((remainingTime % (1000 * 60)) / 1000));
 
   // Update the HTML elements with the calculated time units
   advisoryDays.textContent = days.toString().padStart(2, "0");
@@ -146,7 +147,7 @@ const countdown = setInterval(() => {
 
   // Check if the countdown has reached zero
   if (remainingTime < 0) {
-    clearInterval(countdown);
+    advisoryMain.textContent = "Seeking love for ";
   }
 }, 1000);
 

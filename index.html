@@ -15,7 +15,11 @@
     <script type="text/javascript" src=".js/functions.js"></script>
   </head>
   <body class="bg-white dark:bg-black select-none subpixel-antialiased">
-    <div class="z-[100] dark:bg-black bg-white h-dvh w-full fixed" id="loadingPage" style="opacity: 1"></div>
+    <div
+      class="z-[100] dark:bg-black bg-white h-dvh w-full fixed cursor-zoom-in"
+      id="loadingPage"
+      style="opacity: 1"
+    ></div>
 
     <script>
       tailwind.config = {
@@ -49,7 +53,9 @@
     </script>
 
     <div class="fixed justify-center h-dvh w-full flex items-center justify-center">
-      <div class="z-50 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100">
+      <div
+        class="z-40 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100 -skew-y-6 cursor-help"
+      >
         <div class="fixed flex flex-col items-center justify-center z-40" id="myName">
           <div class="flex flex-col justify-items-stretch">
             <div style="font-family: Maginia" id="nickName">Takahashi</div>
@@ -67,13 +73,16 @@
         </div>
       </div>
 
-      <div class="absolute top-8 right-8 flex flex-row z-50" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="dark:opacity-100 opacity-0 w-9" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="opacity-100 dark:opacity-0 w-9 fixed" alt="Github" />
+      <div class="absolute top-8 right-8 flex flex-row z-50 cursor-grabbing" id="githubButton">
+        <img src="./.svg/github-mark-white.svg" class="hidden dark:visible dark:block w-9" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="dark:hidden visible w-9" alt="Github" />
+        <div
+          class="outline-dashed outline-2 dark:outline-black outline-white outline-offset-2 rounded-full animate-spin w-[2.25rem] h-[2.25rem] fixed"
+        ></div>
       </div>
 
       <div
-        class="flex flex-col-reverse sm:flex-row absolute bottom-8 left-8 z-50 group/advisory text-center hover:animate-none animate-shake"
+        class="flex flex-col-reverse sm:flex-row absolute bottom-8 left-8 z-50 group/advisory text-center hover:animate-none animate-shake cursor-not-allowed"
         style="font-family: GarageGothic"
       >
         <div class="flex flex-col w-[6.25rem]">
@@ -120,15 +129,18 @@
             class="sm:w-0 sm:group-hover/advisory:w-full sm:h-full max-sm:h-0 max-sm:group-hover/advisory:h-10 overflow-hidden max-sm:w-full duration-[2000ms] bg-[#370037] flex sm:items-center max-sm:items-start sm:justify-end justify-center"
           >
             <div class="text-white mx-[10px] text-[27px] flex-row flex text-nowrap">
-              Grounded from love for <span id="advisoryDays" class="pl-[5px]"></span>:<span id="advisoryHours"></span
-              >:<span id="advisoryMinutes"></span>:<span id="advisorySeconds"></span>
+              <div id="advisoryMain">Grounded from love for</div>
+              <span id="advisoryDays" class="pl-[5px]"></span>:<span id="advisoryHours"></span>:<span
+                id="advisoryMinutes"
+              ></span
+              >:<span id="advisorySeconds"></span>
             </div>
           </div>
         </div>
       </div>
 
       <div
-        class="absolute top-8 left-8 z-40 flex items-center justify-center rotate-90 origin-top-left translate-x-[84px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0"
+        class="absolute top-8 left-8 z-50 scale-75 sm:scale-100 flex items-center justify-center rotate-90 origin-top-left translate-x-[63px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0 cursor-wait"
       >
         <iframe
           src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=true&bar_color=53b14f&bar_color_cover=true"
