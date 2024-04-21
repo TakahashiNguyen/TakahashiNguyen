@@ -23,12 +23,14 @@ const images = [
   "Halnaker",
   "HồYamanaka",
   "ISS",
+  "Killarnery",
   "LâuĐàiHimeji",
   "SôngCửuLong",
   "UnionSquare",
   "VũngNapa",
+  "Yellowstone",
 ].map((imageName) => {
-  return imgUrltoData(`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`);
+  return imgUrltoData(`./.jpg/${imageName}.jpg`);
 });
 const dynamicDuration = 140000;
 const randomImageDuration = 23000;
@@ -46,7 +48,7 @@ const randomImage = async (dur) => {
       fade(myNameSub, (dur * 2) / 32, 0, 1),
 
       fade(myName, (dur * 2) / 13, 1, 0),
-      fade(githubSpin, (dur * 2) / 13, 1, 0),
+      fade(githubSpin, (dur * 2) / 74, 1, 0),
     ]);
 
     myImg.src = data;
@@ -58,12 +60,25 @@ const randomImage = async (dur) => {
       fade(myNameSub, (dur * 2) / 50, 1, 0),
 
       fade(myName, (dur * 3) / 32, 0, 1),
-      fade(githubSpin, (dur * 3) / 32, 0, 1),
+      fade(githubSpin, (dur * 3) / 74, 0, 1),
     ]);
   }
   await delay(bool ? dur : 100);
   randomImage(dur);
 };
+const updateTextShadow = () => {
+  const color = imageBackgroundBrightness > 128 ? "white" : "black";
+  const siz = (e) => textSquareSize / (37 * e);
+  myName.style.textShadow = `
+    ${-siz(17)}px ${siz(17)}px ${siz(17)}px ${color},
+    ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color},
+    ${-siz(13)}px ${siz(13)}px ${siz(13)}px ${color},
+    ${-siz(10)}px ${siz(10)}px ${siz(10)}px ${color},
+    ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color}
+  `;
+};
+let imageBackgroundBrightness = 0,
+  textSquareSize = 0;
 
 async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
@@ -84,28 +99,29 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
   });
 }
 
-async function dynamicTextSizer(name, nickname, hashtag) {
+async function dynamicTextSizer(name, nickname, hashtag, shadow = false) {
   const { innerHeight, innerWidth } = window;
-  const squareSideLength = Math.min(innerHeight, innerWidth);
+  textSquareSize = Math.min(innerHeight, innerWidth);
 
-  name.style.height = name.style.width = `${squareSideLength}px`;
-  name.style.lineHeight = name.style.fontSize = `${squareSideLength / 18}px`;
+  name.style.height = name.style.width = `${textSquareSize}px`;
+  name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
 
-  nickname.style.lineHeight = nickname.style.fontSize = `${squareSideLength / 20}px`;
-  hashtag.style.lineHeight = hashtag.style.fontSize = `${squareSideLength / 64}px`;
+  nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
+  hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
+  if (shadow) updateTextShadow();
   if (!isMobile) {
-    hashtag.style.marginTop = `${squareSideLength / 100}px`;
-    nickname.style.marginBottom = `-${squareSideLength / 74}px`;
+    hashtag.style.marginTop = `${textSquareSize / 100}px`;
+    nickname.style.marginBottom = `-${textSquareSize / 74}px`;
   }
 }
 
 function changeTextColor() {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
-  const canvaSize = Math.min(myImg.width, myImg.height) / 9;
-  canvas.width = canvaSize * 5;
-  canvas.height = canvaSize * 2;
+  const canvaSize = Math.min(myImg.width, myImg.height) / 14;
+  canvas.width = canvaSize * 11;
+  canvas.height = canvaSize * 4;
   var x = (myImg.width - canvas.width) / 2;
   var y = (myImg.height - canvas.height) / 2;
 
@@ -132,7 +148,9 @@ function changeTextColor() {
   const averageR = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(r / pixelCount));
   const averageG = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
   const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
-  const averageColor = RGBToHex(averageB, averageR, averageG);
+  imageBackgroundBrightness = brightness;
+  updateTextShadow();
+  const averageColor = RGBToHex(averageR, averageG, averageB);
   const updateClass = (obj, prefix, main, suffix = "") => {
     const classes = obj.classList;
     classes.remove(classes[classes.length - 1]);
@@ -182,7 +200,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-  dynamicTextSizer(myName, nickName, myHashTag);
+  dynamicTextSizer(myName, nickName, myHashTag, true);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
   startDynamicFunction();
   randomImage(randomImageDuration);
@@ -260,6 +278,6 @@ window.addEventListener("load", async () => {
 });
 
 window.addEventListener("resize", async () => {
-  dynamicTextSizer(myName, nickName, myHashTag);
+  dynamicTextSizer(myName, nickName, myHashTag, true);
   dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
 });
