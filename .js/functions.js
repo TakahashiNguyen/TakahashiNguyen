@@ -285,7 +285,7 @@ window.addEventListener("load", async () => {
               serviceWorker.showNotification(title, options);
             });
           });
-      }, 6000);
+      }, 60000);
     }
   });
 });
