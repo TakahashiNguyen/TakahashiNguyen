@@ -95,13 +95,13 @@ const updateTextDecoration = () => {
 
   const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
   const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
-  const siz = (e) => textSquareSize / (37 * e);
+  const siz = (e) => (textSquareSize / (1941 * 2)) * e;
   myName.style.textShadow = `
-    ${-siz(17)}px ${siz(17)}px ${siz(17)}px ${color},
-    ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color},
-    ${-siz(13)}px ${siz(13)}px ${siz(13)}px ${color},
+    ${-siz(1)}px ${siz(1)}px ${siz(1)}px ${color},
+    ${-siz(3)}px ${siz(3)}px ${siz(3)}px ${color},
+    ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color},
     ${-siz(10)}px ${siz(10)}px ${siz(10)}px ${color},
-    ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color}
+    ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color}
   `;
 };
 
