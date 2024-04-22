@@ -1,8 +1,7 @@
-<div align="center">
-  <a href="https://github.com/TakahashiNguyen">
-    <img src="greeting.svg" style="width: 100%;" alt="Click to see the source">
-  </a>
-</div>
+<!--https://repobeats.axiom.co/api/embed/b8a59d63070b4186fc1af22c77c5d784d2306be8.svg-->
+
+![Introducing](./greeting.svg)
+
 <h3 align="left">
   Hoạt động trên github của tôi
   <a href="https://github.com/TakahashiNguyen" rel="nofollow">
