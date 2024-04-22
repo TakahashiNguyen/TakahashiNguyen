@@ -1,46 +1,69 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-const targetDate = new Date("2024-01-28T00:00:00");
-const getRandomInt = (max) => Math.floor(Math.random() * max);
-const imgUrltoData = (url) => {
-  var reader = new FileReader();
-  fetch(url)
-    .then((response) => response.blob())
-    .then((blob) => reader.readAsDataURL(blob));
-  return reader;
-};
-const RGBToHex = (r, g, b) => {
-  const hex = "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
-  return hex;
-};
-const images = [
-  "Akiyoshidai",
-  "California",
-  "CaoBằng",
-  "CátBà",
-  "Centre-ValDeLoire",
-  "Dorset",
-  "Dorset_1",
-  "Halnaker",
-  "HồYamanaka",
-  "ISS",
-  "Killarnery",
-  "LâuĐàiHimeji",
-  "SôngCửuLong",
-  "UnionSquare",
-  "VũngNapa",
-  "Yellowstone",
-].map((imageName) => {
-  return imgUrltoData(`./.jpg/${imageName}.jpg`);
-});
 const dynamicDuration = 140000;
 const randomImageDuration = 23000;
+const targetDate = new Date("2024-01-28T00:00:00");
+let imageBackgroundBrightness = 0,
+  textSquareSize = 0,
+  textNameColor = "";
+const abs = (value) => Math.abs(value);
+const getRandomInt = (max) => Math.floor(Math.random() * max);
+const RGBToHex = (r, g, b) => "#" + ((1 << 24) | (abs(r) << 16) | (abs(g) << 8) | abs(b)).toString(16).slice(1);
+const HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
+  return [parseInt(result[1], 16) + rr, parseInt(result[2], 16) + gg, parseInt(result[3], 16) + bb];
+};
+const updateClass = (obj, prefix, main, suffix = "") => {
+  const classes = obj.classList;
+  classes.remove(classes[classes.length - 1]);
+  classes.add(`${prefix}-[${main}]${suffix}`);
+};
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const imgUrltoData = (url) =>
+  fetch(url)
+    .then((response) => response.blob())
+    .then(async (blob) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
+      while (reader.readyState != 2) await delay(100);
+      return reader.result;
+    })
+    .catch((error) => {
+      console.error(error);
+      return "";
+    });
+var images = [];
+Promise.all(
+  [
+    "Akiyoshidai",
+    "California",
+    "CaoBằng",
+    "CátBà",
+    "Centre-ValDeLoire",
+    "Dorset",
+    "Dorset_1",
+    "Halnaker",
+    "HồYamanaka",
+    "ISS",
+    "Killarnery",
+    "LâuĐàiHimeji",
+    "SôngCửuLong",
+    "UnionSquare",
+    "VũngNapa",
+    "Yellowstone",
+    "HCMUS",
+  ].map(async (imageName) => {
+    return await imgUrltoData(`./.jpg/${imageName}.jpg`);
+  })
+).then((values) => {
+  images = values;
+});
 const randomImage = async (dur) => {
-  var currentIndex = images.map((i) => i.result).indexOf(myImg.src);
+  var currentIndex = images.indexOf(myImg.src);
   do {
     var newIndex = getRandomInt(images.length);
   } while (newIndex == currentIndex);
-  var data = images[newIndex].result;
-  var bool = data !== null;
+  var data = images[newIndex];
+  var bool = data != null;
 
   if (bool) {
     await Promise.all([
@@ -66,8 +89,12 @@ const randomImage = async (dur) => {
   await delay(bool ? dur : 100);
   randomImage(dur);
 };
-const updateTextShadow = () => {
-  const color = imageBackgroundBrightness > 128 ? "white" : "black";
+const updateTextDecoration = () => {
+  updateClass(myName, "text", textNameColor);
+  updateClass(githubSpin, "outline", textNameColor);
+
+  const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
+  const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
   const siz = (e) => textSquareSize / (37 * e);
   myName.style.textShadow = `
     ${-siz(17)}px ${siz(17)}px ${siz(17)}px ${color},
@@ -77,12 +104,6 @@ const updateTextShadow = () => {
     ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color}
   `;
 };
-let imageBackgroundBrightness = 0,
-  textSquareSize = 0;
-
-async function delay(ms) {
-  await new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   return new Promise(async (resolve) => {
@@ -109,7 +130,7 @@ async function dynamicTextSizer(name, nickname, hashtag, shadow = false) {
   nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
   hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
-  if (shadow) updateTextShadow();
+  if (shadow) updateTextDecoration();
   if (!isMobile) {
     hashtag.style.marginTop = `${textSquareSize / 100}px`;
     nickname.style.marginBottom = `-${textSquareSize / 74}px`;
@@ -145,20 +166,12 @@ function changeTextColor() {
 
   const brightness = Math.floor(colorSum / (canvas.height * canvas.width));
   const pixelCount = data.length / 4;
-  const averageR = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(r / pixelCount));
-  const averageG = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
-  const averageB = Math.abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
+  const averageR = abs((brightness < 128 ? 270 : 180) - Math.floor(r / pixelCount));
+  const averageG = abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
+  const averageB = abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
   imageBackgroundBrightness = brightness;
-  updateTextShadow();
-  const averageColor = RGBToHex(averageR, averageG, averageB);
-  const updateClass = (obj, prefix, main, suffix = "") => {
-    const classes = obj.classList;
-    classes.remove(classes[classes.length - 1]);
-    classes.add(`${prefix}-[${main}]${suffix}`);
-  };
-
-  updateClass(myName, "text", averageColor);
-  updateClass(githubSpin, "outline", averageColor);
+  textNameColor = RGBToHex(averageR, averageG, averageB);
+  updateTextDecoration();
 }
 
 targetDate.setMonth(targetDate.getMonth() + 19);
@@ -169,10 +182,10 @@ const countdown = setInterval(() => {
   const remainingTime = targetDate.getTime() - now;
 
   // Calculate the days, hours, minutes, and seconds
-  const days = Math.abs(Math.floor(remainingTime / (1000 * 60 * 60 * 24)));
-  const hours = Math.abs(Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-  const minutes = Math.abs(Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)));
-  const seconds = Math.abs(Math.floor((remainingTime % (1000 * 60)) / 1000));
+  const days = abs(Math.floor(remainingTime / (1000 * 60 * 60 * 24)));
+  const hours = abs(Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  const minutes = abs(Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)));
+  const seconds = abs(Math.floor((remainingTime % (1000 * 60)) / 1000));
 
   // Update the HTML elements with the calculated time units
   advisoryDays.textContent = days.toString().padStart(2, "0");
@@ -206,12 +219,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   randomImage(randomImageDuration);
 });
 
+const cat = () => {
+  return imgUrltoData(`https://cataas.com/cat`);
+};
 window.addEventListener("load", async () => {
   githubButton.addEventListener("click", () => {
     window.open("https://github.com/TakahashiNguyen", "_blank");
   });
 
-  fade(loadingPage, 1500, 1, 0, 144, () => {
+  fade(loadingPage, 1975, 1, 0, 144, () => {
     loadingPage.classList.add("hidden");
   });
 
@@ -225,9 +241,6 @@ window.addEventListener("load", async () => {
             const img = "./.png/Larry_Chief_Mouser.png";
             const text = `Wish you a good day (。・ω・。)`;
 
-            var cat = imgUrltoData(`https://cataas.com/cat`);
-            do await delay(100);
-            while (cat.result == null);
             const imgData =
               "data:image/svg+xml;base64," +
               btoa(`
@@ -255,7 +268,7 @@ window.addEventListener("load", async () => {
 
             const options = {
               body: text,
-              icon: cat.result,
+              icon: await cat(),
               image: imgData,
               vibrate: [200, 100, 200],
               badge: img,
