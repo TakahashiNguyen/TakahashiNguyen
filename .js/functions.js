@@ -4,20 +4,31 @@ const randomImageDuration = 23000;
 const targetDate = new Date("2024-01-28T00:00:00");
 let imageBackgroundBrightness = 0,
   textSquareSize = 0,
-  textNameColor = "";
+  textNameColor = "",
+  randomImageDelayLeft = 0;
+const getIdsHasSubString = (str) => document.querySelectorAll(`[id*=${str}]`);
 const abs = (value) => Math.abs(value);
 const getRandomInt = (max) => Math.floor(Math.random() * max);
-const RGBToHex = (r, g, b) => "#" + ((1 << 24) | (abs(r) << 16) | (abs(g) << 8) | abs(b)).toString(16).slice(1);
-const HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
-  return [parseInt(result[1], 16) + rr, parseInt(result[2], 16) + gg, parseInt(result[3], 16) + bb];
-};
 const updateClass = (obj, prefix, main, suffix = "") => {
   const classes = obj.classList;
   classes.remove(classes[classes.length - 1]);
   classes.add(`${prefix}-[${main}]${suffix}`);
 };
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
+const RGBToHex = (r, g, b) =>
+  "#" +
+  ((1 << 24) | (abs(r + luckyColor[0]) << 16) | (abs(g + luckyColor[1]) << 8) | abs(b + luckyColor[2]))
+    .toString(16)
+    .slice(1);
+const HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
+  return [
+    parseInt(result[1], 16) + rr + luckyColor[0],
+    parseInt(result[2], 16) + gg + luckyColor[1],
+    parseInt(result[3], 16) + bb + luckyColor[2],
+  ];
+};
 const imgUrltoData = (url) =>
   fetch(url)
     .then((response) => response.blob())
@@ -57,8 +68,9 @@ Promise.all(
 ).then((values) => {
   images = values;
 });
-const randomImage = async (dur) => {
+const randomImage = async (dur, loop = false) => {
   var currentIndex = images.indexOf(myImg.src);
+  randomImageDelayLeft = 100;
   do {
     var newIndex = getRandomInt(images.length);
   } while (newIndex == currentIndex);
@@ -68,9 +80,9 @@ const randomImage = async (dur) => {
   if (bool) {
     await Promise.all([
       fade(myImg, (dur * 3) / 50, 1, 0),
-      fade(myNameSub, (dur * 2) / 32, 0, 1),
+      fade(textDivSub, (dur * 2) / 32, 0, 1),
 
-      fade(myName, (dur * 2) / 13, 1, 0),
+      fade(textDiv, (dur * 2) / 13, 1, 0),
       fade(githubSpin, (dur * 2) / 74, 1, 0),
     ]);
 
@@ -80,23 +92,28 @@ const randomImage = async (dur) => {
 
     await Promise.all([
       fade(myImg, (dur * 2) / 13, 0, 1),
-      fade(myNameSub, (dur * 2) / 50, 1, 0),
+      fade(textDivSub, (dur * 2) / 50, 1, 0),
 
-      fade(myName, (dur * 3) / 32, 0, 1),
+      fade(textDiv, (dur * 3) / 32, 0, 1),
       fade(githubSpin, (dur * 3) / 74, 0, 1),
     ]);
   }
-  await delay(bool ? dur : 100);
-  randomImage(dur);
+  if (bool) {
+    do {
+      randomImageDelayLeft -= 1;
+      await delay(dur / 100);
+    } while (randomImageDelayLeft > 0);
+  } else await delay(100);
+  if (loop) randomImage(dur, true);
 };
 const updateTextDecoration = () => {
-  updateClass(myName, "text", textNameColor);
+  updateClass(textDiv, "text", textNameColor);
   updateClass(githubSpin, "outline", textNameColor);
 
   const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
   const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
   const siz = (e) => (textSquareSize / (1941 * 2)) * e;
-  myName.style.textShadow = `
+  textDiv.style.textShadow = `
     ${-siz(1)}px ${siz(1)}px ${siz(1)}px ${color},
     ${-siz(3)}px ${siz(3)}px ${siz(3)}px ${color},
     ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color},
@@ -212,11 +229,18 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+const myName = "Nguyễn Việt Anh";
+const myNickName = "Takahashi";
+const hashTag = "makeUKgreatagain";
 window.addEventListener("DOMContentLoaded", async () => {
-  dynamicTextSizer(myName, nickName, myHashTag, true);
-  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
+  getIdsHasSubString("name").forEach((obj) => (obj.textContent = myName));
+  getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
+  getIdsHasSubString("myHashTag").forEach((obj) => (obj.textContent = "#" + hashTag));
+
+  dynamicTextSizer(textDiv, nickName, myHashTag, true);
+  dynamicTextSizer(textDivSub, nickNameSub, myHashTagSub);
   startDynamicFunction();
-  randomImage(randomImageDuration);
+  randomImage(randomImageDuration, true);
 });
 
 const cat = () => {
@@ -224,7 +248,7 @@ const cat = () => {
 };
 window.addEventListener("load", async () => {
   githubButton.addEventListener("click", () => {
-    window.open("https://github.com/TakahashiNguyen", "_blank");
+    window.open(getRandomInt(6) ? "https://github.com/TakahashiNguyen" : "https://www.youtube.com/@vtv24", "_blank");
   });
 
   fade(loadingPage, 1975, 1, 0, 144, () => {
@@ -291,6 +315,6 @@ window.addEventListener("load", async () => {
 });
 
 window.addEventListener("resize", async () => {
-  dynamicTextSizer(myName, nickName, myHashTag, true);
-  dynamicTextSizer(myNameSub, nickNameSub, myHashTagSub);
+  dynamicTextSizer(textDiv, nickName, myHashTag, true);
+  dynamicTextSizer(textDivSub, nickNameSub, myHashTagSub);
 });
