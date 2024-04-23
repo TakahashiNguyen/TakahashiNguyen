@@ -67,7 +67,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [500]))
+total_time_animated = ceil(max(animation_timers + [200]))
 
 
 ########################################################
@@ -167,5 +167,3 @@ if USE_TMP_PATH:
     os.remove(f"TMP_{FILE_NAME}")
 shutil.rmtree("_screenshots")
 
-# Optional delete of selenium logs
-os.remove(f"geckodriver.log")
