@@ -2,5 +2,6 @@
     "files.associations": {
         "algorithm": "cpp"
     },
-    "liquid.format.enable": true
+    "liquid.format.enable": true,
+    "svg.preview.background": "editor"
 }

@@ -13,10 +13,11 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src=".js/functions.js"></script>
+    <script type="text/javascript" src=".js/website.js"></script>
   </head>
   <body class="bg-white dark:bg-black select-none subpixel-antialiased">
     <div
-      class="z-[100] dark:bg-black bg-white h-dvh w-full fixed cursor-zoom-in"
+      class="fixed z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
       id="loadingPage"
       style="opacity: 1"
     ></div>
@@ -52,11 +53,11 @@
       };
     </script>
 
-    <div class="fixed justify-center h-dvh w-full flex items-center justify-center">
-      <div class="z-40 fixed w-full h-dvh flex items-center justify-center scale-150 lg:scale-100 -skew-y-6">
-        <div class="fixed flex flex-col items-center justify-center z-40 text-white" id="textDiv">
+    <div class="fixed flex h-dvh w-full items-center justify-center">
+      <div class="fixed z-40 flex h-dvh w-full -skew-y-6 scale-150 items-center justify-center lg:scale-100">
+        <div class="fixed z-40 flex flex-col items-center justify-center text-white" id="textDiv">
           <div
-            class="flex flex-col justify-items-stretch cursor-help hover:animate-pulse"
+            class="flex cursor-help flex-col justify-items-stretch hover:animate-pulse"
             onclick="randomImageDelayLeft=0"
           >
             <div style="font-family: Maginia" id="nickName" class="capitalize"></div>
@@ -65,7 +66,7 @@
           </div>
         </div>
 
-        <div class="fixed flex flex-col items-center justify-center -z-50 dark:text-white text-black" id="textDivSub">
+        <div class="fixed -z-50 flex flex-col items-center justify-center text-black dark:text-white" id="textDivSub">
           <div class="flex flex-col justify-items-stretch">
             <div style="font-family: Maginia" id="nickNameSub" class="capitalize"></div>
             <div style="font-family: Magnies" id="nameSub" class="capitalize"></div>
@@ -74,26 +75,26 @@
         </div>
       </div>
 
-      <div class="absolute top-8 right-8 flex flex-row z-50 cursor-grabbing" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block w-9 h-9" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="z-50 dark:hidden visible w-9 h-9" alt="Github" />
+      <div class="absolute right-8 top-8 z-50 flex cursor-grabbing flex-row" id="githubButton">
+        <img src="./.svg/github-mark-white.svg" class="z-50 hidden h-9 w-9 dark:visible dark:block" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="visible z-50 h-9 w-9 dark:hidden" alt="Github" />
         <div
-          class="bg-white/[.64] dark:bg-black/[.32] rounded-full animate-[spin_6s_linear_infinite] w-9 h-9 fixed -z-50"
+          class="fixed -z-50 h-9 w-9 animate-[spin_6s_linear_infinite] rounded-full bg-white/[.64] dark:bg-black/[.32]"
         >
           <div
-            class="outline-dashed outline-2 dark:outline-black outline-offset-2 w-full h-full rounded-full outline-white"
+            class="h-full w-full rounded-full outline-dashed outline-2 outline-offset-2 outline-white dark:outline-black"
             id="githubSpin"
           ></div>
         </div>
       </div>
 
       <div
-        class="flex flex-col-reverse sm:flex-row absolute bottom-8 left-8 z-50 group/advisory text-center hover:animate-none animate-shake cursor-not-allowed"
+        class="group/advisory absolute bottom-8 left-8 z-50 flex animate-shake cursor-not-allowed flex-col-reverse text-center hover:animate-none sm:flex-row"
         style="font-family: GarageGothic"
       >
-        <div class="flex flex-col w-[6.25rem] dark:bg-black/[.32] bg-white/[.32]">
+        <div class="flex w-[6.25rem] flex-col bg-white/[.32] dark:bg-black/[.32]">
           <div
-            class="z-50 h-4 leading-[1rem] bg-transparent dark:text-black text-white text-[1rem] tracking-[0.275rem]"
+            class="z-50 h-4 bg-transparent text-[1rem] leading-[1rem] tracking-[0.275rem] text-white dark:text-black"
           >
             <div class="">
               <svg viewBox="0 0 100 16" style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg">
@@ -117,11 +118,11 @@
             </div>
           </div>
           <div
-            class="z-10 w-full leading-[16px] bg-transparent dark:text-white text-black text-[1.5rem] tracking-[0.2rem]"
+            class="z-10 w-full bg-transparent text-[1.5rem] leading-[16px] tracking-[0.2rem] text-black dark:text-white"
           >
             PERSONAL
           </div>
-          <div class="z-50 h-4 leading-[1rem] bg-transparent dark:text-black text-white text-[1rem] tracking-[0.25rem]">
+          <div class="z-50 h-4 bg-transparent text-[1rem] leading-[1rem] tracking-[0.25rem] text-white dark:text-black">
             <div class="">
               <svg viewBox="0 0 100 16" style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -146,9 +147,9 @@
         </div>
         <div>
           <div
-            class="sm:w-0 sm:group-hover/advisory:w-full sm:h-full max-sm:h-0 max-sm:group-hover/advisory:h-10 overflow-hidden max-sm:w-full duration-[2000ms] bg-[#370037] flex sm:items-center max-sm:items-start sm:justify-end justify-center"
+            class="flex justify-center overflow-hidden bg-[#370037] duration-[2000ms] max-sm:h-0 max-sm:w-full max-sm:items-start max-sm:group-hover/advisory:h-10 sm:h-full sm:w-0 sm:items-center sm:justify-end sm:group-hover/advisory:w-full"
           >
-            <div class="text-white mx-[10px] text-[27px] flex-row flex text-nowrap">
+            <div class="mx-[10px] flex flex-row text-nowrap text-[27px] text-white">
               <div id="advisoryMain">Grounded from love for</div>
               <span id="advisoryDays" class="pl-[5px]"></span>:<span id="advisoryHours"></span>:<span
                 id="advisoryMinutes"
@@ -160,7 +161,7 @@
       </div>
 
       <div
-        class="absolute top-8 left-8 z-50 scale-75 sm:scale-100 flex items-center justify-center rotate-90 origin-top-left translate-x-[63px] sm:translate-x-0 sm:translate-y-0 sm:rotate-0 cursor-wait"
+        class="absolute left-8 top-8 z-50 flex origin-top-left translate-x-[63px] rotate-90 scale-75 cursor-wait items-center justify-center sm:translate-x-0 sm:translate-y-0 sm:rotate-0 sm:scale-100"
       >
         <iframe
           src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=true&bar_color=53b14f&bar_color_cover=true"
@@ -171,15 +172,15 @@
           width="320px"
           class="z-40"
         ></iframe>
-        <div class="absolute select-none bg-transparent h-full w-full z-50"></div>
+        <div class="absolute z-50 h-full w-full select-none bg-transparent"></div>
         <div
-          class="w-full h-full z-30 fixed dark:bg-black/[.32] backdrop-blur-md bg-white/[.32]"
+          class="fixed z-30 h-full w-full bg-white/[.32] backdrop-blur-md dark:bg-black/[.32]"
           id="spotifyBackground"
         ></div>
       </div>
 
       <img
-        class="fixed -z-40 h-dvh w-full bg-white dark:bg-black blur-sm lg:blur lg:object-contain object-cover lg:scale-[1.1] scale-[1.4] lg:animate-none animate-slide touch-none"
+        class="fixed -z-40 h-dvh w-full scale-[1.4] animate-slide touch-none bg-white object-cover blur-sm lg:scale-[1.1] lg:animate-none lg:object-contain lg:blur dark:bg-black"
         id="myImg"
         title="myImg"
         crossorigin="anonymous"
