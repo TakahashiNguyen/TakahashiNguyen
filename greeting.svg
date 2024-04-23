@@ -16,7 +16,7 @@
           <div class="flex cursor-help flex-col justify-items-stretch hover:animate-pulse"
             onclick="randomImageDelayLeft=0">
             <div id="nickName" class="capitalize"
-              style="font-family: Maginia; line-height: 28.75px; margin-bottom: -7.77027px; font-size: 28.75px;"></div>
+              style="font-family: Maginia; line-height: 28.75px; font-size: 28.75px;"></div>
             <div style="font-family: Magnies" id="name" class="capitalize"></div>
             <div style="font-family: consolas; font-size: 8.98438px; line-height: 8.98438px; margin-top: 5.75px;"
               id="myHashTag" class="flex justify-end"></div>
@@ -26,8 +26,8 @@
         <div class="fixed -z-50 flex flex-col items-center justify-center text-black dark:text-white" id="textDivSub"
           style="height: 575px; width: 575px; font-size: 31.9444px; line-height: 31.9444px;">
           <div class="flex flex-col justify-items-stretch">
-            <div style="font-family: Maginia; line-height: 28.75px; margin-bottom: -7.77027px; font-size: 28.75px;"
-              id="nickNameSub" class="capitalize"></div>
+            <div style="font-family: Maginia; line-height: 28.75px; font-size: 28.75px;" id="nickNameSub"
+              class="capitalize"></div>
             <div style="font-family: Magnies" id="nameSub" class="capitalize"></div>
             <div style="font-family: consolas; font-size: 8.98438px; line-height: 8.98438px; margin-top: 5.75px;"
               id="myHashTagSub" class="flex justify-end"></div>
@@ -43,7 +43,12 @@
   <script>
     // <![CDATA[
     const textSquareSize=600;
-    const randomImageDuration = 23000;
+    const randomImageDuration = 14000;
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
+      dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+    });
     // ]]>
   </script>
 </svg>

@@ -18,8 +18,13 @@ jobs:
 
       - name: Installing Python's packages
         run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+          curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+          sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+          sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+          sudo rm microsoft.gpg
+          sudo apt update && sudo apt install microsoft-edge-stable -y
+          python3 -m pip install --upgrade pip
+          pip install requests beautifulsoup4 pillow selenium
 
       - name: Generating snake eat contribution streak
         uses: Platane/snk/svg-only@v3
@@ -29,7 +34,7 @@ jobs:
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
       - name: Get statistics
-        run: python githubstats.py
+        run: python3 githubstats.py
 
       - name: Push results to Github
         uses: crazy-max/ghaction-github-pages@v3.1.0

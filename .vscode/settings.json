@@ -3,5 +3,6 @@
         "algorithm": "cpp"
     },
     "liquid.format.enable": true,
-    "svg.preview.background": "editor"
+    "svg.preview.background": "editor",
+    "python.analysis.typeCheckingMode": "basic"
 }

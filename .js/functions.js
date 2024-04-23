@@ -1,4 +1,5 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+const isLinux = /Linux/i.test(navigator.userAgent);
 const dynamicDuration = 140000;
 let imageBackgroundBrightness = 0,
   textNameColor = "",
@@ -104,7 +105,7 @@ const randomImage = async (dur, loop = false) => {
   if (bool) {
     do {
       randomImageDelayLeft -= 1;
-      await delay(dur / 100);
+      await delay((dur / 100) * (1 - 2 / 13 - 2 / 50 - 3 / 32 - 3 / 74));
     } while (randomImageDelayLeft > 0);
   } else await delay(100);
   if (loop) randomImage(dur, true);
@@ -147,7 +148,9 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
 
 async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
-  textSquareSize = Math.min(innerHeight, innerWidth);
+  try {
+    textSquareSize = Math.min(innerHeight, innerWidth);
+  } catch (error) {}
 
   try {
     name.style.height = name.style.width = `${textSquareSize}px`;
@@ -157,8 +160,8 @@ async function dynamicTextSizer(name, nickname, hashtag) {
     hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
     if (!isMobile) {
-      hashtag.style.marginTop = `${textSquareSize / 100}px`;
-      nickname.style.marginBottom = `-${textSquareSize / 74}px`;
+      hashtag.style.marginTop = `${textSquareSize / 130}px`;
+      if (!isLinux) nickname.style.marginBottom = `-${textSquareSize / 74}px`;
     }
   } catch (error) {}
 }

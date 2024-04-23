@@ -31,7 +31,7 @@ elif len(sys.argv) == 1:
     FILE_NAME = "examples/test.svg"
 else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
-SCREENSHOTS_PER_SECOND = 11  # This arbitrary number worked but is not perfect
+SCREENSHOTS_PER_SECOND = 6  # This arbitrary number worked but is not perfect
 
 ########################################################
 # Helper functions
@@ -70,7 +70,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [74]))
+total_time_animated = ceil(max(animation_timers + [80]))
 
 
 ########################################################
@@ -110,7 +110,7 @@ if capture:
 
     opts = webdriver.EdgeOptions()
     driver = webdriver.Edge(options=opts)
-    driver.set_window_size(964, 338)
+    driver.set_window_size(908, 322)
 
     # In Selenium you need the prefix file:/// to open a local file
     if USE_TMP_PATH:
