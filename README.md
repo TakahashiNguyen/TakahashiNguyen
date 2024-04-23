@@ -19,7 +19,7 @@
 
 ## Nghe cùng với tôi nè
 
-[![Favorite tracks](https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg)](#nhạc-tôi-thích-nè)
+[![Favorite tracks](https://data-card-for-spotify.herokuapp.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy&hide_title=true)](#nhạc-tôi-thích-nè)
 
 <!---
   Tạm biệt Github README và takahashi.github.io trong 3 tháng nha!
