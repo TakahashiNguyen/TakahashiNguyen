@@ -490,14 +490,8 @@ video {
 .flex {
   display: flex;
 }
-.h-\[200px\] {
-  height: 200px;
-}
 .h-full {
   height: 100%;
-}
-.w-\[854px\] {
-  width: 854px;
 }
 .w-full {
   width: 100%;
@@ -518,6 +512,17 @@ video {
   --tw-scale-y: 1.4;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
     skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes slide {
+  25% {
+    transform: translateX(13%) scale(1.4);
+  }
+  75% {
+    transform: translateX(-13%) scale(1.4);
+  }
+}
+.animate-slide {
+  animation: slide 66.6s ease-in-out infinite;
 }
 .cursor-help {
   cursor: help;

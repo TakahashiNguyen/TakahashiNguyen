@@ -11,7 +11,7 @@ import os
 import shutil
 import sys
 
-from PIL import Image
+from PIL import Image, GifImagePlugin
 from bs4 import BeautifulSoup
 from math import ceil
 from selenium import webdriver
@@ -67,7 +67,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [100]))
+total_time_animated = ceil(max(animation_timers + [500]))
 
 
 ########################################################
@@ -107,7 +107,7 @@ if not os.path.exists("_screenshots"):
 
 opts = webdriver.EdgeOptions()
 driver = webdriver.Edge(options=opts)
-driver.set_window_size(918, 338)
+driver.set_window_size(964, 338)
 
 # In Selenium you need the prefix file:/// to open a local file
 if USE_TMP_PATH:
@@ -136,13 +136,14 @@ fp_in = "_screenshots/*.png"
 fp_out = f'{FILE_NAME.replace(".svg",".gif")}'
 
 # use exit stack to automatically close opened images
+GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 with contextlib.ExitStack() as stack:
 
     files = glob.glob(fp_in)
     files.sort(key=lambda f: int(re.sub("\D", "", f)))
 
     # lazily load images
-    imgs = (stack.enter_context(Image.open(f)) for f in files[120:])
+    imgs = (stack.enter_context(Image.open(f)) for f in files)
 
     img = next(imgs)
 
@@ -155,6 +156,7 @@ with contextlib.ExitStack() as stack:
         duration=(total_time_animated * 1000) / len(files)
         - 20,  # the math here feels off because the resulting gif is too slow thus -10 is implemented
         loop=0,
+        optimize=True,
     )
 
 

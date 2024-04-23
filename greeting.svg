@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="z-index:1;position:relative"
-  width="854" height="200" viewBox="0 0 854 200">
+  width="900" height="200" viewBox="0 0 900 200">
   <foreignObject x="0" y="0" width="100%" height="100%" class="bg-white dark:bg-black">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self';">
     </meta>
-    <div xmlns="http://www.w3.org/1999/xhtml" class="fixed flex h-[200px] w-[854px] items-center justify-center">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="fixed flex h-full w-full items-center justify-center">
       <style>
         @import url(./.css/style.css);
         @import url(./.css/tailwind.css);
@@ -36,7 +36,7 @@
       </div>
 
       <img
-        class="animate-slide fixed -z-40 h-full w-full scale-[1.4] touch-none bg-white object-cover blur-sm dark:bg-black"
+        class="fixed -z-40 h-full w-full scale-[1.4] animate-slide touch-none bg-white object-cover blur-sm dark:bg-black"
         id="myImg" title="myImg" crossorigin="anonymous" onload="changeTextColor()" />
     </div>
   </foreignObject>

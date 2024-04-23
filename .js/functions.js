@@ -93,7 +93,6 @@ const randomImage = async (dur, loop = false) => {
     try {
       mySpotify.src += "";
     } catch (error) {}
-    await delay(dur / 17);
 
     await Promise.all([
       fade(ele("myImg"), (dur * 2) / 13, 0, 1),
