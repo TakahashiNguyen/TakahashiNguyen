@@ -109,8 +109,9 @@ if capture:
     os.makedirs("_screenshots")
 
     opts = webdriver.EdgeOptions()
+    opts.add_argument("--headless")
     driver = webdriver.Edge(options=opts)
-    driver.set_window_size(908, 322)
+    driver.set_window_size(900, 200)
 
     # In Selenium you need the prefix file:/// to open a local file
     if USE_TMP_PATH:
