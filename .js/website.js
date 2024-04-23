@@ -1,3 +1,5 @@
+let textSquareSize = 0;
+
 // The countdown
 const targetDate = new Date("2024-01-28T00:00:00");
 targetDate.setMonth(targetDate.getMonth() + 19);
@@ -95,4 +97,16 @@ window.addEventListener("load", async () => {
       }, 60000);
     }
   });
+});
+
+// Website's content finished load trigger
+window.addEventListener("DOMContentLoaded", async () => {
+  dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
+  dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+});
+
+// Website's window resize trigger
+window.addEventListener("resize", async () => {
+  dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
+  dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
 });

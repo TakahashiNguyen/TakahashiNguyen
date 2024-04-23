@@ -2,16 +2,18 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const dynamicDuration = 140000;
 const randomImageDuration = 23000;
 let imageBackgroundBrightness = 0,
-  textSquareSize = 0,
   textNameColor = "",
   randomImageDelayLeft = 0;
+const ele = (str) => document.getElementById(str);
 const getIdsHasSubString = (str) => document.querySelectorAll(`[id*=${str}]`);
 const abs = (value) => Math.abs(value);
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 const updateClass = (obj, prefix, main, suffix = "") => {
-  const classes = obj.classList;
-  classes.remove(classes[classes.length - 1]);
-  classes.add(`${prefix}-[${main}]${suffix}`);
+  try {
+    const classes = obj.classList;
+    classes.remove(classes[classes.length - 1]);
+    classes.add(`${prefix}-[${main}]${suffix}`);
+  } catch (error) {}
 };
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
@@ -62,13 +64,15 @@ Promise.all(
     "Yellowstone",
     "HCMUS",
   ].map(async (imageName) => {
-    return await imgUrltoData(`./.jpg/${imageName}.jpg`);
+    return await imgUrltoData(
+      `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
+    );
   })
 ).then((values) => {
   images = values;
 });
 const randomImage = async (dur, loop = false) => {
-  var currentIndex = images.indexOf(myImg.src);
+  var currentIndex = images.indexOf(ele("myImg").src);
   randomImageDelayLeft = 100;
   do {
     var newIndex = getRandomInt(images.length);
@@ -78,23 +82,25 @@ const randomImage = async (dur, loop = false) => {
 
   if (bool) {
     await Promise.all([
-      fade(myImg, (dur * 3) / 50, 1, 0),
-      fade(textDivSub, (dur * 2) / 32, 0, 1),
+      fade(ele("myImg"), (dur * 3) / 50, 1, 0),
+      fade(ele("textDivSub"), (dur * 2) / 32, 0, 1),
 
-      fade(textDiv, (dur * 2) / 13, 1, 0),
-      fade(githubSpin, (dur * 2) / 74, 1, 0),
+      fade(ele("textDiv"), (dur * 2) / 13, 1, 0),
+      fade(ele("githubSpin"), (dur * 2) / 74, 1, 0),
     ]);
 
-    myImg.src = data;
-    mySpotify.src += "";
+    ele("myImg").setAttribute("src", data);
+    try {
+      mySpotify.src += "";
+    } catch (error) {}
     await delay(dur / 17);
 
     await Promise.all([
-      fade(myImg, (dur * 2) / 13, 0, 1),
-      fade(textDivSub, (dur * 2) / 50, 1, 0),
+      fade(ele("myImg"), (dur * 2) / 13, 0, 1),
+      fade(ele("textDivSub"), (dur * 2) / 50, 1, 0),
 
-      fade(textDiv, (dur * 3) / 32, 0, 1),
-      fade(githubSpin, (dur * 3) / 74, 0, 1),
+      fade(ele("textDiv"), (dur * 3) / 32, 0, 1),
+      fade(ele("githubSpin"), (dur * 3) / 74, 0, 1),
     ]);
   }
   if (bool) {
@@ -103,22 +109,22 @@ const randomImage = async (dur, loop = false) => {
       await delay(dur / 100);
     } while (randomImageDelayLeft > 0);
   } else await delay(100);
-  if (loop) setTimeout(randomImage(dur, true));
+  if (loop) randomImage(dur, true);
 };
 const updateTextDecoration = () => {
-  updateClass(textDiv, "text", textNameColor);
-  updateClass(githubSpin, "outline", textNameColor);
+  updateClass(ele("githubSpin"), "outline", textNameColor);
 
   const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
   const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
   const siz = (e) => (textSquareSize / (1941 * 2)) * e;
-  textDiv.style.textShadow = `
+  ele("textDiv").style.textShadow = `
     ${-siz(1)}px ${siz(1)}px ${siz(1)}px ${color},
     ${-siz(3)}px ${siz(3)}px ${siz(3)}px ${color},
     ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color},
     ${-siz(10)}px ${siz(10)}px ${siz(10)}px ${color},
     ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color}
   `;
+  ele("textDiv").style.color = textNameColor;
 };
 
 async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
@@ -126,7 +132,12 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
     var l = from,
       i = (from > to ? -1 : 1) * (1 / (duration * (fps / 1000)));
     while (from < to ? l < to : l > to) {
-      element.style.opacity = l;
+      try {
+        element.style.opacity = l;
+      } catch (error) {
+        resolve();
+        return;
+      }
       l += i;
       await delay((1 / fps) * 1000);
     }
@@ -136,33 +147,34 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
   });
 }
 
-async function dynamicTextSizer(name, nickname, hashtag, shadow = false) {
+async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   textSquareSize = Math.min(innerHeight, innerWidth);
 
-  name.style.height = name.style.width = `${textSquareSize}px`;
-  name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
+  try {
+    name.style.height = name.style.width = `${textSquareSize}px`;
+    name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
 
-  nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
-  hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
+    nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
+    hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
-  if (shadow) updateTextDecoration();
-  if (!isMobile) {
-    hashtag.style.marginTop = `${textSquareSize / 100}px`;
-    nickname.style.marginBottom = `-${textSquareSize / 74}px`;
-  }
+    if (!isMobile) {
+      hashtag.style.marginTop = `${textSquareSize / 100}px`;
+      nickname.style.marginBottom = `-${textSquareSize / 74}px`;
+    }
+  } catch (error) {}
 }
 
 function changeTextColor() {
   const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  const canvaSize = Math.min(myImg.width, myImg.height) / 14;
+  const context = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas").getContext("2d");
+  const canvaSize = Math.min(ele("myImg").width, ele("myImg").height) / 14;
   canvas.width = canvaSize * 11;
   canvas.height = canvaSize * 4;
-  var x = (myImg.width - canvas.width) / 2;
-  var y = (myImg.height - canvas.height) / 2;
+  var x = (ele("myImg").width - canvas.width) / 2;
+  var y = (ele("myImg").height - canvas.height) / 2;
 
-  context.drawImage(myImg, -x, -y, myImg.width, myImg.height);
+  context.drawImage(ele("myImg"), -x, -y, ele("myImg").width, ele("myImg").height);
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
@@ -211,13 +223,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
   getIdsHasSubString("myHashTag").forEach((obj) => (obj.textContent = "#" + hashTag));
 
-  dynamicTextSizer(textDiv, nickName, myHashTag, true);
-  dynamicTextSizer(textDivSub, nickNameSub, myHashTagSub);
   startDynamicFunction();
   randomImage(randomImageDuration, true);
-});
-
-window.addEventListener("resize", async () => {
-  dynamicTextSizer(textDiv, nickName, myHashTag, true);
-  dynamicTextSizer(textDivSub, nickNameSub, myHashTagSub);
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ele("textDiv").style.color = "black";
 });
