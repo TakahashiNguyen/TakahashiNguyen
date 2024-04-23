@@ -70,7 +70,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [33]))
+total_time_animated = ceil(max(animation_timers + [74]))
 
 
 ########################################################
@@ -122,12 +122,11 @@ if capture:
         total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
     else:
         total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(6)
+    time.sleep(13)
 
     start = time.time()
     for i in range(total_screenshots + 60):
         driver.get_screenshot_as_file(f"_screenshots/{i}.png")
-        time.sleep(1 / SCREENSHOTS_PER_SECOND)
     total_time_animated = ceil(time.time() - start)
     print(total_time_animated)
 
@@ -142,9 +141,8 @@ if capture:
 
 # filepaths
 fp_in = "_screenshots/*.png"
-fp_out = f'{FILE_NAME.replace(".svg",".gif")}'
+fp_out = f'./dist/{FILE_NAME.replace(".svg",".gif")}'
 
-user_input = input("Enter to continue")
 # use exit stack to automatically close opened images
 GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 with contextlib.ExitStack() as stack:

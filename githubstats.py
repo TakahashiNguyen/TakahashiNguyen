@@ -1,7 +1,7 @@
 username = "TakahashiNguyen"
 spotify_user_id = "31qy6z7gz35jc5yccywp6eyumuxy"
 
-import requests
+import requests, os
 
 stats = requests.get(
     f"https://github-readme-stats.vercel.app/api?username={username}&show_icons=true&locale=vi&hide_border=True&theme=swift&hide_title=True&card_width=400"
@@ -20,7 +20,5 @@ with open("./dist/stats.svg", "w") as f:
         f"""<svg viewBox="0 0 800 552" xmlns="http://www.w3.org/2000/svg" width="800" height="552">\n
         <rect width="100%" height="100%" fill="rgba(247,247,247,255)"/>\n{stats+toplang+contributestreak+snake}\n</svg>"""
     )
-    
-musicurl = f"https://data-card-for-spotify.herokuapp.com/api/card?user_id={spotify_user_id}&hide_title=true"
-with open("./dist/musicstats.svg", "w") as f:
-    f.write(requests.get(musicurl).text)
+
+os.system("svg2gif.py greeting.svg")

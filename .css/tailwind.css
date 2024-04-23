@@ -515,10 +515,10 @@ video {
 }
 @keyframes slide {
   25% {
-    transform: translateX(13%) scale(1.4);
+    transform: translateX(17%) scale(1.4);
   }
   75% {
-    transform: translateX(-13%) scale(1.4);
+    transform: translateX(-17%) scale(1.4);
   }
 }
 .animate-slide {

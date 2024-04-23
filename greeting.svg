@@ -43,7 +43,7 @@
   <script>
     // <![CDATA[
     const textSquareSize=600;
-    const randomImageDuration = 9000;
+    const randomImageDuration = 23000;
     // ]]>
   </script>
 </svg>
