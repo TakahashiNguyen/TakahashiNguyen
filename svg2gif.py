@@ -68,7 +68,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [180]))
+total_time_animated = ceil(max(animation_timers + [120]))
 
 
 ########################################################
@@ -156,9 +156,8 @@ with contextlib.ExitStack() as stack:
         format="GIF",
         append_images=imgs,
         save_all=True,
-        duration=(total_time_animated * 2) / len(files),
+        duration=(total_time_animated * 1000) / (len(files)),
         loop=0,
-        optimize=True,
     )
 
 
