@@ -17,6 +17,8 @@ from bs4 import BeautifulSoup
 from math import ceil
 from selenium import webdriver
 
+capture = True
+
 
 ########################################################
 # Constants
@@ -29,7 +31,7 @@ elif len(sys.argv) == 1:
     FILE_NAME = "examples/test.svg"
 else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
-SCREENSHOTS_PER_SECOND = 6  # This arbitrary number worked but is not perfect
+SCREENSHOTS_PER_SECOND = 11  # This arbitrary number worked but is not perfect
 
 ########################################################
 # Helper functions
@@ -68,7 +70,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [120]))
+total_time_animated = ceil(max(animation_timers + [33]))
 
 
 ########################################################
@@ -94,38 +96,43 @@ if total_time_animated < 20:
     with open(f"TMP_{FILE_NAME}", "w") as text_file:
         print(file_text, file=text_file)
 
+if capture:
+    ########################################################
+    # Use Selenium to play the SVG file to play the file
+    # and capture screenshots of the SVG
 
-########################################################
-# Use Selenium to play the SVG file to play the file
-# and capture screenshots of the SVG
-
-## currently Magick doesn't support this conversion:
-## https://github.com/ImageMagick/ImageMagick/discussions/2391
-########################################################
-if not os.path.exists("_screenshots"):
+    ## currently Magick doesn't support this conversion:
+    ## https://github.com/ImageMagick/ImageMagick/discussions/2391
+    ########################################################
+    if os.path.exists("_screenshots"):
+        shutil.rmtree("_screenshots")
     os.makedirs("_screenshots")
 
+    opts = webdriver.EdgeOptions()
+    driver = webdriver.Edge(options=opts)
+    driver.set_window_size(964, 338)
 
-opts = webdriver.EdgeOptions()
-driver = webdriver.Edge(options=opts)
-driver.set_window_size(964, 338)
+    # In Selenium you need the prefix file:/// to open a local file
+    if USE_TMP_PATH:
+        driver.get(f"file:///{ABSOLUTE_FILE_PATH}/TMP_{FILE_NAME}")
+    else:
+        driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
 
-# In Selenium you need the prefix file:/// to open a local file
-if USE_TMP_PATH:
-    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/TMP_{FILE_NAME}")
-else:
-    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
+    if USE_TMP_PATH:
+        total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
+    else:
+        total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
+    time.sleep(6)
 
-if USE_TMP_PATH:
-    total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
-else:
-    total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-time.sleep(6)
-for i in range(total_screenshots):
-    driver.get_screenshot_as_file(f"_screenshots/{i}.png")
+    start = time.time()
+    for i in range(total_screenshots + 60):
+        driver.get_screenshot_as_file(f"_screenshots/{i}.png")
+        time.sleep(1 / SCREENSHOTS_PER_SECOND)
+    total_time_animated = ceil(time.time() - start)
+    print(total_time_animated)
 
-driver.close()
-driver.quit()
+    driver.close()
+    driver.quit()
 
 
 ########################################################
