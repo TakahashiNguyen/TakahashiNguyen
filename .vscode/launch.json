@@ -5,10 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Current File",
-      "type": "python",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/svg2gif.js",
       "request": "launch",
-      "program": "${file}",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "Generate GIF file",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "svg2gif.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "args": [
@@ -25,28 +34,5 @@
         "webpack:///src/*": "${webRoot}/*"
       }
     },
-    {
-      "name": "run Engine",
-      "type": "python",
-      "request": "launch",
-      "program": "${workspaceFolder}/NEATChessEngine/NEATChessEngine.py",
-      "cwd": "${workspaceFolder}/NEATChessEngine",
-      "console": "integratedTerminal",
-      "justMyCode": false
-    },
-    {
-      "name": "Terminal",
-      "type": "lldb",
-      "request": "launch",
-      "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
-      "cwd": "${workspaceFolder}/bin",
-      "preLaunchTask": "Terminal"
-    },
-    {
-      "type": "msedge",
-      "name": "http://127.0.0.1:3000/index.html",
-      "request": "launch",
-      "url": "http://127.0.0.1:3000/index.html"
-    }
   ]
 }

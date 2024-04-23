@@ -1,6 +1,5 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const dynamicDuration = 140000;
-const randomImageDuration = 23000;
 let imageBackgroundBrightness = 0,
   textNameColor = "",
   randomImageDelayLeft = 0;

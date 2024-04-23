@@ -10,6 +10,7 @@ import re
 import os
 import shutil
 import sys
+import time
 
 from PIL import Image, GifImagePlugin
 from bs4 import BeautifulSoup
@@ -28,7 +29,7 @@ elif len(sys.argv) == 1:
     FILE_NAME = "examples/test.svg"
 else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
-SCREENSHOTS_PER_SECOND = 11  # This arbitrary number worked but is not perfect
+SCREENSHOTS_PER_SECOND = 6  # This arbitrary number worked but is not perfect
 
 ########################################################
 # Helper functions
@@ -67,7 +68,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [200]))
+total_time_animated = ceil(max(animation_timers + [180]))
 
 
 ########################################################
@@ -119,6 +120,7 @@ if USE_TMP_PATH:
     total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
 else:
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
+time.sleep(6)
 for i in range(total_screenshots):
     driver.get_screenshot_as_file(f"_screenshots/{i}.png")
 
@@ -135,6 +137,7 @@ driver.quit()
 fp_in = "_screenshots/*.png"
 fp_out = f'{FILE_NAME.replace(".svg",".gif")}'
 
+user_input = input("Enter to continue")
 # use exit stack to automatically close opened images
 GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 with contextlib.ExitStack() as stack:
@@ -153,8 +156,7 @@ with contextlib.ExitStack() as stack:
         format="GIF",
         append_images=imgs,
         save_all=True,
-        duration=(total_time_animated * 1000) / len(files)
-        - 20,  # the math here feels off because the resulting gif is too slow thus -10 is implemented
+        duration=(total_time_animated * 2) / len(files),
         loop=0,
         optimize=True,
     )
@@ -166,4 +168,3 @@ with contextlib.ExitStack() as stack:
 if USE_TMP_PATH:
     os.remove(f"TMP_{FILE_NAME}")
 shutil.rmtree("_screenshots")
-
