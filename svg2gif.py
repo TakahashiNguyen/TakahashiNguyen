@@ -70,7 +70,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [80]))
+total_time_animated = ceil(max(animation_timers + [110]))
 
 
 ########################################################
@@ -123,7 +123,7 @@ if capture:
         total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
     else:
         total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(13)
+    time.sleep(8)
 
     start = time.time()
     for i in range(total_screenshots + 60):
