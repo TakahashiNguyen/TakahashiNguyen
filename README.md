@@ -12,7 +12,7 @@
 
 ### Những thứ mà tôi đã học được
 
-[![My Skills](https://skillicons.dev/icons?i=github,githubactions,vscode,git,bash,linux,docker,cloudflare,py,tensorflow,vim,flutter,dart,nestjs,nodejs,androidstudio,mysql,sqlite&perline=9&theme=light)](#những-thứ-mà-tôi-đã-học-được)
+[![My Skills](https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=dark)](#những-thứ-mà-tôi-đã-học-được)
 
 > [!TIP]
 > Tôi đang tập trung ôn thi Tốt nghiệp Trung học Phổ Thông Quốc gia và cố gắng đậu 7480201_DKD 🥰
