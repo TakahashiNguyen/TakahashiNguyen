@@ -48,13 +48,14 @@ var images = [];
 Promise.all(
   [
     "Akiyoshidai",
-    "California",
     "CaoBằng",
     "CátBà",
     "Centre-ValDeLoire",
     "Dorset",
     "Dorset_1",
     "Halnaker",
+    "HCMUS",
+    "HoàngCungTokyo",
     "HồYamanaka",
     "ISS",
     "Killarnery",
@@ -63,7 +64,6 @@ Promise.all(
     "UnionSquare",
     "VũngNapa",
     "Yellowstone",
-    "HCMUS",
   ].map(async (imageName) => {
     return await imgUrltoData(
       `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
