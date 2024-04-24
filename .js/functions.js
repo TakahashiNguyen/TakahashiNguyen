@@ -1,4 +1,5 @@
 const isWindows = /Windows/i.test(navigator.userAgent);
+const isLinux = /Linux/i.test(navigator.userAgent);
 const ele = (s) => document.getElementById(s);
 const getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`);
 const abs = (v) => Math.abs(v);
@@ -160,10 +161,10 @@ async function dynamicTextSizer(name, nickname, hashtag) {
     nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
     hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
-    if (isWindows) {
-      hashtag.style.marginTop = `${textSquareSize / 130}px`;
+    if (!isLinux) {
       nickname.style.marginBottom = `-${textSquareSize / 74}px`;
     }
+    hashtag.style.marginTop = `${textSquareSize / 150}px`;
   } catch (error) {}
 }
 
