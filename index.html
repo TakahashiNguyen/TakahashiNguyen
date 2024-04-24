@@ -44,6 +44,8 @@
           },
         },
       };
+
+      let isBanner = false;
     </script>
 
     <style type="text/tailwindcss">
@@ -69,17 +71,20 @@
         .tr-8 {
           @apply top-8 right-8;
         }
+        .bannerPageStyle {
+          @apply -translate-x-[30%];
+        }
       }
     </style>
   </head>
-  <body class="bg-white dark:bg-black select-none subpixel-antialiased">
+  <body class="bg-white dark:bg-black select-none subpixel-antialiased overflow-hidden">
     <div
-      class="fixed z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
+      class="absolute z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
       id="loadingPage"
       style="opacity: 1"
     ></div>
 
-    <div class="fixed flex full middle-div">
+    <div class="absolute flex full middle-div" id="thePage">
       <div class="flex fixed z-40 full scale-150 middle-div -skew-y-6 lg:scale-100">
         <div class="fixed z-40 flex flex-col middle-div" id="textDiv">
           <div

@@ -119,6 +119,8 @@ if capture:
     else:
         driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
 
+    driver.execute_script("bannerTime()")
+
     if USE_TMP_PATH:
         total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
     else:
@@ -142,7 +144,7 @@ if capture:
 
 # filepaths
 fp_in = "_screenshots/*.png"
-fp_out = f'./dist/{FILE_NAME.replace(".svg",".gif")}'
+fp_out = f"./dist/greeting.gif"
 
 # use exit stack to automatically close opened images
 GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS

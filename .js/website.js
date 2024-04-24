@@ -100,14 +100,30 @@ window.addEventListener("load", async () => {
   });
 });
 
-// Website's content finished load trigger
-window.addEventListener("DOMContentLoaded", async () => {
+// Resize text
+const textResize = () => {
   dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
   dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+};
+
+// It's banner time!
+function bannerTime() {
+  ele("thePage").classList.remove("full");
+  ele("thePage").classList.add("w-[240%]");
+  ele("thePage").classList.add("h-full");
+  ele("thePage").classList.add("bannerPageStyle");
+  ele("thePage").classList.add("overscroll-none");
+
+  isBanner = true;
+  textResize();
+}
+
+// Website's content finished load trigger
+window.addEventListener("DOMContentLoaded", async () => {
+  textResize();
 });
 
 // Website's window resize trigger
 window.addEventListener("resize", async () => {
-  dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
-  dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+  textResize();
 });

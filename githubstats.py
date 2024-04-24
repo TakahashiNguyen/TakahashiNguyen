@@ -21,4 +21,4 @@ with open("./dist/stats.svg", "w") as f:
         <rect width="100%" height="100%" fill="rgba(247,247,247,255)"/>\n{stats+toplang+contributestreak+snake}\n</svg>"""
     )
 
-os.system("python3 ./svg2gif.py greeting.svg")
+os.system("python3 ./svg2gif.py index.html")

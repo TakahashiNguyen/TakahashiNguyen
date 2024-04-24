@@ -153,6 +153,7 @@ async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   try {
     textSquareSize = Math.min(innerHeight, innerWidth);
+    if (isBanner) textSquareSize = 600;
   } catch (error) {}
 
   try {
@@ -208,14 +209,11 @@ function changeTextColor() {
 
 var dynamicInvertal;
 const dynamicFunctions = async () => {};
-const startDynamicFunction = () => {
-  dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
-};
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     clearInterval(dynamicInvertal);
   } else {
-    startDynamicFunction();
+    dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
   }
 });
 
@@ -227,7 +225,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
   getIdsHasSubString("myHashTag").forEach((obj) => (obj.textContent = "#" + hashTag));
 
-  startDynamicFunction();
+  dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
   randomImage(randomImageDuration, true);
   if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
     ele("textDiv").style.color = "black";
