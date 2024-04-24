@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "Installing dependencies and caching them."
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -venv venv
+          pip install -r requirements.txt
 
       - name: Setup Microsoft Edge
         uses: browser-actions/setup-edge@v1
