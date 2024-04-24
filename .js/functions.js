@@ -4,9 +4,10 @@ const dynamicDuration = 140000;
 let imageBackgroundBrightness = 0,
   textNameColor = "",
   randomImageDelayLeft = 0;
-const ele = (str) => document.getElementById(str);
-const getIdsHasSubString = (str) => document.querySelectorAll(`[id*=${str}]`);
-const abs = (value) => Math.abs(value);
+const ele = (s) => document.getElementById(s);
+const getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`);
+const abs = (v) => Math.abs(v);
+const floor = (v) => Math.floor(v);
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 const updateClass = (obj, prefix, main, suffix = "") => {
   try {
@@ -82,11 +83,11 @@ const randomImage = async (dur, loop = false) => {
 
   if (bool) {
     await Promise.all([
-      fade(ele("myImg"), (dur * 3) / 50, 1, 0),
-      fade(ele("textDivSub"), (dur * 2) / 32, 0, 1),
+      fade(ele("myImg"), (dur * 7) / 100, 1, 0),
+      fade(ele("textDivSub"), (dur * 3) / 100, 0, 1),
 
-      fade(ele("textDiv"), (dur * 2) / 13, 1, 0),
-      fade(ele("githubSpin"), (dur * 2) / 74, 1, 0),
+      fade(ele("textDiv"), (dur * 5) / 100, 1, 0),
+      fade(ele("githubSpin"), (dur * 2) / 100, 1, 0),
     ]);
 
     ele("myImg").setAttribute("src", data);
@@ -95,17 +96,17 @@ const randomImage = async (dur, loop = false) => {
     } catch (error) {}
 
     await Promise.all([
-      fade(ele("myImg"), (dur * 2) / 13, 0, 1),
-      fade(ele("textDivSub"), (dur * 2) / 50, 1, 0),
+      fade(ele("myImg"), (dur * 7) / 100, 0, 1),
+      fade(ele("textDivSub"), (dur * 3) / 100, 1, 0),
 
-      fade(ele("textDiv"), (dur * 3) / 32, 0, 1),
-      fade(ele("githubSpin"), (dur * 3) / 74, 0, 1),
+      fade(ele("textDiv"), (dur * 5) / 100, 0, 1),
+      fade(ele("githubSpin"), (dur * 2) / 100, 0, 1),
     ]);
   }
   if (bool) {
     do {
       randomImageDelayLeft -= 1;
-      await delay((dur / 100) * (1 - 2 / 13 - 2 / 50 - 3 / 32 - 3 / 74));
+      await delay((dur / 100) * 0.74);
     } while (randomImageDelayLeft > 0);
   } else await delay(100);
   if (loop) randomImage(dur, true);
@@ -167,8 +168,8 @@ async function dynamicTextSizer(name, nickname, hashtag) {
 }
 
 function changeTextColor() {
-  const canvas = document.createElement("canvas");
-  const context = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas").getContext("2d");
+  const canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
+  const context = canvas.getContext("2d");
   const canvaSize = Math.min(ele("myImg").width, ele("myImg").height) / 14;
   canvas.width = canvaSize * 11;
   canvas.height = canvaSize * 4;
