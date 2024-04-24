@@ -110,6 +110,7 @@ const textResize = () => {
 function bannerTime() {
   ele("thePage").classList.remove("full");
   ele("thePage").classList.add("bannerPageStyle");
+  ele("mySpotify").classList.add("hidden");
 
   isBanner = true;
   textResize();
