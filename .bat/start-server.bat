@@ -1,1 +1,0 @@
-docker run -d -v %cd%\mcserver:/data -e TYPE=PAPER -p 25565:25565 -e EULA=TRUE -e ONLINE_MODE=FALSE -e MAX_PLAYERS=50 -e DIFFICULTY=normal -e JVM_DD_OPTS=disable.watchdog:true --name mc itzg/minecraft-server
