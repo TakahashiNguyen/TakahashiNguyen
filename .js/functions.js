@@ -1,14 +1,10 @@
-const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-const isLinux = /Linux/i.test(navigator.userAgent);
-const dynamicDuration = 140000;
-let imageBackgroundBrightness = 0,
-  textNameColor = "",
-  randomImageDelayLeft = 0;
+const isWindows = /Windows/i.test(navigator.userAgent);
 const ele = (s) => document.getElementById(s);
 const getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`);
 const abs = (v) => Math.abs(v);
 const floor = (v) => Math.floor(v);
 const getRandomInt = (max) => Math.floor(Math.random() * max);
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const updateClass = (obj, prefix, main, suffix = "") => {
   try {
     const classes = obj.classList;
@@ -16,8 +12,6 @@ const updateClass = (obj, prefix, main, suffix = "") => {
     classes.add(`${prefix}-[${main}]${suffix}`);
   } catch (error) {}
 };
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
 const RGBToHex = (r, g, b) =>
   "#" +
   ((1 << 24) | (abs(r + luckyColor[0]) << 16) | (abs(g + luckyColor[1]) << 8) | abs(b + luckyColor[2]))
@@ -44,34 +38,6 @@ const imgUrltoData = (url) =>
       console.error(error);
       return "";
     });
-var images = [];
-Promise.all(
-  [
-    "Akiyoshidai",
-    "CaoBằng",
-    "CátBà",
-    "Centre-ValDeLoire",
-    "Dorset",
-    "Dorset_1",
-    "Halnaker",
-    "HCMUS",
-    "HoàngCungTokyo",
-    "HồYamanaka",
-    "ISS",
-    "Killarnery",
-    "LâuĐàiHimeji",
-    "SôngCửuLong",
-    "UnionSquare",
-    "VũngNapa",
-    "Yellowstone",
-  ].map(async (imageName) => {
-    return await imgUrltoData(
-      `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
-    );
-  })
-).then((values) => {
-  images = values;
-});
 const randomImage = async (dur, loop = false) => {
   var currentIndex = images.indexOf(ele("myImg").src);
   randomImageDelayLeft = 100;
@@ -127,6 +93,40 @@ const updateTextDecoration = () => {
   ele("textDiv").style.color = textNameColor;
 };
 
+const dynamicDuration = 140000;
+const luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
+let imageBackgroundBrightness = 0,
+  textNameColor = "",
+  randomImageDelayLeft = 0;
+var images = [];
+Promise.all(
+  [
+    "Akiyoshidai",
+    "CaoBằng",
+    "CátBà",
+    "Centre-ValDeLoire",
+    "Dorset",
+    "Dorset_1",
+    "Halnaker",
+    "HCMUS",
+    "HoàngCungTokyo",
+    "HồYamanaka",
+    "ISS",
+    "Killarnery",
+    "LâuĐàiHimeji",
+    "SôngCửuLong",
+    "UnionSquare",
+    "VũngNapa",
+    "Yellowstone",
+  ].map(async (imageName) => {
+    return await imgUrltoData(
+      `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
+    );
+  })
+).then((values) => {
+  images = values;
+});
+
 async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   return new Promise(async (resolve) => {
     var l = from,
@@ -160,9 +160,9 @@ async function dynamicTextSizer(name, nickname, hashtag) {
     nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
     hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 
-    if (!isMobile) {
+    if (isWindows) {
       hashtag.style.marginTop = `${textSquareSize / 130}px`;
-      if (!isLinux) nickname.style.marginBottom = `-${textSquareSize / 74}px`;
+      nickname.style.marginBottom = `-${textSquareSize / 74}px`;
     }
   } catch (error) {}
 }
