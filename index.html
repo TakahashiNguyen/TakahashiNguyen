@@ -14,13 +14,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src=".js/functions.js"></script>
     <script type="text/javascript" src=".js/website.js"></script>
-  </head>
-  <body class="bg-white dark:bg-black select-none subpixel-antialiased">
-    <div
-      class="fixed z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
-      id="loadingPage"
-      style="opacity: 1"
-    ></div>
 
     <script>
       tailwind.config = {
@@ -53,97 +46,111 @@
       };
     </script>
 
-    <div class="fixed flex h-dvh w-full items-center justify-center">
-      <div class="fixed z-40 flex h-full w-full -skew-y-6 scale-150 items-center justify-center lg:scale-100">
-        <div class="fixed z-40 flex flex-col items-center justify-center text-white" id="textDiv">
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .full {
+          @apply h-full w-full;
+        }
+        .middle-div {
+          @apply items-center justify-center;
+        }
+        .advisoryStyle {
+          @apply z-50 bg-transparent text-white dark:text-black;
+        }
+        .blurBackground {
+          @apply bg-white/[.32] dark:bg-black/[.32];
+        }
+        .bl-8 {
+          @apply bottom-8 left-8;
+        }
+        .tl-8 {
+          @apply top-8 left-8;
+        }
+        .tr-8 {
+          @apply top-8 right-8;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-white dark:bg-black select-none subpixel-antialiased">
+    <div
+      class="fixed z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
+      id="loadingPage"
+      style="opacity: 1"
+    ></div>
+
+    <div class="fixed flex full middle-div">
+      <div class="flex fixed z-40 full scale-150 middle-div -skew-y-6 lg:scale-100">
+        <div class="fixed z-40 flex flex-col middle-div" id="textDiv">
           <div
             class="flex cursor-help flex-col justify-items-stretch hover:animate-pulse"
             onclick="randomImageDelayLeft=0"
           >
-            <div style="font-family: Maginia" id="nickName" class="capitalize"></div>
-            <div style="font-family: Magnies" id="name" class="capitalize"></div>
-            <div style="font-family: consolas" id="myHashTag" class="flex justify-end"></div>
+            <p id="nickName" class="capitalize font-['Maginia']"></p>
+            <p id="name" class="capitalize font-['Magnies']"></p>
+            <p id="myHashTag" class="flex justify-end font-['consolas']"></p>
           </div>
         </div>
 
-        <div class="fixed -z-50 flex flex-col items-center justify-center text-black dark:text-white" id="textDivSub">
+        <div class="fixed -z-50 flex flex-col middle-div text-black dark:text-white" id="textDivSub">
           <div class="flex flex-col justify-items-stretch">
-            <div style="font-family: Maginia" id="nickNameSub" class="capitalize"></div>
-            <div style="font-family: Magnies" id="nameSub" class="capitalize"></div>
-            <div style="font-family: consolas" id="myHashTagSub" class="flex justify-end"></div>
+            <p id="nickNameSub" class="capitalize font-['Maginia']"></p>
+            <p id="nameSub" class="capitalize font-['Magnies']"></p>
+            <p id="myHashTagSub" class="flex justify-end font-['consolas']"></p>
           </div>
         </div>
       </div>
 
-      <div class="absolute right-8 top-8 z-50 flex cursor-grabbing flex-row" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="z-50 hidden h-9 w-9 dark:visible dark:block" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="visible z-50 h-9 w-9 dark:hidden" alt="Github" />
-        <div
-          class="fixed -z-50 h-9 w-9 animate-[spin_6s_linear_infinite] rounded-full bg-white/[.64] dark:bg-black/[.32]"
-        >
+      <div class="absolute tr-8 z-50 flex cursor-grabbing flex-row h-9 w-9" id="githubButton">
+        <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block" alt="Github" />
+        <img src="./.svg/github-mark.svg" class="visible z-50 dark:hidden" alt="Github" />
+        <div class="fixed h-9 w-9 -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
           <div
-            class="h-full w-full rounded-full outline-dashed outline-2 outline-offset-2 outline-white dark:outline-black"
+            class="full rounded-full outline-dashed outline-2 outline-offset-2 outline-white dark:outline-black"
             id="githubSpin"
           ></div>
         </div>
       </div>
 
       <div
-        class="group/advisory absolute bottom-8 left-8 z-50 flex animate-shake cursor-not-allowed flex-col-reverse text-center hover:animate-none sm:flex-row"
-        style="font-family: GarageGothic"
+        class="group/advisory absolute bl-8 z-50 flex animate-shake cursor-not-allowed flex-col-reverse text-center hover:animate-none sm:flex-row font-['GarageGothic']"
       >
-        <div class="flex w-[6.25rem] flex-col bg-white/[.32] dark:bg-black/[.32]">
-          <div
-            class="z-50 h-4 bg-transparent text-[1rem] leading-[1rem] tracking-[0.275rem] text-white dark:text-black"
+        <div class="flex flex-col w-[6.25rem] blurBackground">
+          <svg
+            viewBox="0 0 100 16"
+            class="tracking-[0.275rem] advisoryStyle basis-1/3"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <div class="">
-              <svg viewBox="0 0 100 16" style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <mask id="topAdvisoryText">
-                    <rect x="0" y="0" height="100%" width="100%" class="fill-white" />
-                    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
-                      PRIORITIZE
-                    </text>
-                  </mask>
-                </defs>
-                <rect
-                  x="0"
-                  y="0"
-                  height="100%"
-                  width="100%"
-                  class="fill-black dark:fill-white"
-                  style="mask: url(#topAdvisoryText)"
-                />
-              </svg>
-            </div>
-          </div>
+            <defs>
+              <mask id="topAdvisoryText">
+                <rect height="100%" width="100%" class="fill-white" />
+                <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
+                  PRIORITIZE
+                </text>
+              </mask>
+            </defs>
+            <rect class="fill-black dark:fill-white full" style="mask: url(#topAdvisoryText)" />
+          </svg>
           <div
-            class="z-10 w-full bg-transparent text-[1.5rem] leading-[16px] tracking-[0.2rem] text-black dark:text-white"
+            class="z-10 bg-transparent text-[1.5rem] leading-[16px] tracking-[0.2rem] basis-1/3 text-black dark:text-white"
           >
             PERSONAL
           </div>
-          <div class="z-50 h-4 bg-transparent text-[1rem] leading-[1rem] tracking-[0.25rem] text-white dark:text-black">
-            <div class="">
-              <svg viewBox="0 0 100 16" style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <mask id="bottomAdvisoryText">
-                    <rect x="0" y="0" height="100%" width="100%" class="fill-white" />
-                    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
-                      WELL-BEING
-                    </text>
-                  </mask>
-                </defs>
-                <rect
-                  x="0"
-                  y="0"
-                  height="100%"
-                  width="100%"
-                  class="fill-black dark:fill-white"
-                  style="mask: url(#bottomAdvisoryText)"
-                />
-              </svg>
-            </div>
-          </div>
+          <svg
+            viewBox="0 0 100 16"
+            class="tracking-[0.25rem] advisoryStyle basis-1/3"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <mask id="bottomAdvisoryText">
+                <rect height="100%" width="100%" class="fill-white" />
+                <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
+                  WELL-BEING
+                </text>
+              </mask>
+            </defs>
+            <rect class="fill-black dark:fill-white full" style="mask: url(#bottomAdvisoryText)" />
+          </svg>
         </div>
         <div>
           <div
@@ -161,7 +168,7 @@
       </div>
 
       <div
-        class="absolute left-8 top-8 z-50 flex origin-top-left translate-x-[63px] rotate-90 scale-75 cursor-wait items-center justify-center sm:translate-x-0 sm:translate-y-0 sm:rotate-0 sm:scale-100"
+        class="absolute tl-8 z-50 flex origin-top-left translate-x-[63px] rotate-90 scale-75 cursor-wait sm:translate-x-0 sm:translate-y-0 sm:rotate-0 sm:scale-100"
       >
         <iframe
           src="https://spotify-github-profile.vercel.app/api/view.svg?uid=31qy6z7gz35jc5yccywp6eyumuxy&cover_image=true&theme=natemoo-re&show_offline=true&interchange=true&bar_color=53b14f&bar_color_cover=true"
@@ -172,15 +179,12 @@
           width="320px"
           class="z-40"
         ></iframe>
-        <div class="absolute z-50 h-full w-full select-none bg-transparent"></div>
-        <div
-          class="fixed z-30 h-full w-full bg-white/[.32] backdrop-blur-md dark:bg-black/[.32]"
-          id="spotifyBackground"
-        ></div>
+        <div class="absolute z-50 full select-none bg-transparent"></div>
+        <div class="fixed z-30 full backdrop-blur-md blurBackground" id="spotifyBackground"></div>
       </div>
 
       <img
-        class="fixed -z-40 h-full w-full scale-[1.4] animate-slide touch-none bg-white object-cover blur-sm lg:scale-[1.1] lg:animate-none lg:object-contain lg:blur dark:bg-black"
+        class="fixed -z-40 full scale-[1.4] animate-slide touch-none object-cover blur-sm lg:scale-[1.1] lg:animate-none lg:object-contain lg:blur"
         id="myImg"
         title="myImg"
         crossorigin="anonymous"

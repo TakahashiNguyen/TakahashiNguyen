@@ -10,33 +10,27 @@
       </style>
       <script type="text/javascript" src=".js/functions.js"></script>
 
-      <div class="fixed z-40 flex h-full w-full -skew-y-6 scale-150 items-center justify-center">
-        <div class="fixed z-40 flex flex-col items-center justify-center text-white" id="textDiv"
-          style="height: 575px; width: 575px; font-size: 31.9444px; line-height: 31.9444px;">
+      <div class="flex fixed z-40 full scale-150 middle-div -skew-y-6 lg:scale-100">
+        <div class="fixed z-40 flex flex-col middle-div" id="textDiv">
           <div class="flex cursor-help flex-col justify-items-stretch hover:animate-pulse"
             onclick="randomImageDelayLeft=0">
-            <div id="nickName" class="capitalize"
-              style="font-family: Maginia; line-height: 28.75px; font-size: 28.75px;"></div>
-            <div style="font-family: Magnies" id="name" class="capitalize"></div>
-            <div style="font-family: consolas; font-size: 8.98438px; line-height: 8.98438px; margin-top: 5.75px;"
-              id="myHashTag" class="flex justify-end"></div>
+            <p id="nickName" class="capitalize font-['Maginia']"></p>
+            <p id="name" class="capitalize font-['Magnies']"></p>
+            <p id="myHashTag" class="flex justify-end font-['consolas']"></p>
           </div>
         </div>
 
-        <div class="fixed -z-50 flex flex-col items-center justify-center text-black dark:text-white" id="textDivSub"
-          style="height: 575px; width: 575px; font-size: 31.9444px; line-height: 31.9444px;">
+        <div class="fixed -z-50 flex flex-col middle-div text-black dark:text-white" id="textDivSub">
           <div class="flex flex-col justify-items-stretch">
-            <div style="font-family: Maginia; line-height: 28.75px; font-size: 28.75px;" id="nickNameSub"
-              class="capitalize"></div>
-            <div style="font-family: Magnies" id="nameSub" class="capitalize"></div>
-            <div style="font-family: consolas; font-size: 8.98438px; line-height: 8.98438px; margin-top: 5.75px;"
-              id="myHashTagSub" class="flex justify-end"></div>
+            <p id="nickNameSub" class="capitalize font-['Maginia']"></p>
+            <p id="nameSub" class="capitalize font-['Magnies']"></p>
+            <p id="myHashTagSub" class="flex justify-end font-['consolas']"></p>
           </div>
         </div>
       </div>
 
       <img
-        class="fixed -z-40 h-full w-full scale-[1.4] animate-slide touch-none bg-white object-cover blur-sm dark:bg-black"
+        class="fixed -z-40 full scale-[1.4] animate-slide touch-none object-cover blur-sm lg:scale-[1.1] lg:animate-none lg:object-contain lg:blur"
         id="myImg" title="myImg" crossorigin="anonymous" onload="changeTextColor()" />
     </div>
   </foreignObject>
