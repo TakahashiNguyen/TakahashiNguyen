@@ -109,10 +109,7 @@ const textResize = () => {
 // It's banner time!
 function bannerTime() {
   ele("thePage").classList.remove("full");
-  ele("thePage").classList.add("w-[240%]");
-  ele("thePage").classList.add("h-full");
   ele("thePage").classList.add("bannerPageStyle");
-  ele("thePage").classList.add("overscroll-none");
 
   isBanner = true;
   textResize();
