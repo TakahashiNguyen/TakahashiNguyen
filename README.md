@@ -2,7 +2,7 @@
 
 # Xin chào, tôi là...
 
-[![Introducing](./greeting.gif)](#xin-chào-tôi-là)
+[![Introducing](https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/greeting.gif)](#xin-chào-tôi-là)
 
 ## Giới thiệu với mọi người
 
