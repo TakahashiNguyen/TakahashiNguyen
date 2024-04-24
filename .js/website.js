@@ -110,5 +110,4 @@ window.addEventListener("DOMContentLoaded", async () => {
 window.addEventListener("resize", async () => {
   dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
   dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
-  changeTextColor();
 });
