@@ -88,6 +88,5 @@ if __name__ == "__main__":
                 "greeting-dark",
                 True,
             ),
-            ("socialPreview", False, 960, 480),
         ],
     )
