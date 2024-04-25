@@ -28,8 +28,11 @@
 
 ## Nghe cùng với tôi nè
 
-[![Favorite tracks](https://data-card-for-spotify.herokuapp.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy&hide_title=true)](#nhạc-tôi-thích-nè)
-
+[![Favorite tracks]()](#nhạc-tôi-thích-nè)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://data-card-for-spotify.herokuapp.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy&hide_title=true">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg">
+</picture>
 <!---
   Tạm biệt Github README và takahashi.github.io trong 3 tháng nha!
   Tập trung thi Học Kì, Tốt Nghiệp THPT Quốc Gia và Đánh giá Năng lực đợt hai thôi.
