@@ -19,7 +19,7 @@
 ### Những thứ mà tôi đã học được
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql">
+  <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=dark">
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=light">
 </picture>
 
