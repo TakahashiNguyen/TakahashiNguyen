@@ -46,6 +46,20 @@
       };
 
       let isBanner = false;
+
+      function toggleDarkMode() {
+        ["bg", "text"].forEach((obj) => {
+          const e1 = [...document.getElementsByClassName(`${obj}-white dark:${obj}-black`)];
+          const e2 = [...document.getElementsByClassName(`dark:${obj}-white ${obj}-black`)];
+
+          e1.forEach((ele) => {
+            ele.className = ele.className.replace(`${obj}-white dark:${obj}-black`, `dark:${obj}-white ${obj}-black`);
+          });
+          e2.forEach((ele) => {
+            ele.className = ele.className.replace(`dark:${obj}-white ${obj}-black`, `${obj}-white dark:${obj}-black`);
+          });
+        });
+      }
     </script>
 
     <style type="text/tailwindcss">
@@ -97,7 +111,7 @@
           </div>
         </div>
 
-        <div class="fixed -z-50 flex flex-col middle-div text-black dark:text-white" id="textDivSub">
+        <div class="fixed -z-50 flex flex-col middle-div dark:text-white text-black" id="textDivSub">
           <div class="flex flex-col justify-items-stretch">
             <p id="nickNameSub" class="capitalize font-['Maginia']"></p>
             <p id="nameSub" class="capitalize font-['Magnies']"></p>
@@ -110,10 +124,7 @@
         <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block" alt="Github" />
         <img src="./.svg/github-mark.svg" class="visible z-50 dark:hidden" alt="Github" />
         <div class="fixed h-9 w-9 -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
-          <div
-            class="full rounded-full outline-dashed outline-2 outline-offset-2 outline-white dark:outline-black"
-            id="githubSpin"
-          ></div>
+          <div class="full rounded-full outline-dashed outline-2 outline-offset-2" id="githubSpin"></div>
         </div>
       </div>
 
@@ -134,10 +145,10 @@
                 </text>
               </mask>
             </defs>
-            <rect class="fill-black dark:fill-white full" style="mask: url(#topAdvisoryText)" />
+            <rect class="dark:fill-white fill-black full" style="mask: url(#topAdvisoryText)" />
           </svg>
           <div
-            class="z-10 bg-transparent text-[1.5rem] leading-[16px] tracking-[0.2rem] basis-1/3 text-black dark:text-white"
+            class="z-10 bg-transparent text-[1.5rem] leading-[16px] tracking-[0.2rem] basis-1/3 dark:text-white text-black"
           >
             PERSONAL
           </div>
@@ -154,7 +165,7 @@
                 </text>
               </mask>
             </defs>
-            <rect class="fill-black dark:fill-white full" style="mask: url(#bottomAdvisoryText)" />
+            <rect class="dark:fill-white fill-black full" style="mask: url(#bottomAdvisoryText)" />
           </svg>
         </div>
         <div>

@@ -118,6 +118,7 @@ if capture:
 
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
+    driver.execute_script("toggleDarkMode()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
     time.sleep(8)
 
