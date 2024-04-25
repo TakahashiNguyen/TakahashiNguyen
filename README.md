@@ -11,11 +11,17 @@
 
 ### Hoạt động của tôi trên Github
 
-[![Activity_on_Github](https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg)](#hoạt-động-của-tôi-trên-github)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats-dark.svg">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg">
+</picture>
 
 ### Những thứ mà tôi đã học được
 
-[![My Skills](https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=dark)](#những-thứ-mà-tôi-đã-học-được)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=dark">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql">
+</picture>
 
 > [!TIP]
 > Tôi đang tập trung ôn thi Tốt nghiệp Trung học Phổ Thông Quốc gia và cố gắng đậu 7480201_DKD 🥰
