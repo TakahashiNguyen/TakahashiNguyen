@@ -153,7 +153,7 @@ async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   try {
     textSquareSize = Math.min(innerHeight, innerWidth);
-    if (isBanner) textSquareSize = 600;
+    if (isBanner) textSquareSize = 650;
   } catch (error) {}
 
   try {

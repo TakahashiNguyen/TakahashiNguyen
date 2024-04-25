@@ -1,9 +1,3 @@
-"""
-Most SVG to Gif online generators are using magick's command
-this was not sufficent for my use case due to the outputs not formatting correctly 
-and scalability
-"""
-
 import glob
 import contextlib
 import re
@@ -13,16 +7,13 @@ import sys
 import time
 
 from PIL import Image, GifImagePlugin
-from bs4 import BeautifulSoup
 from math import ceil
 from selenium import webdriver
+from multiprocessing import Pool
 
-capture = True
+SCREENSHOTS_PER_SECOND = 10  # This arbitrary number worked but is not perfect
+total_time_animated = 74
 
-
-########################################################
-# Constants
-########################################################
 if len(sys.argv) == 2:
     FILE_NAME = sys.argv[1]
     ABSOLUTE_FILE_PATH = os.getcwd()
@@ -31,123 +22,50 @@ elif len(sys.argv) == 1:
     FILE_NAME = "examples/test.svg"
 else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
-SCREENSHOTS_PER_SECOND = 10  # This arbitrary number worked but is not perfect
-
-########################################################
-# Helper functions
-########################################################
 
 
-def _clean_time_element(time):
-    """
-    takes time paramter in an svg and converts it to seconds
-
-    Args:
-            time (str): time format from SVG i.e. 10s = 10 seconds
-    Returns:
-            (float): cleaned time
-    """
-    if type(time) != str:
-        raise Exception("did not pass str")
-    elif "s" in time:
-        return float(time.replace("s", ""))
-    elif "m" in time:
-        return float(time.replace("m", "")) * 60
-    else:
-        raise Exception("Time was not in seconds or minutes")
-
-
-########################################################
-# Beautiful soup parse to find total duration of SVG
-########################################################
-
-svg_file = open(FILE_NAME, "r+")
-soup = BeautifulSoup(svg_file, features="html.parser")
-
-
-animation_timers = [
-    _clean_time_element(time_element.get("dur"))
-    for time_element in soup.findAll("animate")
-]
-
-total_time_animated = ceil(max(animation_timers + [80]))
-
-if capture:
-    ########################################################
-    # Use Selenium to play the SVG file to play the file
-    # and capture screenshots of the SVG
-
-    ## currently Magick doesn't support this conversion:
-    ## https://github.com/ImageMagick/ImageMagick/discussions/2391
-    ########################################################
-    if os.path.exists("_screenshots"):
-        shutil.rmtree("_screenshots")
-    if os.path.exists("_screenshotsDark"):
-        shutil.rmtree("_screenshotsDark")
-    os.makedirs("_screenshots")
-    os.makedirs("_screenshotsDark")
+def captureBanner(folder, darkMode=False):
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
+    os.makedirs(folder)
 
     opts = webdriver.EdgeOptions()
     opts.add_argument("--headless")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(900, 200)
-
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
+    if darkMode:
+        driver.execute_script("toggleDarkMode()")
+
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
     time.sleep(6)
     start = time.time()
     for i in range(total_screenshots):
         time.sleep(0.5 / SCREENSHOTS_PER_SECOND)
-        driver.get_screenshot_as_file(f"_screenshots/{i}.png")
-    total_time_animated_white = ceil(time.time() - start)
-    print(total_time_animated_white)
+        driver.get_screenshot_as_file(f"{folder}/{i}.png")
+    tta = ceil(time.time() - start)
+    print(tta)
 
     driver.close()
     driver.quit()
-
-    # Dark mode time
-    opts = webdriver.EdgeOptions()
-    opts.add_argument("--headless")
-    opts.add_argument("--enable-features=WebUIDarkMode")
-    opts.add_argument("--force-dark-mode")
-    opts.add_argument("--enable-features=WebContentsForceDark")
-    driver = webdriver.Edge(options=opts)
-    driver.set_window_size(900, 200)
-
-    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
-    driver.execute_script("bannerTime()")
-    driver.execute_script("toggleDarkMode()")
-    total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(2)
-    start = time.time()
-    for i in range(total_screenshots):
-        time.sleep(0.5 / SCREENSHOTS_PER_SECOND)
-        driver.get_screenshot_as_file(f"_screenshotsDark/{i}.png")
-    total_time_animated_dark = ceil(time.time() - start)
-    print(total_time_animated_dark)
-
-    driver.close()
-    driver.quit()
+    exportGIF(
+        f"{folder}/*.png",
+        f"./dist/greeting{'-dark' if darkMode else ''}.gif",
+        tta,
+    )
+    shutil.rmtree(folder)
 
 
-GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
-
-
-########################################################
-# use PIL to combine the save PNG's to a GIF
-########################################################
 def exportGIF(fp_in, fp_out, tt):
+    GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
     with contextlib.ExitStack() as stack:
         files = glob.glob(fp_in)
         files.sort(key=lambda f: int(re.sub("\D", "", f)))
 
-        # lazily load images
         imgs = (stack.enter_context(Image.open(f)) for f in files)
-
         img = next(imgs)
 
-        # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
         img.save(
             fp=fp_out,
             format="GIF",
@@ -158,9 +76,16 @@ def exportGIF(fp_in, fp_out, tt):
         )
 
 
-exportGIF("_screenshots/*.png", "./dist/greeting.gif", total_time_animated_white)
-exportGIF(
-    "_screenshotsDark/*.png", "./dist/greeting-dark.gif", total_time_animated_dark
-)
-shutil.rmtree("_screenshots")
-shutil.rmtree("_screenshotsDark")
+if __name__ == "__main__":
+    svg_file = open(FILE_NAME, "r+")
+    pool = Pool(processes=4)
+    pool.starmap(
+        captureBanner,
+        [
+            ("_screenshots",),
+            (
+                "_screenshotsDark",
+                True,
+            ),
+        ],
+    )
