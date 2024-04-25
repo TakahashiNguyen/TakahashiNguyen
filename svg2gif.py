@@ -111,7 +111,8 @@ if capture:
     # Dark mode time
     opts = webdriver.EdgeOptions()
     opts.add_argument("--headless")
-    opts.add_argument("--enable-features=WebUIDarkMode --force-dark-mode")
+    opts.add_argument("--enable-features=WebUIDarkMode")
+    opts.add_argument("--force-dark-mode")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(900, 200)
 
