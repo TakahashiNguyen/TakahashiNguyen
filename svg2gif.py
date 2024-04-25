@@ -73,29 +73,6 @@ animation_timers = [
 total_time_animated = ceil(max(animation_timers + [110]))
 
 
-########################################################
-#                Create Temporary File
-# Useful to provide more files to smooth the gif
-########################################################
-USE_TMP_PATH = False
-
-if total_time_animated < 20:
-    USE_TMP_PATH = True
-
-    file_text = open(FILE_NAME).read()
-    for animation_timer in animation_timers:
-        if animation_timer % 1 == 0:
-            file_text = file_text.replace(
-                f"{int(animation_timer)}s", f"{int(animation_timer * 2)}s"
-            )
-        else:
-            file_text = file_text.replace(
-                f"{animation_timer}s", f"{animation_timer * 2}s"
-            )
-
-    with open(f"TMP_{FILE_NAME}", "w") as text_file:
-        print(file_text, file=text_file)
-
 if capture:
     ########################################################
     # Use Selenium to play the SVG file to play the file
@@ -104,9 +81,11 @@ if capture:
     ## currently Magick doesn't support this conversion:
     ## https://github.com/ImageMagick/ImageMagick/discussions/2391
     ########################################################
-    if os.path.exists("_screenshots"):
+    if os.path.exists("_screenshots") or os.path.exists("_screenshotsDark"):
         shutil.rmtree("_screenshots")
+        shutil.rmtree("_screenshotsDark")
     os.makedirs("_screenshots")
+    os.makedirs("_screenshotsDark")
 
     opts = webdriver.EdgeOptions()
     opts.add_argument("--headless")
@@ -114,22 +93,36 @@ if capture:
     driver.set_window_size(900, 200)
 
     # In Selenium you need the prefix file:/// to open a local file
-    if USE_TMP_PATH:
-        driver.get(f"file:///{ABSOLUTE_FILE_PATH}/TMP_{FILE_NAME}")
-    else:
-        driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
-
+    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
-
-    if USE_TMP_PATH:
-        total_screenshots = int(SCREENSHOTS_PER_SECOND * (total_time_animated * 2))
-    else:
-        total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
+    total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
     time.sleep(8)
 
     start = time.time()
     for i in range(total_screenshots + 60):
         driver.get_screenshot_as_file(f"_screenshots/{i}.png")
+    total_time_animated = ceil(time.time() - start)
+    print(total_time_animated)
+
+    driver.close()
+    driver.quit()
+
+    # Dark mode time
+    opts = webdriver.EdgeOptions()
+    opts.add_argument("--headless")
+    opts.add_argument("--enable-features=WebContentsForceDark")
+    driver = webdriver.Edge(options=opts)
+    driver.set_window_size(900, 200)
+
+    # In Selenium you need the prefix file:/// to open a local file
+    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
+    driver.execute_script("bannerTime()")
+    total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
+    time.sleep(8)
+
+    start = time.time()
+    for i in range(total_screenshots + 60):
+        driver.get_screenshot_as_file(f"_screenshotsDark/{i}.png")
     total_time_animated = ceil(time.time() - start)
     print(total_time_animated)
 
@@ -142,36 +135,36 @@ if capture:
 ########################################################
 
 
-# filepaths
-fp_in = "_screenshots/*.png"
-fp_out = f"./dist/greeting.gif"
+GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
+
 
 # use exit stack to automatically close opened images
-GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
-with contextlib.ExitStack() as stack:
+def exportGIF(fp_in, fp_out):
+    with contextlib.ExitStack() as stack:
 
-    files = glob.glob(fp_in)
-    files.sort(key=lambda f: int(re.sub("\D", "", f)))
+        files = glob.glob(fp_in)
+        files.sort(key=lambda f: int(re.sub("\D", "", f)))
 
-    # lazily load images
-    imgs = (stack.enter_context(Image.open(f)) for f in files)
+        # lazily load images
+        imgs = (stack.enter_context(Image.open(f)) for f in files)
 
-    img = next(imgs)
+        img = next(imgs)
 
-    # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
-    img.save(
-        fp=fp_out,
-        format="GIF",
-        append_images=imgs,
-        save_all=True,
-        duration=(total_time_animated * 1000) / (len(files)),
-        loop=0,
-    )
+        # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
+        img.save(
+            fp=fp_out,
+            format="GIF",
+            append_images=imgs,
+            save_all=True,
+            duration=(total_time_animated * 1000) / (len(files)),
+            loop=0,
+        )
 
 
+exportGIF("_screenshots/*.png", "./dist/greeting.gif")
+exportGIF("_screenshotsDark/*.png", "./dist/greeting-dark.gif")
 ########################################################
 # Remove temporary directories
 ########################################################
-if USE_TMP_PATH:
-    os.remove(f"TMP_{FILE_NAME}")
 shutil.rmtree("_screenshots")
+shutil.rmtree("_screenshotsDark")
