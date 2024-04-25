@@ -12,7 +12,7 @@ from selenium import webdriver
 from multiprocessing import Pool
 
 SCREENSHOTS_PER_SECOND = 8  # This arbitrary number worked but is not perfect
-total_time_animated = 100
+total_time_animated = 80
 
 if len(sys.argv) == 2:
     FILE_NAME = sys.argv[1]
@@ -24,7 +24,8 @@ else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
 
 
-def captureBanner(folder, darkMode=False):
+def captureBanner(fname, darkMode=False, width=900, height=200):
+    folder = f"_screenshots-{fname}"
     if os.path.exists(folder):
         shutil.rmtree(folder)
     os.makedirs(folder)
@@ -32,14 +33,14 @@ def captureBanner(folder, darkMode=False):
     opts = webdriver.EdgeOptions()
     opts.add_argument("--headless")
     driver = webdriver.Edge(options=opts)
-    driver.set_window_size(900, 200)
+    driver.set_window_size(width, height)
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
     if darkMode:
         driver.execute_script("toggleDarkMode()")
 
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(2)
+    time.sleep(4)
     start = time.time()
     for i in range(total_screenshots):
         time.sleep(0.05)
@@ -51,7 +52,7 @@ def captureBanner(folder, darkMode=False):
     driver.quit()
     exportGIF(
         f"{folder}/*.png",
-        f"./dist/greeting{'-dark' if darkMode else ''}.gif",
+        f"./dist/{fname}.gif",
         tta,
     )
     shutil.rmtree(folder)
@@ -82,10 +83,11 @@ if __name__ == "__main__":
     pool.starmap(
         captureBanner,
         [
-            ("_screenshots",),
+            ("greeting",),
             (
-                "_screenshotsDark",
+                "greeting-dark",
                 True,
             ),
+            ("socialPreview", False, 960, 480),
         ],
     )
