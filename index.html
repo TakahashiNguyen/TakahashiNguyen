@@ -99,8 +99,8 @@
     ></div>
 
     <div class="absolute flex full middle-div" id="thePage">
-      <div class="flex fixed z-40 full scale-150 middle-div -skew-y-6 lg:scale-100">
-        <div class="fixed z-40 flex flex-col middle-div" id="textDiv">
+      <div class="flex fixed z-40 full scale-150 middle-div -skew-y-6 lg:scale-100 dark:text-white text-black">
+        <div class="fixed z-40 flex flex-col middle-div" style="color: white" id="textDiv">
           <div
             class="flex cursor-help flex-col justify-items-stretch hover:animate-pulse"
             onclick="randomImageDelayLeft=0"
@@ -111,7 +111,7 @@
           </div>
         </div>
 
-        <div class="fixed -z-50 flex flex-col middle-div dark:text-white text-black" id="textDivSub">
+        <div class="fixed -z-50 flex flex-col middle-div opacity-0" id="textDivSub">
           <div class="flex flex-col justify-items-stretch">
             <p id="nickNameSub" class="capitalize font-['Maginia']"></p>
             <p id="nameSub" class="capitalize font-['Magnies']"></p>
@@ -123,8 +123,8 @@
       <div class="absolute tr-8 z-50 flex cursor-grabbing flex-row h-9 w-9" id="githubButton">
         <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block" alt="Github" />
         <img src="./.svg/github-mark.svg" class="visible z-50 dark:hidden" alt="Github" />
-        <div class="fixed h-9 w-9 -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
-          <div class="full rounded-full outline-dashed outline-2 outline-offset-2" id="githubSpin"></div>
+        <div class="fixed -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
+          <div class="h-9 w-9 rounded-full outline-dashed outline-2 outline-offset-2 ll" id="githubSpin"></div>
         </div>
       </div>
 

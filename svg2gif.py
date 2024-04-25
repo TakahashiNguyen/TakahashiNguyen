@@ -31,7 +31,7 @@ elif len(sys.argv) == 1:
     FILE_NAME = "examples/test.svg"
 else:
     raise Exception("Usage: python svg2gif.py <SVG_file>")
-SCREENSHOTS_PER_SECOND = 6  # This arbitrary number worked but is not perfect
+SCREENSHOTS_PER_SECOND = 10  # This arbitrary number worked but is not perfect
 
 ########################################################
 # Helper functions
@@ -70,8 +70,7 @@ animation_timers = [
     for time_element in soup.findAll("animate")
 ]
 
-total_time_animated = ceil(max(animation_timers + [110]))
-
+total_time_animated = ceil(max(animation_timers + [80]))
 
 if capture:
     ########################################################
@@ -96,13 +95,13 @@ if capture:
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(8)
-
+    time.sleep(6)
     start = time.time()
-    for i in range(total_screenshots + 60):
+    for i in range(total_screenshots):
+        time.sleep(0.5 / SCREENSHOTS_PER_SECOND)
         driver.get_screenshot_as_file(f"_screenshots/{i}.png")
-    total_time_animated = ceil(time.time() - start)
-    print(total_time_animated)
+    total_time_animated_white = ceil(time.time() - start)
+    print(total_time_animated_white)
 
     driver.close()
     driver.quit()
@@ -120,13 +119,13 @@ if capture:
     driver.execute_script("bannerTime()")
     driver.execute_script("toggleDarkMode()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(8)
-
+    time.sleep(2)
     start = time.time()
-    for i in range(total_screenshots + 60):
+    for i in range(total_screenshots):
+        time.sleep(0.5 / SCREENSHOTS_PER_SECOND)
         driver.get_screenshot_as_file(f"_screenshotsDark/{i}.png")
-    total_time_animated = ceil(time.time() - start)
-    print(total_time_animated)
+    total_time_animated_dark = ceil(time.time() - start)
+    print(total_time_animated_dark)
 
     driver.close()
     driver.quit()
@@ -138,7 +137,7 @@ GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 ########################################################
 # use PIL to combine the save PNG's to a GIF
 ########################################################
-def exportGIF(fp_in, fp_out):
+def exportGIF(fp_in, fp_out, tt):
     with contextlib.ExitStack() as stack:
         files = glob.glob(fp_in)
         files.sort(key=lambda f: int(re.sub("\D", "", f)))
@@ -154,12 +153,14 @@ def exportGIF(fp_in, fp_out):
             format="GIF",
             append_images=imgs,
             save_all=True,
-            duration=(total_time_animated * 1000) / (len(files)),
+            duration=(tt * 1000) / (len(files)),
             loop=0,
         )
 
 
-exportGIF("_screenshots/*.png", "./dist/greeting.gif")
-exportGIF("_screenshotsDark/*.png", "./dist/greeting-dark.gif")
+exportGIF("_screenshots/*.png", "./dist/greeting.gif", total_time_animated_white)
+exportGIF(
+    "_screenshotsDark/*.png", "./dist/greeting-dark.gif", total_time_animated_dark
+)
 shutil.rmtree("_screenshots")
 shutil.rmtree("_screenshotsDark")
