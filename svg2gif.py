@@ -81,8 +81,9 @@ if capture:
     ## currently Magick doesn't support this conversion:
     ## https://github.com/ImageMagick/ImageMagick/discussions/2391
     ########################################################
-    if os.path.exists("_screenshots") or os.path.exists("_screenshotsDark"):
+    if os.path.exists("_screenshots"):
         shutil.rmtree("_screenshots")
+    if os.path.exists("_screenshotsDark"):
         shutil.rmtree("_screenshotsDark")
     os.makedirs("_screenshots")
     os.makedirs("_screenshotsDark")
@@ -110,7 +111,7 @@ if capture:
     # Dark mode time
     opts = webdriver.EdgeOptions()
     opts.add_argument("--headless")
-    opts.add_argument("--enable-features=WebContentsForceDark")
+    opts.add_argument("--enable-features=WebUIDarkMode --force-dark-mode")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(900, 200)
 
