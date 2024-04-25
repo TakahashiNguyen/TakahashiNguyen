@@ -93,7 +93,6 @@ if capture:
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(900, 200)
 
-    # In Selenium you need the prefix file:/// to open a local file
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
@@ -113,10 +112,10 @@ if capture:
     opts.add_argument("--headless")
     opts.add_argument("--enable-features=WebUIDarkMode")
     opts.add_argument("--force-dark-mode")
+    opts.add_argument("--enable-features=WebContentsForceDark")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(900, 200)
 
-    # In Selenium you need the prefix file:/// to open a local file
     driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
     driver.execute_script("bannerTime()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
@@ -132,18 +131,14 @@ if capture:
     driver.quit()
 
 
-########################################################
-# use PIL to combine the save PNG's to a GIF
-########################################################
-
-
 GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 
 
-# use exit stack to automatically close opened images
+########################################################
+# use PIL to combine the save PNG's to a GIF
+########################################################
 def exportGIF(fp_in, fp_out):
     with contextlib.ExitStack() as stack:
-
         files = glob.glob(fp_in)
         files.sort(key=lambda f: int(re.sub("\D", "", f)))
 
@@ -165,8 +160,5 @@ def exportGIF(fp_in, fp_out):
 
 exportGIF("_screenshots/*.png", "./dist/greeting.gif")
 exportGIF("_screenshotsDark/*.png", "./dist/greeting-dark.gif")
-########################################################
-# Remove temporary directories
-########################################################
 shutil.rmtree("_screenshots")
 shutil.rmtree("_screenshotsDark")

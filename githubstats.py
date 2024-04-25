@@ -22,6 +22,7 @@ output = f"""<svg viewBox="0 0 900 552" xmlns="http://www.w3.org/2000/svg">\n
         <rect width="100%" height="100%" fill="#f7f7f7"/>\n{stats+toplang+contributestreak+snake}\n</svg>"""
 outputBlack = f"""<svg viewBox="0 0 900 552" xmlns="http://www.w3.org/2000/svg">\n
         <rect width="100%" height="100%" fill="#f7f7f7"/>\n{stats+toplang+contributestreak+snakeBlack}\n</svg>"""
+musicurl = f"https://data-card-for-spotify.herokuapp.com/api/card?user_id={spotify_user_id}&hide_title=true"
 
 with open("./dist/stats.svg", "w") as f:
     f.write(output)
@@ -31,6 +32,17 @@ with open("./dist/stats-dark.svg", "w") as f:
         .replace("f7f7f7", "000000")
         .replace("F7F7F7", "00000")
         .replace("BLACK", "f7f7f7")
+    )
+
+with open("./dist/musicstats.svg", "w") as f:
+    f.write(
+        requests.get(musicurl)
+        .text.replace(
+            'class="card-container"', 'class="card-container" style="color:black;"'
+        )
+        .replace("121212", "f7f7f7")
+        .replace("121212", "373737")
+        .replace(".attribution {", ".attribution {display: none !important;")
     )
 
 os.system("python3 ./svg2gif.py index.html")
