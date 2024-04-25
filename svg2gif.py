@@ -11,8 +11,8 @@ from math import ceil
 from selenium import webdriver
 from multiprocessing import Pool
 
-SCREENSHOTS_PER_SECOND = 10  # This arbitrary number worked but is not perfect
-total_time_animated = 74
+SCREENSHOTS_PER_SECOND = 13  # This arbitrary number worked but is not perfect
+total_time_animated = 60
 
 if len(sys.argv) == 2:
     FILE_NAME = sys.argv[1]
@@ -39,10 +39,9 @@ def captureBanner(folder, darkMode=False):
         driver.execute_script("toggleDarkMode()")
 
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(6)
+    time.sleep(2)
     start = time.time()
     for i in range(total_screenshots):
-        time.sleep(0.5 / SCREENSHOTS_PER_SECOND)
         driver.get_screenshot_as_file(f"{folder}/{i}.png")
     tta = ceil(time.time() - start)
     print(tta)
