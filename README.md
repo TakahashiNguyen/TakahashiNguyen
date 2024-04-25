@@ -2,7 +2,10 @@
 
 # Xin chào, tôi là...
 
-[![Introducing](https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/greeting.gif)](#xin-chào-tôi-là)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/greeting-dark.gif">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/greeting.gif">
+</picture>
 
 ## Giới thiệu với mọi người
 
