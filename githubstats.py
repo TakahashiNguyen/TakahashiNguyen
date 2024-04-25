@@ -43,6 +43,7 @@ with open("./dist/musicstats.svg", "w") as f:
         .replace("121212", "f7f7f7")
         .replace("121212", "373737")
         .replace(".attribution {", ".attribution {display: none !important;")
+        .replace("b3b3b3", "f05237")
     )
 
 os.system("python3 ./svg2gif.py index.html")
