@@ -48,15 +48,31 @@
       let isBanner = false;
 
       function toggleDarkMode() {
-        ["bg", "text"].forEach((obj) => {
+        ["bg", "text", "fill"].forEach((obj) => {
           const e1 = [...document.getElementsByClassName(`${obj}-white dark:${obj}-black`)];
           const e2 = [...document.getElementsByClassName(`dark:${obj}-white ${obj}-black`)];
 
-          e1.forEach((ele) => {
-            ele.className = ele.className.replace(`${obj}-white dark:${obj}-black`, `dark:${obj}-white ${obj}-black`);
+          e1.forEach((e) => {
+            e.classList.remove(`${obj}-white`, `dark:${obj}-black`);
+            e.classList.add(`dark:${obj}-white`, `${obj}-black`);
           });
-          e2.forEach((ele) => {
-            ele.className = ele.className.replace(`dark:${obj}-white ${obj}-black`, `${obj}-white dark:${obj}-black`);
+          e2.forEach((e) => {
+            e.classList.remove(`dark:${obj}-white`, `${obj}-black`);
+            e.classList.add(`${obj}-white`, `dark:${obj}-black`);
+          });
+        });
+        [
+          { obj: "blurBackground", light: "", dark: "-dark" },
+          { obj: "dObject", light: "", dark: "-dark" },
+        ].forEach(({ obj, light, dark }) => {
+          const e1 = [...document.getElementsByClassName(obj + light)];
+          const e2 = [...document.getElementsByClassName(obj + dark)];
+
+          e1.forEach((e) => {
+            e.classList.remove(obj + light), e.classList.add(obj + dark);
+          });
+          e2.forEach((e) => {
+            e.classList.remove(obj + dark), e.classList.add(obj + light);
           });
         });
       }
@@ -70,11 +86,11 @@
         .middle-div {
           @apply items-center justify-center;
         }
-        .advisoryStyle {
-          @apply z-50 bg-transparent text-white dark:text-black;
-        }
         .blurBackground {
           @apply bg-white/[.32] dark:bg-black/[.32];
+        }
+        .blurBackground-dark {
+          @apply dark:bg-white/[.32] bg-black/[.32];
         }
         .bl-8 {
           @apply bottom-8 left-8;
@@ -87,6 +103,12 @@
         }
         .bannerPageStyle {
           @apply -translate-x-[21.25%] w-[170%] h-full overscroll-none;
+        }
+        .dObject-dark {
+          @apply hidden;
+        }
+        .dObject {
+          @apply visible;
         }
       }
     </style>
@@ -120,11 +142,13 @@
         </div>
       </div>
 
-      <div class="absolute tr-8 z-50 flex cursor-grabbing flex-row h-9 w-9" id="githubButton">
-        <img src="./.svg/github-mark-white.svg" class="z-50 hidden dark:visible dark:block" alt="Github" />
-        <img src="./.svg/github-mark.svg" class="visible z-50 dark:hidden" alt="Github" />
-        <div class="fixed -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
-          <div class="h-9 w-9 rounded-full outline-dashed outline-2 outline-offset-2 ll" id="githubSpin"></div>
+      <div class="absolute tr-8 z-50 cursor-grabbing" id="githubButton">
+        <div class="relative h-9 w-9">
+          <img src="./.svg/github-mark-white.svg" class="dObject-dark absolute" alt="Github" />
+          <img src="./.svg/github-mark.svg" class="dObject z-50 absolute" alt="Github" />
+          <div class="absolute -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
+            <div class="h-9 w-9 rounded-full outline-dashed outline-2 outline-offset-2 ll" id="githubSpin"></div>
+          </div>
         </div>
       </div>
 
@@ -134,7 +158,7 @@
         <div class="flex flex-col w-[6.25rem] blurBackground">
           <svg
             viewBox="0 0 100 16"
-            class="tracking-[0.275rem] advisoryStyle basis-1/3"
+            class="tracking-[0.275rem] z-50 bg-transparent basis-1/3"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -154,7 +178,7 @@
           </div>
           <svg
             viewBox="0 0 100 16"
-            class="tracking-[0.25rem] advisoryStyle basis-1/3"
+            class="tracking-[0.25rem] z-50 bg-transparent basis-1/3"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
