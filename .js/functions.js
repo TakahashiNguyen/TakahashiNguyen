@@ -1,38 +1,69 @@
-
+// Local utils
 const updateClass = (obj, prefix, main, suffix = "") => {
-  try {
-    const classes = obj.classList;
-    classes.remove(classes[classes.length - 1]);
-    classes.add(`${prefix}-[${main}]${suffix}`);
-  } catch (error) {}
-};
-const RGBToHex = (r, g, b) =>
-  "#" +
-  ((1 << 24) | (abs(r + luckyColor[0]) << 16) | (abs(g + luckyColor[1]) << 8) | abs(b + luckyColor[2]))
-    .toString(16)
-    .slice(1);
-const HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
-  return [
-    parseInt(result[1], 16) + rr + luckyColor[0],
-    parseInt(result[2], 16) + gg + luckyColor[1],
-    parseInt(result[3], 16) + bb + luckyColor[2],
-  ];
-};
-const imgUrltoData = (url) =>
-  fetch(url)
-    .then((response) => response.blob())
-    .then(async (blob) => {
-      var reader = new FileReader();
-      reader.readAsDataURL(blob);
-      while (reader.readyState != 2) await delay(100);
-      return reader.result;
-    })
-    .catch((error) => {
-      console.error(error);
-      return "";
-    });
-const randomImage = async (dur, loop = false) => {
+    try {
+      const classes = obj.classList;
+      classes.remove(classes[classes.length - 1]);
+      classes.add(`${prefix}-[${main}]${suffix}`);
+    } catch (error) {}
+  },
+  imgUrltoData = (url) =>
+    fetch(url)
+      .then((response) => response.blob())
+      .then(async (blob) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(blob);
+        while (reader.readyState != 2) await delay(100);
+        return reader.result;
+      })
+      .catch((error) => {
+        console.error(error);
+        return "";
+      });
+
+// Local const
+const dynamicDuration = 140000,
+  luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6],
+  myName = "Nguyễn Việt Anh",
+  myNickName = "Takahashi",
+  hashTag = "makeUKgreatagain";
+
+// Dynamic variables
+let imageBackgroundBrightness = 0,
+  textNameColor = "",
+  randomImageDelayLeft = 0,
+  images = [];
+
+// Local values' initations
+Promise.all(
+  [
+    "Akiyoshidai",
+    "CaoBằng",
+    "CátBà",
+    "Centre-ValDeLoire",
+    "Dorset",
+    "Dorset_1",
+    "Halnaker",
+    "HCMUS",
+    "HoàngCungTokyo",
+    "HồYamanaka",
+    "ISS",
+    "Killarnery",
+    "LâuĐàiHimeji",
+    "SôngCửuLong",
+    "UnionSquare",
+    "VũngNapa",
+    "Yellowstone",
+  ].map(async (imageName) => {
+    return await imgUrltoData(
+      `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
+    );
+  })
+).then((values) => {
+  images = values;
+});
+
+// Replace background image
+async function randomImage(dur, loop = false) {
   var currentIndex = images.indexOf(ele("myImg").src);
   randomImageDelayLeft = 100;
   do {
@@ -70,8 +101,10 @@ const randomImage = async (dur, loop = false) => {
     } while (randomImageDelayLeft > 0);
   } else await delay(100);
   if (loop) randomImage(dur, true);
-};
-const updateTextDecoration = () => {
+}
+
+// Update text decoration
+function updateTextDecoration() {
   updateClass(ele("githubSpin"), "outline", textNameColor);
 
   const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
@@ -85,42 +118,9 @@ const updateTextDecoration = () => {
     ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color}
   `;
   ele("textDiv").style.color = textNameColor;
-};
+}
 
-const dynamicDuration = 140000;
-const luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
-let imageBackgroundBrightness = 0,
-  textNameColor = "",
-  randomImageDelayLeft = 0;
-var images = [];
-Promise.all(
-  [
-    "Akiyoshidai",
-    "CaoBằng",
-    "CátBà",
-    "Centre-ValDeLoire",
-    "Dorset",
-    "Dorset_1",
-    "Halnaker",
-    "HCMUS",
-    "HoàngCungTokyo",
-    "HồYamanaka",
-    "ISS",
-    "Killarnery",
-    "LâuĐàiHimeji",
-    "SôngCửuLong",
-    "UnionSquare",
-    "VũngNapa",
-    "Yellowstone",
-  ].map(async (imageName) => {
-    return await imgUrltoData(
-      `https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
-    );
-  })
-).then((values) => {
-  images = values;
-});
-
+// Fade animation for element
 async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
   return new Promise(async (resolve) => {
     var l = from,
@@ -141,6 +141,7 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
   });
 }
 
+// Text's dynamic size
 async function dynamicTextSizer(name, nickname, hashtag) {
   const { innerHeight, innerWidth } = window;
   try {
@@ -162,6 +163,7 @@ async function dynamicTextSizer(name, nickname, hashtag) {
   } catch (error) {}
 }
 
+// Update text color
 function changeTextColor() {
   const canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
   const context = canvas.getContext("2d");
@@ -199,6 +201,7 @@ function changeTextColor() {
   updateTextDecoration();
 }
 
+// Special sector
 var dynamicInvertal;
 const dynamicFunctions = async () => {};
 document.addEventListener("visibilitychange", () => {
@@ -209,9 +212,6 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-const myName = "Nguyễn Việt Anh";
-const myNickName = "Takahashi";
-const hashTag = "makeUKgreatagain";
 window.addEventListener("DOMContentLoaded", async () => {
   getIdsHasSubString("name").forEach((obj) => (obj.textContent = myName));
   getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));

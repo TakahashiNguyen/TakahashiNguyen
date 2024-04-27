@@ -1,5 +1,8 @@
-let textSquareSize = 0;
+// Local const
 const randomImageDuration = 23000;
+
+// Local variables
+let textSquareSize = 0;
 
 // The countdown
 const targetDate = new Date("2024-01-28T00:00:00");
