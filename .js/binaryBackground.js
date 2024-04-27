@@ -4,7 +4,7 @@ const genBinary = (previous = "") => {
     if (previous == "") {
       for (let i = 0; i < stringLength; i++) output += `${getRandomInt(2)}`;
     } else {
-      let numChange = previous.length / 10;
+      let numChange = previous.length * (4 / 100);
       do {
         numChange -= 1;
         let pos = getRandomInt(previous.length);
@@ -17,25 +17,26 @@ const genBinary = (previous = "") => {
     const { innerHeight, innerWidth } = window;
     return Math.sqrt(innerHeight * innerHeight + innerWidth * innerWidth);
   },
-  getFontSize = () => 130,
+  getFontSize = () => 37,
   getFontWidth = () => getFontSize() / 2,
-  getFontHeight = () => (getFontSize() * 3) / 4,
+  getFontHeight = () => (getFontSize() * 5) / 10,
   rowNum = () => floor(diagonalLength() / getFontHeight());
 let addRowNum = 0,
-  stringLength = 100,
+  stringLength = 1000,
   randomDigitDelay = 0;
 
 // Init binary rows
 function initBinaryRows(from = 0) {
   addRowNum = rowNum();
-  let prevSpeed = stringLength;
+  const initSpeed = stringLength / 10 + 500;
+  let prevSpeed = initSpeed;
   for (let i = from; i < addRowNum; i++) {
     const outterDiv = document.createElement("div"),
       text1Div = document.createElement("div"),
       text2Div = document.createElement("div"),
       text1 = document.createElement("span"),
       text2 = document.createElement("span"),
-      curSpeed = prevSpeed + (getRandomInt(20) + 1) * (getRandomInt(2) ? -1 : 1);
+      curSpeed = prevSpeed + (getRandomInt(initSpeed / 20) + 1) * (getRandomInt(2) ? -1 : 1);
     outterDiv.classList.add("relative", "whitespace-nowrap", "flex", "flex-row");
     outterDiv.append(text1Div, text2Div);
     text1Div.append(text1), text2Div.append(text2);
@@ -68,7 +69,7 @@ async function updateStrings() {
   }
   do {
     randomDigitDelay -= 1;
-    await delay(1000);
+    await delay(200);
   } while (randomDigitDelay > 0);
   setTimeout(updateStrings);
 }
