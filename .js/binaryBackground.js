@@ -28,14 +28,14 @@ let addRowNum = 0,
 // Init binary rows
 function initBinaryRows(from = 0) {
   addRowNum = rowNum();
-  let prevSpeed = (stringLength * 72) / 100;
+  let prevSpeed = stringLength;
   for (let i = from; i < addRowNum; i++) {
     const outterDiv = document.createElement("div"),
       text1Div = document.createElement("div"),
       text2Div = document.createElement("div"),
       text1 = document.createElement("span"),
       text2 = document.createElement("span"),
-      curSpeed = prevSpeed + (getRandomInt(3) + 1) * (getRandomInt(2) ? -1 : 1);
+      curSpeed = prevSpeed + (getRandomInt(20) + 1) * (getRandomInt(2) ? -1 : 1);
     outterDiv.classList.add("relative", "whitespace-nowrap", "flex", "flex-row");
     outterDiv.append(text1Div, text2Div);
     text1Div.append(text1), text2Div.append(text2);
