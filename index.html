@@ -164,7 +164,7 @@
           >
             <defs>
               <mask id="topAdvisoryText">
-                <rect height="100%" width="100%" class="fill-white" />
+                <rect class="fill-white full" />
                 <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
                   PRIORITIZE
                 </text>
@@ -184,7 +184,7 @@
           >
             <defs>
               <mask id="bottomAdvisoryText">
-                <rect height="100%" width="100%" class="fill-white" />
+                <rect class="fill-white full" />
                 <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black">
                   WELL-BEING
                 </text>
@@ -195,7 +195,7 @@
         </div>
         <div>
           <div
-            class="flex justify-center overflow-hidden bg-[#370037] duration-[2000ms] max-sm:h-0 max-sm:w-full max-sm:items-start max-sm:group-hover/advisory:h-10 sm:h-full sm:w-0 sm:items-center sm:justify-end sm:group-hover/advisory:w-full"
+            class="relative flex justify-center overflow-hidden bg-transparent duration-[2000ms] max-sm:h-0 max-sm:w-full max-sm:items-start max-sm:group-hover/advisory:h-10 sm:h-full sm:w-0 sm:items-center sm:justify-end sm:group-hover/advisory:w-full"
           >
             <div class="mx-[10px] flex flex-row text-nowrap text-[27px] text-white">
               <div id="advisoryMain">Grounded from love for</div>
@@ -204,6 +204,17 @@
               ></span
               >:<span id="advisorySeconds"></span>
             </div>
+            <svg class="absolute -z-50 bg-transparent" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <mask id="binaryBackgroundIFrame">
+                  <rect class="fill-white full" />
+                  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="fill-black full">
+                    WELL-BEING
+                  </text>
+                </mask>
+              </defs>
+              <rect class="dark:fill-white fill-black full" style="mask: url(#binaryBackgroundIFrame)" />
+            </svg>
           </div>
         </div>
       </div>
