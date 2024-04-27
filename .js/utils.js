@@ -19,4 +19,10 @@ const isWindows = /Windows/i.test(navigator.userAgent),
       parseInt(result[2], 16) + gg + luckyColor[1],
       parseInt(result[3], 16) + bb + luckyColor[2],
     ];
+  },
+  replaceAt = (str, pos, char) => {
+    let firstPart = str.substr(0, pos),
+      lastPart = str.substr(pos + 1);
+
+    return firstPart + char + lastPart;
   };
