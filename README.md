@@ -29,7 +29,7 @@
 ## Nghe cùng với tôi nè
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://data-card-for-spotify.herokuapp.com/api/card?user_id=31qy6z7gz35jc5yccywp6eyumuxy&hide_title=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://data-card-for-spotify.herokuapp.com/api/card?user_id=&hide_title=true">
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg">
 </picture>
 <!---
