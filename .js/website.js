@@ -118,6 +118,19 @@ function bannerTime() {
 
 // Website's content finished load trigger
 window.addEventListener("DOMContentLoaded", async () => {
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    [{ obj: "dObject", light: "", dark: "-dark" }].forEach(({ obj, light, dark }) => {
+      const e1 = [...document.getElementsByClassName(obj + light)];
+      const e2 = [...document.getElementsByClassName(obj + dark)];
+
+      e1.forEach((e) => {
+        e.classList.remove(obj + light), e.classList.add(obj + dark);
+      });
+      e2.forEach((e) => {
+        e.classList.remove(obj + dark), e.classList.add(obj + light);
+      });
+    });
+  }
   textResize();
 });
 
