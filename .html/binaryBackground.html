@@ -8,5 +8,50 @@
     <title>binaryBackground</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          animation: {
+            marquee: "marquee 10s linear infinite",
+            marquee2: "marquee2 10s linear infinite",
+          },
+          keyframes: {
+            marquee: {
+              "0%": { transform: "translateX(100%)" },
+              "100%": { transform: "translateX(-100%)" },
+            },
+            marquee2: {
+              "0%": { transform: "translateX(0)" },
+              "50%": { transform: "translateX(-100%)" },
+              "50.0000000001%": { transform: "translateX(100%)" },
+              "100%": { transform: "translateX(0%)" },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .full {
+          @apply h-full w-full;
+        }
+      }
+    </style>
   </head>
+  <body>
+    <div
+      class="full absolute bg-white dark:bg-black dark:text-white text-black flex flex-col justify-center items-center whitespace-nowrap overflow-hidden"
+    >
+      <div class="relative flex overflow-hidden font-['consolas']">
+        <div class="animate-marquee whitespace-nowrap">
+          <span class="text-4xl" id="text1">000000000000000000000</span>
+        </div>
+
+        <div class="absolute top-0 animate-marquee2 whitespace-nowrap">
+          <span class="text-4xl" id="text2">111111111111111111111</span>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
