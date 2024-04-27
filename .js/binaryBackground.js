@@ -2,9 +2,9 @@
 const genBinary = (previous = "") => {
     let output = previous;
     if (previous == "") {
-      for (let i = 0; i < 10; i++) output += `${getRandomInt(2)}`;
+      for (let i = 0; i < stringLength; i++) output += `${getRandomInt(2)}`;
     } else {
-      let numChange = previous.length / 6;
+      let numChange = previous.length / 10;
       do {
         numChange -= 1;
         let pos = getRandomInt(previous.length);
@@ -22,30 +22,32 @@ const genBinary = (previous = "") => {
   getFontHeight = () => (getFontSize() * 3) / 4,
   rowNum = () => floor(diagonalLength() / getFontHeight());
 let addRowNum = 0,
-  stringLength = 0,
+  stringLength = 100,
   randomDigitDelay = 0;
 
 // Init binary rows
 function initBinaryRows(from = 0) {
   addRowNum = rowNum();
+  let prevSpeed = (stringLength * 72) / 100;
   for (let i = from; i < addRowNum; i++) {
     const outterDiv = document.createElement("div"),
       text1Div = document.createElement("div"),
       text2Div = document.createElement("div"),
       text1 = document.createElement("span"),
       text2 = document.createElement("span"),
-      runTime = 10 + getRandomInt(36);
+      curSpeed = prevSpeed + (getRandomInt(3) + 1) * (getRandomInt(2) ? -1 : 1);
     outterDiv.classList.add("relative", "whitespace-nowrap", "flex", "flex-row");
     outterDiv.append(text1Div, text2Div);
     text1Div.append(text1), text2Div.append(text2);
-    text1Div.classList.add(`animate-[marquee1_${runTime}s_linear_infinite]`);
-    text2Div.classList.add(`animate-[marquee2_${runTime}s_linear_infinite]`, "translate-x-full", "absolute", "top-0");
+    text1Div.classList.add(`animate-[marquee1_${curSpeed}s_linear_infinite]`);
+    text2Div.classList.add(`animate-[marquee2_${curSpeed}s_linear_infinite]`, "translate-x-full", "absolute", "top-0");
     text1.classList.add("inline-block", `leading-[${getFontHeight()}px]`);
     text2.classList.add("inline-block", `leading-[${getFontHeight()}px]`);
     (text1.innerText = genBinary()), (text2.innerText = genBinary());
     (text1.id = `text${i}_1`), (text2.id = `text${i}_2`);
 
     ele("binaryDiv").appendChild(outterDiv);
+    prevSpeed = curSpeed;
   }
 }
 
