@@ -38,11 +38,12 @@ jobs:
         id: statsQuote
         run: echo "quote=$(python3 githubstats.py)" >> $GITHUB_OUTPUT
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Push results to Github
+        uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
+          target_branch: output
           commit_message: ${{steps.statsQuote.outputs.quote}}
-          branch: statisticsFiles
-          repository: ./dist
-          commit_user_name: ${{secrets.AUTHOR_NAME}}
-          commit_user_email: ${{secrets.AUTHOR_EMAIL}}
-          create_branch: true
+          build_dir: dist
+          author: ${{secrets.AUTHOR_NAME}} <${{secrets.AUTHOR_EMAIL}}>
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
