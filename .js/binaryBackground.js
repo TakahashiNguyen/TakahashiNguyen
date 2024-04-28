@@ -11,6 +11,10 @@ const genBinary = (previous = "") => {
         output = replaceAt(output, pos, `${(parseInt(previous[pos]) + 1) % 2}`);
       } while (numChange > 0);
     }
+    while ((stringLength + 10) * getFontWidth() < diagonalLength()) {
+      stringLength += 1;
+      output += `${getRandomInt(2)}`;
+    }
     return output;
   },
   diagonalLength = () => {
@@ -19,17 +23,17 @@ const genBinary = (previous = "") => {
   },
   getFontSize = () => 37,
   getFontWidth = () => getFontSize() / 2,
-  getFontHeight = () => (getFontSize() * 5) / 10,
-  rowNum = () => floor(diagonalLength() / getFontHeight());
+  getFontHeight = () => getFontSize() * (5 / 10),
+  rowNum = () => floor(diagonalLength() / getFontSize());
 let addRowNum = 0,
-  stringLength = 250,
+  stringLength = 10,
   randomDigitDelay = 0;
 
 // Generate SVG block
 function genSVGBlock(id, speed) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", `leading-[${getFontHeight()}px] block`);
   svg.setAttribute("id", `svg${id}`);
+  svg.setAttribute("y", `${id * getFontSize() * (3 / 4)}px`);
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
   var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
@@ -46,8 +50,7 @@ function genSVGBlock(id, speed) {
 
   var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("x", "50%");
-  
-  text.setAttribute("y", "60%");
+  text.setAttribute("y", getFontHeight());
   text.setAttribute("dominant-baseline", "middle");
   text.setAttribute("text-anchor", "middle");
   text.setAttribute("class", "fill-white");
@@ -56,7 +59,7 @@ function genSVGBlock(id, speed) {
   mask.appendChild(text);
 
   var rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rectBlock1.setAttribute("class", `fill-white animate-[marquee1_${speed}s_linear_infinite] `);
+  rectBlock1.setAttribute("class", `fill-white animate-[marquee1_${speed}s_linear_infinite]`);
   rectBlock1.setAttribute("style", `mask: url(#mask${id})`);
   rectBlock1.setAttribute("id", `rectBlock${id}_1`);
   svg.appendChild(rectBlock1);
@@ -72,16 +75,24 @@ function genSVGBlock(id, speed) {
 
 // Init binary rows
 function initBinaryRows(from = 0) {
-  addRowNum = 3;
-  const initSpeed = stringLength / 10 + 250;
+  addRowNum = rowNum();
+  const initSpeed = (stringLength * getFontWidth()) / 3;
   let prevSpeed = initSpeed;
   for (let i = from; i < addRowNum; i++) {
-    const curSpeed = prevSpeed + (getRandomInt(initSpeed / 15) + 1) * (getRandomInt(2) ? -1 : 1),
+    const curSpeed = prevSpeed + (getRandomInt(initSpeed / 10) + 1) * (getRandomInt(2) ? -1 : 1),
       text = genSVGBlock(i, curSpeed);
 
     ele("binaryDiv").appendChild(text);
     prevSpeed = curSpeed;
   }
+}
+
+// ResizeSVG
+function resizeSVG() {
+  var svg = document.getElementById("binaryDiv");
+  var bbox = svg.getBBox();
+  svg.setAttribute("width", bbox.x + bbox.width + bbox.x);
+  svg.setAttribute("height", bbox.y + bbox.height + bbox.y);
 }
 
 // Resize text
@@ -97,7 +108,7 @@ function textResize() {
       ele(`rectBlock${i}_1`).style.height =
       ele(`rectBlock${i}_2`).style.height =
       ele(`svg${i}`).style.height =
-        getFontSize() * (3 / 4) + "px";
+        getFontSize() + "px";
   }
 }
 
@@ -136,4 +147,5 @@ function updateCombo(from = 0) {
 window.addEventListener("DOMContentLoaded", async () => {
   updateCombo();
   updateStrings();
+  resizeSVG(binaryDiv);
 });
