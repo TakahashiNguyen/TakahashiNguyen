@@ -39,11 +39,12 @@ jobs:
         run: echo "quote=$(python3 githubstats.py)" >> $GITHUB_OUTPUT
 
       - name: Push results to Github
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+        uses: actions-js/push@master
         with:
-          target_branch: output
-          commit_message: ${{steps.statsQuote.outputs.quote}}
-          build_dir: dist
-          author: ${{secrets.AUTHOR_INFORMATION}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          branch: output
+          message: ${{steps.statsQuote.outputs.quote}}
+          directory: dist
+          author_email: ${{secrets.AUTHOR_EMAIL}}
+          author_name: ${{secrets.AUTHOR_NAME}}
+          github_token: ${{ secrets.GITHUB_TOKEN  }}
+          rebase: true
