@@ -44,6 +44,7 @@ jobs:
           target_branch: output
           commit_message: ${{steps.statsQuote.outputs.quote}}
           build_dir: dist
+          committer: ${{secrets.AUTHOR_NAME}} <${{secrets.AUTHOR_EMAIL}}>
           author: ${{secrets.AUTHOR_NAME}} <${{secrets.AUTHOR_EMAIL}}>
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
