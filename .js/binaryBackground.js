@@ -58,14 +58,19 @@ function genSVGBlock(id, speed) {
   text.textContent = genBinary();
   mask.appendChild(text);
 
+  var rectBlock3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rectBlock3.setAttribute("class", `fill-white`);
+  rectBlock3.setAttribute("id", `rectBlock${id}_3`);
+  svg.appendChild(rectBlock3);
+
   var rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rectBlock1.setAttribute("class", `fill-white animate-[marquee1_${speed}s_linear_infinite]`);
+  rectBlock1.setAttribute("class", `fill-black animate-[marquee1_${speed}s_linear_infinite]`);
   rectBlock1.setAttribute("style", `mask: url(#mask${id})`);
   rectBlock1.setAttribute("id", `rectBlock${id}_1`);
   svg.appendChild(rectBlock1);
 
   var rectBlock2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rectBlock2.setAttribute("class", `fill-white animate-[marquee2_${speed}s_linear_infinite]`);
+  rectBlock2.setAttribute("class", `fill-black animate-[marquee2_${speed}s_linear_infinite]`);
   rectBlock2.setAttribute("style", `mask: url(#mask${id})`);
   rectBlock2.setAttribute("id", `rectBlock${id}_2`);
   svg.appendChild(rectBlock2);
@@ -82,7 +87,7 @@ function initBinaryRows(from = 0) {
     const curSpeed = prevSpeed + (getRandomInt(initSpeed / 10) + 1) * (getRandomInt(2) ? -1 : 1),
       text = genSVGBlock(i, curSpeed);
 
-    ele("binaryDiv").appendChild(text);
+    ele("binaryDefs").appendChild(text);
     prevSpeed = curSpeed;
   }
 }
@@ -99,15 +104,15 @@ function resizeSVG() {
 function textResize() {
   for (let i = 0; i < addRowNum; i++) {
     ele(`text${i}`).style.fontSize = getFontSize() + "px";
-    ele(`rect${i}`).style.width =
-      ele(`rectBlock${i}_1`).style.width =
+    ele(`rectBlock${i}_1`).style.width =
       ele(`rectBlock${i}_2`).style.width =
-      ele(`svg${i}`).style.width =
+      ele(`rectBlock${i}_3`).style.width =
+      ele(`rect${i}`).style.width =
         ele(`text${i}`).getComputedTextLength();
-    ele(`rect${i}`).style.height =
-      ele(`rectBlock${i}_1`).style.height =
+    ele(`rectBlock${i}_1`).style.height =
       ele(`rectBlock${i}_2`).style.height =
-      ele(`svg${i}`).style.height =
+      ele(`rectBlock${i}_3`).style.height =
+      ele(`rect${i}`).style.height =
         getFontSize() + "px";
   }
 }
@@ -135,6 +140,9 @@ function checkViewSize() {
 // Website's window resize trigger
 window.addEventListener("resize", async () => {
   checkViewSize();
+  ele("binaryRect").style.width = ele(`text${0}`).getComputedTextLength();
+  ele("binaryRect").style.height = rowNum() * getFontSize() * (3 / 4);
+  resizeSVG();
 });
 
 // Update combo
@@ -147,5 +155,8 @@ function updateCombo(from = 0) {
 window.addEventListener("DOMContentLoaded", async () => {
   updateCombo();
   updateStrings();
-  resizeSVG(binaryDiv);
+
+  ele("binaryRect").style.width = ele(`text${0}`).getComputedTextLength();
+  ele("binaryRect").style.height = rowNum() * getFontSize() * (3 / 4);
+  resizeSVG();
 });

@@ -39,8 +39,10 @@
   </head>
   <body class="bg-[#370037]">
     <div class="full absolute flex flex-col justify-center items-center whitespace-nowrap overflow-hidden">
-      <svg class="absolute flex flex-col overflow-hidden font-['consolas'] rotate-[]" id="binaryDiv">
-        <defs id="binaryDefs"></defs>
+      <svg class="absolute overflow-hidden font-['consolas'] rotate-[]" id="binaryDiv">
+        <defs>
+          <mask id="binaryDefs"></mask>
+        </defs>
         <rect class="fill-white" style="mask: url(#binaryDefs)" id="binaryRect"></rect>
       </svg>
     </div>
