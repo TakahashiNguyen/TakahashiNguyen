@@ -46,7 +46,6 @@ def captureBanner(fname, darkMode=False, width=900, height=200):
         time.sleep(0.05)
         driver.get_screenshot_as_file(f"{folder}/{i}.png")
     tta = ceil(time.time() - start)
-    print(tta)
 
     driver.close()
     driver.quit()

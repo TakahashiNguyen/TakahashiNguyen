@@ -47,3 +47,19 @@ with open("./dist/musicstats.svg", "w") as f:
     )
 
 os.system("python3 ./svg2gif.py index.html")
+
+
+def generate_quote():
+    response = requests.get("https://zenquotes.io/api/random")
+    if response.status_code == 200:
+        data = response.json()
+        quote = data[0]["q"]
+        author = data[0]["a"]
+
+        return f"{quote} - {author}"
+
+    else:
+        return "Failed to fetch a quote"
+
+
+print(generate_quote())
