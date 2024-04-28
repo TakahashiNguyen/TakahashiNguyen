@@ -11,8 +11,7 @@ const genBinary = (previous = "") => {
         output = replaceAt(output, pos, `${(parseInt(previous[pos]) + 1) % 2}`);
       } while (numChange > 0);
     }
-    while ((stringLength + 10) * getFontWidth() < diagonalLength()) {
-      stringLength += 1;
+    while (output.length * getFontWidth() < diagonalLength()) {
       output += `${getRandomInt(2)}`;
     }
     return output;
@@ -23,8 +22,8 @@ const genBinary = (previous = "") => {
   },
   getFontSize = () => 37,
   getFontWidth = () => getFontSize() / 2,
-  getFontHeight = () => getFontSize() * (5 / 10),
-  rowNum = () => floor(diagonalLength() / getFontSize());
+  getFontHeight = () => getFontSize() * (3 / 4),
+  rowNum = () => floor(diagonalLength() / getFontHeight());
 let addRowNum = 0,
   stringLength = 10,
   randomDigitDelay = 0;
@@ -33,7 +32,7 @@ let addRowNum = 0,
 function genSVGBlock(id, speed) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("id", `svg${id}`);
-  svg.setAttribute("y", `${id * getFontSize() * (3 / 4)}px`);
+  svg.setAttribute("y", `${id * getFontHeight()}px`);
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
   var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
@@ -50,7 +49,7 @@ function genSVGBlock(id, speed) {
 
   var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("x", "50%");
-  text.setAttribute("y", getFontHeight());
+  text.setAttribute("y", getFontWidth());
   text.setAttribute("dominant-baseline", "middle");
   text.setAttribute("text-anchor", "middle");
   text.setAttribute("class", "fill-white");
@@ -79,10 +78,12 @@ function genSVGBlock(id, speed) {
 }
 
 // Init binary rows
+const initSpeed = (stringLength * getFontWidth()) / 3;
+let prevSpeed = initSpeed;
 function initBinaryRows(from = 0) {
+  if (addRowNum >= rowNum()) return;
   addRowNum = rowNum();
-  const initSpeed = (stringLength * getFontWidth()) / 3;
-  let prevSpeed = initSpeed;
+  console.log(from, addRowNum);
   for (let i = from; i < addRowNum; i++) {
     const curSpeed = prevSpeed + (getRandomInt(initSpeed / 10) + 1) * (getRandomInt(2) ? -1 : 1),
       text = genSVGBlock(i, curSpeed);
@@ -130,33 +131,23 @@ async function updateStrings() {
   setTimeout(updateStrings);
 }
 
-// Update rows
-function checkViewSize() {
-  if (addRowNum < rowNum()) {
-    updateCombo(addRowNum);
-  }
-}
-
 // Website's window resize trigger
 window.addEventListener("resize", async () => {
-  checkViewSize();
-  ele("binaryRect").style.width = ele(`text${0}`).getComputedTextLength();
-  ele("binaryRect").style.height = rowNum() * getFontSize() * (3 / 4);
-  resizeSVG();
+  updateCombo();
 });
 
 // Update combo
-function updateCombo(from = 0) {
-  initBinaryRows(from);
+function updateCombo() {
+  initBinaryRows(addRowNum);
+
   textResize();
+  ele("binaryRect").style.width = ele(`text${addRowNum - 1}`).getComputedTextLength();
+  ele("binaryRect").style.height = addRowNum * getFontHeight();
+  resizeSVG();
 }
 
 // Website's content finished load trigger
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("load", async () => {
   updateCombo();
   updateStrings();
-
-  ele("binaryRect").style.width = ele(`text${0}`).getComputedTextLength();
-  ele("binaryRect").style.height = rowNum() * getFontSize() * (3 / 4);
-  resizeSVG();
 });
