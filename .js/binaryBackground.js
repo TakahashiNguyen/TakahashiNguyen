@@ -26,7 +26,7 @@ let addRowNum = 0,
   randomDigitDelay = 0;
 
 // Generate SVG block
-function genSVGBlock(id, spped) {
+function genSVGBlock(id, speed) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", `leading-[${getFontHeight()}px] block`);
   svg.setAttribute("id", `svg${id}`);
@@ -41,29 +41,28 @@ function genSVGBlock(id, spped) {
 
   var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   mask.appendChild(rect);
-  rect.setAttribute("class", "fill-white");
+  rect.setAttribute("class", "fill-black");
   rect.setAttribute("id", `rect${id}`);
 
   var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("x", "50%");
+  
   text.setAttribute("y", "60%");
   text.setAttribute("dominant-baseline", "middle");
   text.setAttribute("text-anchor", "middle");
+  text.setAttribute("class", "fill-white");
   text.setAttribute("id", `text${id}`);
   text.textContent = genBinary();
   mask.appendChild(text);
 
   var rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rectBlock1.setAttribute("class", `dark:fill-white fill-[#370037] animate-[marquee1_${spped}s_linear_infinite] `);
+  rectBlock1.setAttribute("class", `fill-white animate-[marquee1_${speed}s_linear_infinite] `);
   rectBlock1.setAttribute("style", `mask: url(#mask${id})`);
   rectBlock1.setAttribute("id", `rectBlock${id}_1`);
   svg.appendChild(rectBlock1);
 
   var rectBlock2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rectBlock2.setAttribute(
-    "class",
-    `dark:fill-white fill-[#370037]  animate-[marquee2_${spped}s_linear_infinite] absolute`
-  );
+  rectBlock2.setAttribute("class", `fill-white animate-[marquee2_${speed}s_linear_infinite]`);
   rectBlock2.setAttribute("style", `mask: url(#mask${id})`);
   rectBlock2.setAttribute("id", `rectBlock${id}_2`);
   svg.appendChild(rectBlock2);
@@ -73,7 +72,7 @@ function genSVGBlock(id, spped) {
 
 // Init binary rows
 function initBinaryRows(from = 0) {
-  addRowNum = rowNum();
+  addRowNum = 3;
   const initSpeed = stringLength / 10 + 250;
   let prevSpeed = initSpeed;
   for (let i = from; i < addRowNum; i++) {
