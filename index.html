@@ -193,7 +193,9 @@
           <div
             class="relative flex justify-center overflow-hidden bg-transparent duration-[2000ms] max-sm:h-0 max-sm:w-full max-sm:items-start max-sm:group-hover/advisory:h-10 sm:h-full sm:w-0 sm:items-center sm:justify-end sm:group-hover/advisory:w-full"
           >
-            <div class="mx-[10px] flex flex-row text-nowrap text-[27px] text-white dark:text-[#370037]">
+            <div
+              class="mx-[10px] flex flex-row text-nowrap text-[27px] text-white dark:text-[#370037] dark:drop-shadow-[0px_0px_10px_white] drop-shadow-[0px_0px_10px_black]"
+            >
               <div id="advisoryMain">Grounded from love for</div>
               <span id="advisoryDays" class="pl-[5px]"></span>:<span id="advisoryHours"></span>:<span
                 id="advisoryMinutes"
@@ -202,11 +204,7 @@
             </div>
             <svg class="absolute -z-50 bg-transparent full" xmlns="http://www.w3.org/2000/svg">
               <foreignObject width="100%" height="100%">
-                <iframe
-                  src=".html/binaryBackground.html"
-                  class="full dark:blurBackground-dark"
-                  frameborder="0"
-                ></iframe>
+                <iframe src=".html/binaryBackground.html" class="full blurBackground" frameborder="0"></iframe>
               </foreignObject>
             </svg>
           </div>
