@@ -46,8 +46,6 @@ with open("./dist/musicstats.svg", "w") as f:
         .replace("b3b3b3", "f05237")
     )
 
-os.system("python3 ./svg2gif.py index.html")
-
 
 def generate_quote():
     response = requests.get("https://zenquotes.io/api/random")
@@ -63,3 +61,4 @@ def generate_quote():
 
 
 print(generate_quote())
+os.system("python3 ./svg2gif.py index.html")
