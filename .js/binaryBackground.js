@@ -83,7 +83,6 @@ let prevSpeed = initSpeed;
 function initBinaryRows(from = 0) {
   if (addRowNum >= rowNum()) return;
   addRowNum = rowNum();
-  console.log(from, addRowNum);
   for (let i = from; i < addRowNum; i++) {
     const curSpeed = prevSpeed + (getRandomInt(initSpeed / 10) + 1) * (getRandomInt(2) ? -1 : 1),
       text = genSVGBlock(i, curSpeed);
