@@ -1,22 +1,5 @@
 
-*.inp
-*.inp
-*.OUT
-*.exe
-*.inp
-*.exe
-*.exe
-*.inp
-*.inp
-/.log
-/bin
-/*Build
 /dist
-/YoloFiles
-/.conda
-/gcc*
 .vs
-test.html
-stats.svg
 _screenshots*
 Ý tưởng
