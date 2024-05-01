@@ -14,6 +14,7 @@ const genBinary = (previous = "") => {
     while (output.length * getFontWidth() < diagonalLength()) {
       output += `${getRandomInt(2)}`;
     }
+    stringLength = output.length;
     return output;
   },
   diagonalLength = () => {
@@ -78,13 +79,13 @@ function genSVGBlock(id, speed) {
 }
 
 // Init binary rows
-const initSpeed = (stringLength * getFontWidth()) / 3;
-let prevSpeed = initSpeed;
+const initSpeed = () => (stringLength * getFontWidth()) / 3;
+let prevSpeed = initSpeed();
 async function initBinaryRows(from = 0) {
   if (addRowNum >= rowNum()) return;
   addRowNum = rowNum();
   for (let i = from; i < addRowNum; i++) {
-    const curSpeed = prevSpeed + (getRandomInt(initSpeed / 10) + 1) * (getRandomInt(2) ? -1 : 1),
+    const curSpeed = prevSpeed + (getRandomInt(initSpeed() / 100) + 1) * (getRandomInt(2) ? -1 : 1),
       text = genSVGBlock(i, curSpeed);
 
     ele("binaryDefs").appendChild(text);
@@ -109,8 +110,10 @@ async function textResize() {
       rect3 = ele(`rectBlock${i}_3`),
       rect = ele(`rect${i}`);
     text.style.fontSize = getFontSize() + "px";
-    rect1.style.width = rect2.style.width = rect3.style.width = rect.style.width = text.getComputedTextLength();
-    rect1.style.height = rect2.style.height = rect3.style.height = rect.style.height = getFontSize() + "px";
+    [rect1, rect2, rect3, rect].forEach(async (r) => {
+      r.style.width = text.getComputedTextLength();
+      r.style.height = getFontSize() + "px";
+    });
   }
 }
 
@@ -133,7 +136,7 @@ window.addEventListener("resize", async () => {
 });
 
 // Update combo
-function updateCombo() {
+async function updateCombo() {
   initBinaryRows(addRowNum);
 
   textResize();
