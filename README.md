@@ -1,4 +1,4 @@
-# Xin chào <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand%20Medium-Light%20Skin%20Tone.png" alt="Waving Hand Medium-Light Skin Tone" width="25" height="25" /></picture>, tôi là... <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cityscape%20at%20Dusk.png"> <img alt="" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cityscape.png" width="20" height="20" ></picture><picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Male%20Sign.png" alt="Male Sign" width="20" height="20" /><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Aquarius.png" alt="Aquarius" width="20" height="20" /></picture>
+# Xin chào <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand%20Medium-Light%20Skin%20Tone.png" alt="Waving Hand Medium-Light Skin Tone" width="30" height="30" /></picture>, tôi là... <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cityscape%20at%20Dusk.png"> <img alt="" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cityscape.png" width="25" height="25" ></picture><picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Male%20Sign.png" alt="Male Sign" width="25" height="25" /></picture><picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Aquarius.png" alt="Aquarius" width="25" height="25" /></picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/greeting-dark.gif">
@@ -7,18 +7,18 @@
 
 ## Giới thiệu với mọi người <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png"> <img alt="" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png" width="20" height="20" ></picture>
 
-### Hoạt động của tôi trên Github <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png" alt="Fire" width="20" height="20" /></picture>
+### Hoạt động của tôi trên Github <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png" alt="Fire" width="15" height="15" /></picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats-dark.svg">
   <img alt="" src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/stats.svg">
 </picture>
 
-### Những thứ mà tôi đã học được <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Brain.png"><img alt="" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Man%20Technologist%20Light%20Skin%20Tone.png" width="20" height="20"></picture>
+### Những thứ mà tôi đã học được <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Brain.png"><img alt="" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Man%20Technologist%20Light%20Skin%20Tone.png" width="15" height="15"></picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=github%2Cvscode%2Cdocker%2Ccloudflare%2Cpy%2Cvim%2Ccpp%2Cnestjs%2Cnodejs%2Candroidstudio%2Clinux%2Cwindows%2Cmysql">
-  <img alt="" src="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=light">
+  <img alt="" src="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=light" width="900" height="100">
 </picture>
 
 > [!TIP]
