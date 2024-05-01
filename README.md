@@ -33,12 +33,7 @@
 
 ##
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20xem%20trong%20ng%C3%A0y&labelColor=080808&color=0fadc8
-">
-  <img alt="" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20xem%20trong%20ng%C3%A0y&labelColor=f05237&color=f7f7f7
-">
-</picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m%20trong%20ng%C3%A0y&labelColor=080808&color=0fadc8"><img alt="" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m%20trong%20ng%C3%A0y&labelColor=f05237&color=f7f7f7"></picture>
 
 <!---
   Tạm biệt Github README và takahashi.github.io trong 3 tháng nha!
