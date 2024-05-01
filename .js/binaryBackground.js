@@ -80,7 +80,7 @@ function genSVGBlock(id, speed) {
 // Init binary rows
 const initSpeed = (stringLength * getFontWidth()) / 3;
 let prevSpeed = initSpeed;
-function initBinaryRows(from = 0) {
+async function initBinaryRows(from = 0) {
   if (addRowNum >= rowNum()) return;
   addRowNum = rowNum();
   for (let i = from; i < addRowNum; i++) {
@@ -93,7 +93,7 @@ function initBinaryRows(from = 0) {
 }
 
 // ResizeSVG
-function resizeSVG() {
+async function resizeSVG() {
   var svg = document.getElementById("binaryDiv");
   var bbox = svg.getBBox();
   svg.setAttribute("width", bbox.x + bbox.width + bbox.x);
@@ -101,19 +101,16 @@ function resizeSVG() {
 }
 
 // Resize text
-function textResize() {
+async function textResize() {
   for (let i = 0; i < addRowNum; i++) {
-    ele(`text${i}`).style.fontSize = getFontSize() + "px";
-    ele(`rectBlock${i}_1`).style.width =
-      ele(`rectBlock${i}_2`).style.width =
-      ele(`rectBlock${i}_3`).style.width =
-      ele(`rect${i}`).style.width =
-        ele(`text${i}`).getComputedTextLength();
-    ele(`rectBlock${i}_1`).style.height =
-      ele(`rectBlock${i}_2`).style.height =
-      ele(`rectBlock${i}_3`).style.height =
-      ele(`rect${i}`).style.height =
-        getFontSize() + "px";
+    let text = ele(`text${i}`),
+      rect1 = ele(`rectBlock${i}_1`),
+      rect2 = ele(`rectBlock${i}_2`),
+      rect3 = ele(`rectBlock${i}_3`),
+      rect = ele(`rect${i}`);
+    text.style.fontSize = getFontSize() + "px";
+    rect1.style.width = rect2.style.width = rect3.style.width = rect.style.width = text.getComputedTextLength();
+    rect1.style.height = rect2.style.height = rect3.style.height = rect.style.height = getFontSize() + "px";
   }
 }
 
