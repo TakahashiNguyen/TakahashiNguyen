@@ -113,8 +113,7 @@
       function render() {
         requestAnimationFrame(render);
 
-        // Update the iTime uniform with the time delta
-        tuniform.iGlobalTime.value += clock.getDelta();
+        tuniform.iGlobalTime.value += clock.getDelta() / 100;
 
         renderer.render(scene, camera);
       }
