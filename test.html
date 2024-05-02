@@ -60,17 +60,15 @@
     <script>
       const clock = new THREE.Clock();
 
-      const tuniform = {
-        iResolution: { value: new THREE.Vector2() },
-        iTime: { type: "f", value: 0.1 },
-        iMouse: { value: new THREE.Vector2() },
-        iChannel0: { type: "t", value: new THREE.TextureLoader().load("./.jpg/ISS.jpg") },
+      var tuniform = {
+        iGlobalTime: { type: "f", value: 0.1 },
+        iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
+        iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
       };
 
       // Make sure the textures are wrapping
       tuniform.iChannel0.value.wrapS = tuniform.iChannel0.value.wrapT = THREE.RepeatWrapping;
-
-      tuniform.iResolution.value.set(window.innerWidth, window.innerHeight);
+      tuniform.iChannel1.value.wrapS = tuniform.iChannel1.value.wrapT = THREE.RepeatWrapping;
 
       // Load vertex shader and fragment shader sources
       const vertexShaderSource = document.getElementById("vertexShader").textContent;
@@ -106,7 +104,9 @@
         const mouseX = event.clientX;
         const mouseY = event.clientY;
 
-        tuniform.iMouse.value.set(mouseX, mouseY);
+        try {
+          tuniform.iMouse.value.set(mouseX, mouseY);
+        } catch (error) {}
       }
 
       // Render function
@@ -114,7 +114,7 @@
         requestAnimationFrame(render);
 
         // Update the iTime uniform with the time delta
-        tuniform.iTime.value += clock.getDelta();
+        tuniform.iGlobalTime.value += clock.getDelta();
 
         renderer.render(scene, camera);
       }
