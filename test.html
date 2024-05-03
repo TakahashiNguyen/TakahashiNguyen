@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        width: 100dvw;
-        height: 100dvh;
-      }
-      canvas {
-        display: block;
-      }
-    </style>
+		<style>
+			body {
+				margin: 0;
+				overflow: hidden;
+				width: 100dvw;
+				height: 100dvh;
+			}
+			canvas {
+				display: block;
+			}
+		</style>
 
-    <script type="text/javascript" src=".js/utils.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  </head>
-  <body id="body">
-    <script type="x-shader/x-vertex" id="vertexShader">
-      varying vec2 vUv;
-      void main()
-      {
-          vUv = uv;
+		<script type="text/javascript" src=".js/utils.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+	</head>
+	<body id="body">
+		<script type="x-shader/x-vertex" id="vertexShader">
+			varying vec2 vUv;
+			void main()
+			{
+				vUv = uv;
 
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
-          gl_Position = projectionMatrix * mvPosition;
-      }
-    </script>
+			  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
+			  gl_Position = projectionMatrix * mvPosition;
+			}
+		</script>
 
-    <script type="x-shader/x-fragment" id="inputFragmentValues">
-      uniform float     iTime;
-      uniform sampler2D iChannel0;
-      uniform sampler2D iChannel1;
-      uniform vec4      iMouse;
-      uniform vec3      iResolution;
-      varying vec2      vUv;
-    </script>
+		<script type="x-shader/x-fragment" id="inputFragmentValues">
+			uniform float     iTime;
+			uniform sampler2D iChannel0;
+			uniform sampler2D iChannel1;
+			uniform vec4      iMouse;
+			uniform vec3      iResolution;
+			varying vec2      vUv;
+		</script>
 
     <script>
       (async () => {
         const clock = new THREE.Clock(),
           { clientWidth, clientHeight } = ele("body");
 
-        var tuniform = {
-          iTime: { type: "f", value: 0.1 },
-          iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
-          iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
-          iMouse: { value: new THREE.Vector2() },
-          iResolution: { value: new THREE.Vector2(clientWidth, clientHeight) },
-        };
+				var tuniform = {
+					iTime: { type: "f", value: 0.1 },
+					iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
+					iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
+					iMouse: { value: new THREE.Vector2() },
+					iResolution: { value: new THREE.Vector2(clientWidth, clientHeight) },
+				};
 
         // Make sure the textures are wrapping
         tuniform.iChannel0.value.wrapS = tuniform.iChannel0.value.wrapT = THREE.RepeatWrapping;
         tuniform.iChannel1.value.wrapS = tuniform.iChannel1.value.wrapT = THREE.RepeatWrapping;
 
-        // Load vertex shader and fragment shader sources
-        const vertexShaderSource = document.getElementById("vertexShader").textContent;
-        let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
-        await fetch("./.frag/mario.frag")
-          .then((response) => response.blob())
-          .then(async (blob) => {
-            var reader = new FileReader();
-            reader.readAsText(blob);
-            while (reader.readyState != 2) await delay(100);
-            fragmentShaderSource += reader.result
-              .replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
-              .replaceAll("fragColor", "gl_FragColor")
-              .replaceAll("fragCoord", "gl_FragCoord");
-          })
-          .catch((error) => {
-            console.error(error);
-            return "";
-          });
+				// Load vertex shader and fragment shader sources
+				const vertexShaderSource = document.getElementById("vertexShader").textContent;
+				let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
+				await fetch("./.frag/mario.frag")
+					.then((response) => response.blob())
+					.then(async (blob) => {
+						var reader = new FileReader();
+						reader.readAsText(blob);
+						while (reader.readyState != 2) await delay(100);
+						fragmentShaderSource += reader.result
+							.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
+							.replaceAll("fragColor", "gl_FragColor")
+							.replaceAll("fragCoord", "gl_FragCoord");
+					})
+					.catch((error) => {
+						console.error(error);
+						return "";
+					});
 
-        // Init environment
-        const scene = new THREE.Scene(),
-          camera = new THREE.PerspectiveCamera(1, clientWidth / clientHeight, 0.1, 1000),
-          renderer = new THREE.WebGLRenderer(),
-          geometry = new THREE.PlaneBufferGeometry(clientWidth, clientHeight),
-          material = new THREE.ShaderMaterial({
-            uniforms: tuniform,
-            vertexShader: vertexShaderSource,
-            fragmentShader: fragmentShaderSource,
-            side: THREE.DoubleSide,
-          });
-        camera.position.x = camera.position.y = 0;
-        camera.position.z = 100;
-        camera.lookAt(scene.position);
-        renderer.setSize(clientWidth, clientHeight);
+				// Init environment
+				const scene = new THREE.Scene(),
+					camera = new THREE.PerspectiveCamera(1, clientWidth / clientHeight, 0.1, 1000),
+					renderer = new THREE.WebGLRenderer(),
+					geometry = new THREE.PlaneBufferGeometry(clientWidth, clientHeight),
+					material = new THREE.ShaderMaterial({
+						uniforms: tuniform,
+						vertexShader: vertexShaderSource,
+						fragmentShader: fragmentShaderSource,
+						side: THREE.DoubleSide,
+					});
+				camera.position.x = camera.position.y = 0;
+				camera.position.z = 100;
+				camera.lookAt(scene.position);
+				renderer.setSize(clientWidth, clientHeight);
 
         document.body.appendChild(renderer.domElement);
 
@@ -100,30 +100,30 @@
 
         scene.add(plane);
 
-        document.addEventListener("mousemove", (event) => {
-          const { clientX, clientY } = event;
-          try {
-            tuniform.iMouse.value.set(clientX, clientY);
-          } catch (error) {}
-        });
+				document.addEventListener("mousemove", (event) => {
+					const { clientX, clientY } = event;
+					try {
+						tuniform.iMouse.value.set(clientX, clientY);
+					} catch (error) {}
+				});
 
-        function render() {
-          const dynamicSizing = (() => {
-            const { clientWidth, clientHeight } = ele("body");
+				function render() {
+					const dynamicSizing = (() => {
+						const { clientWidth, clientHeight } = ele("body");
 
-            camera.aspect = clientWidth / clientHeight;
-            camera.updateProjectionMatrix();
-            tuniform.iResolution.value = new THREE.Vector2(clientWidth, clientHeight);
-            renderer.setSize(clientWidth, clientHeight);
-          })();
+						camera.aspect = clientWidth / clientHeight;
+						camera.updateProjectionMatrix();
+						tuniform.iResolution.value = new THREE.Vector2(clientWidth, clientHeight);
+						renderer.setSize(clientWidth, clientHeight);
+					})();
 
-          requestAnimationFrame(render);
-          tuniform.iTime.value += clock.getDelta();
-          renderer.render(scene, camera);
-        }
+					requestAnimationFrame(render);
+					tuniform.iTime.value += clock.getDelta();
+					renderer.render(scene, camera);
+				}
 
-        render();
-      })();
-    </script>
-  </body>
+				render();
+			})();
+		</script>
+	</body>
 </html>
