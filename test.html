@@ -58,7 +58,7 @@
         const vertexShaderSource = document.getElementById("vertexShader").textContent;
         let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
 
-        await fetch("./.frag/rain.frag")
+        await fetch("./.frag/tunnel.frag")
           .then((response) => response.blob())
           .then(async (blob) => {
             var reader = new FileReader();
