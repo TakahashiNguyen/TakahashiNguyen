@@ -60,7 +60,7 @@
         const vertexShaderSource = document.getElementById("vertexShader").textContent;
         let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
 
-        await fetch("./.frag/tunnel.frag")
+        await fetch("./.frag/mario.frag")
           .then((response) => response.blob())
           .then(async (blob) => {
             var reader = new FileReader();
