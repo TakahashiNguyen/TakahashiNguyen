@@ -1,8 +1,10 @@
 {
     "files.associations": {
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "*.frag": "c"
     },
     "liquid.format.enable": true,
     "svg.preview.background": "editor",
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "C_Cpp.errorSquiggles": "disabled"
 }
