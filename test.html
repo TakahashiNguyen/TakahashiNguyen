@@ -27,32 +27,77 @@
     </script>
 
     <script type="x-shader/x-fragment" id="fragmentShader">
-      uniform float iGlobalTime;
-      uniform sampler2D iChannel0;
-      uniform sampler2D iChannel1;
+            uniform float iTime;
+            uniform sampler2D iChannel0;
+            uniform sampler2D iChannel1;
+            uniform vec4      iMouse;
+            uniform vec3      iResolution;
 
-      varying vec2 vUv;
+            varying vec2 vUv;
+
+            // Maximum number of cells a ripple can cross.
+      #define MAX_RADIUS 2
+
+      // Set to 1 to hash twice. Slower, but less patterns.
+      #define DOUBLE_HASH 0
+
+      // Hash functions shamefully stolen from:
+      // https://www.shadertoy.com/view/4djSRW
+      #define HASHSCALE1 .1031
+      #define HASHSCALE3 vec3(.1031, .1030, .0973)
+
+      float hash12(vec2 p)
+      {
+      	vec3 p3  = fract(vec3(p.xyx) * HASHSCALE1);
+          p3 += dot(p3, p3.yzx + 19.19);
+          return fract((p3.x + p3.y) * p3.z);
+      }
+
+      vec2 hash22(vec2 p)
+      {
+      	vec3 p3 = fract(vec3(p.xyx) * HASHSCALE3);
+          p3 += dot(p3, p3.yzx+19.19);
+          return fract((p3.xx+p3.yz)*p3.zy);
+
+      }
 
       void main(void)
       {
-          vec2 p = -1.0 + 2.0 *vUv;
-          vec2 q = p - vec2(0.5, 0.5);
+          float resolution = 10. * exp2(-3.*iMouse.x/iResolution.x);
+      	vec2 uv = gl_FragCoord.xy / iResolution.y * resolution;
+          vec2 p0 = floor(uv);
 
-          q.x += sin(iGlobalTime* 0.6) * 0.2;
-          q.y += cos(iGlobalTime* 0.4) * 0.3;
+          vec2 circles = vec2(0.);
+          for (int j = -MAX_RADIUS; j <= MAX_RADIUS; ++j)
+          {
+              for (int i = -MAX_RADIUS; i <= MAX_RADIUS; ++i)
+              {
+      			vec2 pi = p0 + vec2(i, j);
+                  #if DOUBLE_HASH
+                  vec2 hsh = hash22(pi);
+                  #else
+                  vec2 hsh = pi;
+                  #endif
+                  vec2 p = pi + hash22(hsh);
 
-          float len = length(q);
+                  float t = fract(0.3*iTime + hash12(hsh));
+                  vec2 v = p - uv;
+                  float d = length(v) - (float(MAX_RADIUS) + 1.)*t;
 
-          float a = atan(q.y, q.x) + iGlobalTime * 0.3;
-          float b = atan(q.y, q.x) + iGlobalTime * 0.3;
-          float r1 = 0.3 / len + iGlobalTime * 0.5;
-          float r2 = 0.2 / len + iGlobalTime * 0.5;
+                  float h = 1e-3;
+                  float d1 = d - h;
+                  float d2 = d + h;
+                  float p1 = sin(31.*d1) * smoothstep(-0.6, -0.3, d1) * smoothstep(0., -0.3, d1);
+                  float p2 = sin(31.*d2) * smoothstep(-0.6, -0.3, d2) * smoothstep(0., -0.3, d2);
+                  circles += 0.5 * normalize(v) * ((p2 - p1) / (2. * h) * (1. - t) * (1. - t));
+              }
+          }
+          circles /= float((MAX_RADIUS*2+1)*(MAX_RADIUS*2+1));
 
-          float m = (1.0 + sin(iGlobalTime * 0.5)) / 2.0;
-          vec4 tex1 = texture2D(iChannel0, vec2(a + 0.1 / len, r1 ));
-          vec4 tex2 = texture2D(iChannel1, vec2(b + 0.1 / len, r2 ));
-          vec3 col = vec3(mix(tex1, tex2, m));
-          gl_FragColor = vec4(col * len * 1.5, 1.0);
+          float intensity = mix(0.01, 0.15, smoothstep(0.1, 0.6, abs(fract(0.05*iTime + 0.5)*2.-1.)));
+          vec3 n = vec3(circles, sqrt(1. - dot(circles, circles)));
+          vec3 color = texture(iChannel0, uv/resolution - intensity*n.xy).rgb + 5.*pow(clamp(dot(n, normalize(vec3(1., 0.7, 0.5))), 0., 1.), 6.);
+      	gl_FragColor  = vec4(color, 1.0);
       }
     </script>
 
@@ -62,10 +107,11 @@
         { innerWidth, innerHeight } = window;
 
       var tuniform = {
-        iGlobalTime: { type: "f", value: 0.1 },
+        iTime: { type: "f", value: 0.1 },
         iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
         iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
         iMouse: { value: new THREE.Vector2() },
+        iResolution: { value: new THREE.Vector2(innerWidth, innerHeight) },
       };
 
       // Make sure the textures are wrapping
@@ -80,7 +126,7 @@
       const scene = new THREE.Scene();
 
       // Create a camera
-      const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1);
       camera.position.set(0, 0, 700);
 
       // Create a renderer
@@ -109,7 +155,7 @@
 
       function render() {
         requestAnimationFrame(render);
-        tuniform.iGlobalTime.value += clock.getDelta();
+        tuniform.iTime.value += clock.getDelta();
         renderer.render(scene, camera);
       }
 
