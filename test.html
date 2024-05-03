@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Example on how to port shadertoy to html</title>
+
     <style>
       body {
         margin: 0;
@@ -13,7 +13,9 @@
         display: block;
       }
     </style>
+
     <script type="text/javascript" src=".js/utils.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   </head>
   <body>
     <script type="x-shader/x-vertex" id="vertexShader">
@@ -35,9 +37,9 @@
       uniform vec3      iResolution;
       varying vec2 vUv;
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <script>
-      const main = async () => {
+      (async () => {
         const clock = new THREE.Clock(),
           { innerWidth, innerHeight } = window,
           reader = new FileReader();
@@ -109,8 +111,7 @@
         }
 
         render();
-      };
-      main();
+      })();
     </script>
   </body>
 </html>
