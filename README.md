@@ -22,7 +22,7 @@
 </picture>
 
 > [!TIP]
-> Tôi đang tập trung ôn thi Tốt nghiệp Trung học Phổ Thông Quốc gia và cố gắng đậu 7480201_DKD 🥰
+> Tôi đang tập trung ôn thi Tốt nghiệp Trung học Phổ Thông Quốc gia và cố gắng đậu 7480201_DKD@QST 🥰
 
 ## Nghe cùng với tôi nè <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Musical%20Notes.png" alt="Musical Notes" width="24" height="24" /></picture>
 
