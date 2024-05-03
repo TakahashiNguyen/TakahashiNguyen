@@ -58,12 +58,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-      const clock = new THREE.Clock();
+      const clock = new THREE.Clock(),
+        { innerWidth, innerHeight } = window;
 
       var tuniform = {
         iGlobalTime: { type: "f", value: 0.1 },
         iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
         iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
+        iMouse: { value: new THREE.Vector2() },
       };
 
       // Make sure the textures are wrapping
@@ -78,16 +80,16 @@
       const scene = new THREE.Scene();
 
       // Create a camera
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 5;
+      const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 700);
 
       // Create a renderer
       const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(innerWidth, innerHeight);
       document.body.appendChild(renderer.domElement);
 
       // Create a plane to render the shader on
-      const geometry = new THREE.PlaneGeometry(700, 394, 1, 1);
+      const geometry = new THREE.PlaneGeometry(innerWidth, innerHeight, 1, 1);
       const material = new THREE.ShaderMaterial({
         uniforms: tuniform,
         vertexShader: vertexShaderSource,
@@ -98,23 +100,16 @@
       scene.add(plane);
 
       document.addEventListener("mousemove", updateMousePosition);
-
       function updateMousePosition(event) {
-        // Get the mouse X and Y coordinates from the event object
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
+        const { clientX, clientY } = event;
         try {
-          tuniform.iMouse.value.set(mouseX, mouseY);
+          tuniform.iMouse.value.set(clientX, clientY);
         } catch (error) {}
       }
 
-      // Render function
       function render() {
         requestAnimationFrame(render);
-
-        tuniform.iGlobalTime.value += clock.getDelta() / 100;
-
+        tuniform.iGlobalTime.value += clock.getDelta();
         renderer.render(scene, camera);
       }
 
