@@ -8,6 +8,8 @@
       body {
         margin: 0;
         overflow: hidden;
+        width: 100dvw;
+        height: 100dvh;
       }
       canvas {
         display: block;
@@ -41,14 +43,14 @@
     <script>
       (async () => {
         const clock = new THREE.Clock(),
-          { innerWidth, innerHeight } = window;
+          { clientWidth, clientHeight } = ele("body");
 
         var tuniform = {
           iTime: { type: "f", value: 0.1 },
           iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
           iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
           iMouse: { value: new THREE.Vector2() },
-          iResolution: { value: new THREE.Vector2(innerWidth, innerHeight) },
+          iResolution: { value: new THREE.Vector2(clientWidth, clientHeight) },
         };
 
         // Make sure the textures are wrapping
@@ -73,9 +75,9 @@
 
         // Init environment
         const scene = new THREE.Scene(),
-          camera = new THREE.PerspectiveCamera(1, innerWidth / innerHeight, 0.1, 1000),
+          camera = new THREE.PerspectiveCamera(1, clientWidth / clientHeight, 0.1, 1000),
           renderer = new THREE.WebGLRenderer(),
-          geometry = new THREE.PlaneBufferGeometry(innerWidth, innerHeight),
+          geometry = new THREE.PlaneBufferGeometry(clientWidth, clientHeight),
           material = new THREE.ShaderMaterial({
             uniforms: tuniform,
             vertexShader: vertexShaderSource,
@@ -85,7 +87,7 @@
         camera.position.x = camera.position.y = 0;
         camera.position.z = 100;
         camera.lookAt(scene.position);
-        renderer.setSize(innerWidth, innerHeight);
+        renderer.setSize(clientWidth, clientHeight);
 
         document.body.appendChild(renderer.domElement);
 
@@ -102,16 +104,16 @@
           } catch (error) {}
         });
 
-        window.addEventListener("resize", () => {
-          const { innerWidth, innerHeight } = window;
-
-          camera.aspect = innerWidth / innerHeight;
-          camera.updateProjectionMatrix();
-          tuniform.iResolution.value = new THREE.Vector2(innerWidth, innerHeight);
-          renderer.setSize(innerWidth, innerHeight);
-        });
-
         function render() {
+          const dynamicSizing = (() => {
+            const { clientWidth, clientHeight } = ele("body");
+
+            camera.aspect = clientWidth / clientHeight;
+            camera.updateProjectionMatrix();
+            tuniform.iResolution.value = new THREE.Vector2(clientWidth, clientHeight);
+            renderer.setSize(clientWidth, clientHeight);
+          })();
+
           requestAnimationFrame(render);
           tuniform.iTime.value += clock.getDelta();
           renderer.render(scene, camera);
