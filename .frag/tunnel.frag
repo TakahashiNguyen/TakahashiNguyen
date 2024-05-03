@@ -1,6 +1,6 @@
-void main()
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
-    vec2 p = gl_FragCoord.xy / iResolution.xy;
+    vec2 p = fragCoord.xy / iResolution.xy;
     vec2 q = p - vec2(0.5, 0.5);
 
     q.x += sin(iTime * 0.6) * 0.2;
@@ -17,5 +17,5 @@ void main()
     vec4 tex1 = texture(iChannel0, vec2(a + 0.1 / len, r1));
     vec4 tex2 = texture(iChannel1, vec2(b + 0.1 / len, r2));
     vec3 col = vec3(mix(tex1, tex2, m));
-    gl_FragColor = vec4(col * len * 1.5, 1.0);
+    fragColor = vec4(col * len * 1.5, 1.0);
 }

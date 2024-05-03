@@ -60,13 +60,16 @@
         // Load vertex shader and fragment shader sources
         const vertexShaderSource = document.getElementById("vertexShader").textContent;
         let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
-        await fetch("./.frag/mario.frag")
+        await fetch("./.frag/tunnel.frag")
           .then((response) => response.blob())
           .then(async (blob) => {
             var reader = new FileReader();
             reader.readAsText(blob);
             while (reader.readyState != 2) await delay(100);
-            fragmentShaderSource += reader.result;
+            fragmentShaderSource += reader.result
+              .replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
+              .replaceAll("fragColor", "gl_FragColor")
+              .replaceAll("fragCoord", "gl_FragCoord");
           })
           .catch((error) => {
             console.error(error);

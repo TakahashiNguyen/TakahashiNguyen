@@ -1468,7 +1468,7 @@ void DrawScanline(inout vec3 color, vec2 uv)
     color *= scanline * grille * 1.2;
 }
 
-void main()
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     // we want to see at least 224x192 (overscan) and we want multiples of pixel size
     float resMultX = floor(iResolution.x / 224.0);
@@ -1478,8 +1478,8 @@ void main()
     float time = iTime;
     float screenWidth = floor(iResolution.x * resRcp);
     float screenHeight = floor(iResolution.y * resRcp);
-    float pixelX = floor(gl_FragCoord.x * resRcp);
-    float pixelY = floor(gl_FragCoord.y * resRcp);
+    float pixelX = floor(fragCoord.x * resRcp);
+    float pixelY = floor(fragCoord.y * resRcp);
 
     vec3 color = RGB(92, 148, 252);
     DrawGame(color, time, pixelX, pixelY, screenWidth, screenHeight);
@@ -1489,7 +1489,7 @@ void main()
     }
 
     // CRT effects (curvature, vignette, scanlines and CRT grille)
-    vec2 uv = gl_FragCoord.xy / iResolution.xy;
+    vec2 uv = fragCoord.xy / iResolution.xy;
     vec2 crtUV = CRTCurveUV(uv);
     if (crtUV.x < 0.0 || crtUV.x > 1.0 || crtUV.y < 0.0 || crtUV.y > 1.0)
     {
@@ -1498,6 +1498,6 @@ void main()
     DrawVignette(color, crtUV);
     DrawScanline(color, uv);
 
-    gl_FragColor.xyz = color;
-    gl_FragColor.w = 1.0;
+    fragColor.xyz = color;
+    fragColor.w = 1.0;
 }

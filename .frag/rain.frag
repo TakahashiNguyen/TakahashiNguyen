@@ -1,3 +1,18 @@
+/*
+
+A quick experiment with rain drop ripples.
+
+This effect was written for and used in the launch scene of the
+64kB intro "H - Immersion", by Ctrl-Alt-Test.
+
+ > http://www.ctrl-alt-test.fr/productions/h-immersion/
+ > https://www.youtube.com/watch?v=27PN1SsXbjM
+
+--
+Zavie / Ctrl-Alt-Test
+
+*/
+
 // Maximum number of cells a ripple can cross.
 #define MAX_RADIUS 2
 
@@ -23,10 +38,10 @@ vec2 hash22(vec2 p)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
-void main(void)
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     float resolution = 10. * exp2(-3. * iMouse.x / iResolution.x);
-    vec2 uv = gl_FragCoord.xy / iResolution.y * resolution;
+    vec2 uv = fragCoord.xy / iResolution.y * resolution;
     vec2 p0 = floor(uv);
 
     vec2 circles = vec2(0.);
@@ -59,5 +74,5 @@ void main(void)
     float intensity = mix(0.01, 0.15, smoothstep(0.1, 0.6, abs(fract(0.05 * iTime + 0.5) * 2. - 1.)));
     vec3 n = vec3(circles, sqrt(1. - dot(circles, circles)));
     vec3 color = texture(iChannel0, uv / resolution - intensity * n.xy).rgb + 5. * pow(clamp(dot(n, normalize(vec3(1., 0.7, 0.5))), 0., 1.), 6.);
-    gl_FragColor = vec4(color, 1.0);
+    fragColor = vec4(color, 1.0);
 }

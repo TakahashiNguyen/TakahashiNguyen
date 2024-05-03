@@ -338,15 +338,15 @@ float randomStart(vec2 co) { return 0.8 + 0.2 * hash(dot(co, vec2(123.42, 117.85
 //----------------------------------------------------------------------
 // main
 
-void main()
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
-    vec2 q = gl_FragCoord.xy / iResolution.xy;
+    vec2 q = fragCoord.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x / iResolution.y;
 
     if (q.y < .12 || q.y >= .88)
     {
-        gl_FragColor = vec4(0., 0., 0., 1.);
+        fragColor = vec4(0., 0., 0., 1.);
         return;
     }
     else
@@ -423,6 +423,6 @@ void main()
         q.y = (q.y - .12) * (1. / 0.76);
         col *= 0.5 + 0.5 * pow(16.0 * q.x * q.y * (1.0 - q.x) * (1.0 - q.y), 0.1);
 
-        gl_FragColor = vec4(col, 1.0);
+        fragColor = vec4(col, 1.0);
     }
 }

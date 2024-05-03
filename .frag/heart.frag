@@ -1,6 +1,14 @@
-void main()
+// Created by inigo quilez - iq/2013
+//   https://www.youtube.com/c/InigoQuilez
+//   https://iquilezles.org/
+// I share this piece (art and code) here in Shadertoy and through its Public API, only for educational purposes.
+// You cannot use, sell, share or host this piece or modifications of it as part of your own commercial or non-commercial product, website or project.
+// You can share a link to it or an unmodified screenshot of it provided you attribute "by Inigo Quilez, @iquilezles and iquilezles.org".
+// If you are a teacher, lecturer, educator or similar and these conditions are too restrictive for your needs, please contact me and we'll work it out.
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
-    vec2 p = (2.0 * gl_FragCoord.xy - iResolution.xy) / min(iResolution.y, iResolution.x);
+    vec2 p = (2.0 * fragCoord.xy - iResolution.xy) / min(iResolution.y, iResolution.x);
 
     // background color
     vec3 bcol = vec3(1.0, 0.8, 0.7 - 0.07 * p.y) * (1.0 - 0.25 * length(p));
@@ -27,5 +35,5 @@ void main()
 
     vec3 col = mix(bcol, hcol, smoothstep(-0.01, 0.01, d - r));
 
-    gl_FragColor = vec4(col, 1.0);
+    fragColor = vec4(col, 1.0);
 }
