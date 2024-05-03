@@ -59,7 +59,6 @@
         // Load vertex shader and fragment shader sources
         const vertexShaderSource = document.getElementById("vertexShader").textContent;
         let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
-
         await fetch("./.frag/tokyo.frag")
           .then((response) => response.blob())
           .then(async (blob) => {
@@ -91,7 +90,7 @@
         // Create a plane to render the shader on
         let ang_rad = (camera.fov * Math.PI) / 180;
         let fov_y = camera.position.z * Math.tan(ang_rad / 2) * 2;
-        const geometry = new THREE.PlaneGeometry(innerWidth, innerHeight, 1, 1);
+        const geometry = new THREE.PlaneBufferGeometry(innerWidth, innerHeight);
         const material = new THREE.ShaderMaterial({
           uniforms: tuniform,
           vertexShader: vertexShaderSource,
@@ -106,13 +105,20 @@
 
         scene.add(plane);
 
-        document.addEventListener("mousemove", updateMousePosition);
-        function updateMousePosition(event) {
+        document.addEventListener("mousemove", (event) => {
           const { clientX, clientY } = event;
           try {
             tuniform.iMouse.value.set(clientX, clientY);
           } catch (error) {}
-        }
+        });
+
+        window.addEventListener("resize", () => {
+          const { innerWidth, innerHeight } = window;
+
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(innerWidth, innerHeight);
+        });
 
         function render() {
           requestAnimationFrame(render);
