@@ -30,12 +30,12 @@
     </script>
 
     <script type="x-shader/x-fragment" id="inputFragmentValues">
-      uniform float iTime;
+      uniform float     iTime;
       uniform sampler2D iChannel0;
       uniform sampler2D iChannel1;
       uniform vec4      iMouse;
       uniform vec3      iResolution;
-      varying vec2 vUv;
+      varying vec2      vUv;
     </script>
 
     <script>
@@ -59,7 +59,7 @@
         // Load vertex shader and fragment shader sources
         const vertexShaderSource = document.getElementById("vertexShader").textContent;
         let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
-        await fetch("./.frag/tokyo.frag")
+        await fetch("./.frag/mario.frag")
           .then((response) => response.blob())
           .then(async (blob) => {
             var reader = new FileReader();
@@ -117,6 +117,7 @@
 
           camera.aspect = innerWidth / innerHeight;
           camera.updateProjectionMatrix();
+          tuniform.iResolution.value = new THREE.Vector2(innerWidth, innerHeight);
           renderer.setSize(innerWidth, innerHeight);
         });
 
