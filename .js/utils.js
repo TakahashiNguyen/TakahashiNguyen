@@ -52,18 +52,20 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
 			.replaceAll("fragColor", "gl_FragColor")
 			.replaceAll("fragCoord", "gl_FragCoord"),
-	fetchFromURL = async (URL) => {
-		return await fetch(URL)
-			.then((response) => response.blob())
-			.then(async (blob) => {
-				var reader = new FileReader();
-				reader.readAsText(blob);
-				while (reader.readyState != 2) await delay(100);
-				console.log(1);
-				return reader.result;
-			})
-			.catch((error) => {
-				console.error(error);
-				return "";
-			});
-	};
+	fetchFromURL = (URL) =>
+		new Promise((resolve, reject) => {
+			fetch(URL)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error("Network response was not ok");
+					}
+					return response.blob();
+				})
+				.then(async (data) => {
+					var reader = new FileReader();
+					reader.readAsText(data);
+					while (reader.readyState != 2) await delay(100);
+					resolve(reader.result);
+				})
+				.catch((error) => reject(error));
+		});

@@ -140,9 +140,15 @@
 								iTime: { type: "f", value: 0.1 },
 							});
 
-						this.bufferA = initBuffer(ShaderToyToGLSL(await fetchFromURL("./.frag/liquify/a.frag")));
-						this.bufferB = initBuffer(BUFFER_B_FRAG);
-						this.bufferImage = initBuffer(BUFFER_FINAL_FRAG, channel0);
+						await fetchFromURL("./.frag/liquify/a.frag").then(
+							(data) => (this.bufferA = initBuffer(ShaderToyToGLSL(data)))
+						);
+						await fetchFromURL("./.frag/liquify/b.frag").then(
+							(data) => (this.bufferB = initBuffer(ShaderToyToGLSL(data)))
+						);
+						await fetchFromURL("./.frag/liquify/image.frag").then(
+							(data) => (this.bufferImage = initBuffer(ShaderToyToGLSL(data), channel0))
+						);
 
 						this.animate();
 					}
