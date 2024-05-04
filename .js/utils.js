@@ -69,4 +69,5 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 				})
 				.catch((error) => reject(error));
 		}),
-	isVideoEle = (ele) => ele.tagName === "VIDEO";
+	isVideoEle = (ele) => ele.tagName === "VIDEO",
+	isImageEle = (ele) => ele.tagName === "IMG";

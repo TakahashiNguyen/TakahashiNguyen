@@ -33,6 +33,10 @@
 							if (element != "body") {
 								if (isVideoEle(ele(element))) {
 									while (ele(element).readyState < 2) await delay(100);
+									this.mainChannel = new THREE.VideoTexture(ele("videoChannel"));
+								} else if (isImageEle(ele(element))) {
+									while (ele(element).readyState < 2) await delay(100);
+									this.mainChannel = new THREE.Texture(ele(element));
 								}
 								var originalElement = ele(element);
 								var outerDiv = document.createElement("div");
@@ -41,9 +45,10 @@
 								outerDiv.style.border = "1px solid black";
 								outerDiv.style.display = "flex";
 								outerDiv.style.flexDirection = "row";
-								outerDiv.style.position = "absolute";
+								outerDiv.style.position = "relative";
 
 								originalElement.parentNode.insertBefore(outerDiv, originalElement);
+								originalElement.style.opacity = "0";
 								outerDiv.appendChild(originalElement);
 							}
 
@@ -51,15 +56,13 @@
 							this.element = element;
 							this.size = new THREE.Vector2();
 							this.renderer = new THREE.WebGLRenderer();
-							this.loader = new THREE.TextureLoader();
 							this.mousePosition = new THREE.Vector4();
 
-							this.loader.setCrossOrigin("");
 							this.setDOMSize();
 
 							// Append canvas to body
 							this.renderer.setSize(this.size.width, this.size.height);
-							this.renderer.domElement.style.position = "absolute";
+							this.renderer.domElement.style.position = "fixed";
 							ele(`outer-${element}`).appendChild(this.renderer.domElement);
 
 							// Setup events
@@ -91,14 +94,11 @@
 					}
 
 					async start() {
-						const imageChannel = this.loader.load("../.jpg/ISS.jpg"),
-							videoChannel = new THREE.VideoTexture(ele("videoChannel"));
-
 						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = this.initBuffer(true, data, videoChannel))
+							(data) => (this.bufferImage = this.initBuffer(true, data, this.mainChannel))
 						);
 
 						this.animate();
@@ -210,8 +210,9 @@
 			})();
 		</script>
 
-		<div style="position: relative">
+		<div style="position: absolute; display: flex; flex-direction: column">
 			<video id="videoChannel" autoplay loop muted src="../.webm/greenScreenMan.webm"></video>
+			<img src="../.jpg/ISS.jpg" alt="" width="1000" height="100" />
 		</div>
 	</body>
 </html>
