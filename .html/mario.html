@@ -33,10 +33,6 @@
 					iResolution: { value: new THREE.Vector2(clientWidth, clientHeight) },
 				};
 
-				// Make sure the textures are wrapping
-				tuniform.iChannel0.value.wrapS = tuniform.iChannel0.value.wrapT = THREE.RepeatWrapping;
-				tuniform.iChannel1.value.wrapS = tuniform.iChannel1.value.wrapT = THREE.RepeatWrapping;
-
 				// Load vertex shader and fragment shader sources
 				let fragmentShaderSource;
 				await fetch("../.frag/mario.frag")
