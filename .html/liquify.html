@@ -29,7 +29,6 @@
 						this.renderer = new THREE.WebGLRenderer();
 						this.loader = new THREE.TextureLoader();
 						this.mousePosition = new THREE.Vector4();
-						this.counter = 0;
 
 						const setDOMSize = () => {
 							const { clientWidth, clientHeight } = ele("body");
@@ -96,7 +95,6 @@
 					animate() {
 						requestAnimationFrame(() => {
 							// bufferA section
-							this.bufferA.uniforms.iFrame.value = this.counter++;
 							this.bufferA.uniforms.iChannel0.value = this.bufferA.readBuffer.texture;
 							this.bufferA.uniforms.iChannelResolution.value[0] = this.bufferA.uniforms.iResolution.value;
 							this.bufferA.uniforms.iChannel1.value = this.bufferB.readBuffer.texture;
@@ -126,6 +124,7 @@
 						this.camera = camera;
 						this.size = size;
 						this.clock = clock;
+						this.counter = 0;
 						this.uniforms = uniforms;
 						this.scene = new THREE.Scene();
 						this.geometry = new THREE.PlaneBufferGeometry(size.width, size.height);
@@ -180,7 +179,10 @@
 						);
 						this.renderer.setSize(this.size.width, this.size.height);
 
+						// Update uniforms data
 						this.uniforms.iTime.value += this.clock.getDelta();
+						this.uniforms.iFrame.value = this.counter++;
+
 						this.swap();
 					}
 				}
