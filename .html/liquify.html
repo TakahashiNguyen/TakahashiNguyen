@@ -24,7 +24,6 @@
 			(async () => {
 				class App {
 					constructor() {
-						this.clock = new THREE.Clock();
 						this.size = new THREE.Vector2();
 						this.renderer = new THREE.WebGLRenderer();
 						this.loader = new THREE.TextureLoader();
@@ -56,38 +55,29 @@
 					}
 
 					initBuffer(isMainCamera, fragmentShader, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
-						return new Buffer(
-							isMainCamera,
-							ShaderToyToGLSL(fragmentShader),
-							this.renderer,
-							this.camera,
-							this.size,
-							this.clock,
-							{
-								iFrame: { value: 0 },
-								iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
-								iChannelResolution: {
-									value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
-								},
-								iMouse: { value: this.mousePosition },
-								iChannel0: { value: iC0 },
-								iChannel1: { value: iC1 },
-								iChannel2: { value: iC2 },
-								iChannel3: { value: iC3 },
-								iTime: { type: "f", value: 0.1 },
-							}
-						);
+						return new Buffer(isMainCamera, ShaderToyToGLSL(fragmentShader), this.renderer, this.camera, this.size, {
+							iFrame: { value: 0 },
+							iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
+							iChannelResolution: {
+								value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+							},
+							iMouse: { value: this.mousePosition },
+							iChannel0: { value: iC0 },
+							iChannel1: { value: iC1 },
+							iChannel2: { value: iC2 },
+							iChannel3: { value: iC3 },
+							iTime: { type: "f", value: 0.1 },
+						});
 					}
 
 					async start() {
 						const channel0 = this.loader.load("../.jpg/ISS.jpg");
 						this.loader.setCrossOrigin("");
 
+						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
-						await fetchFromURL("../.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = this.initBuffer(true, data, channel0))
-						);
+						await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferImage = this.initBuffer(true, data)));
 
 						this.animate();
 					}
@@ -105,6 +95,7 @@
 							this.bufferB.uniforms.iChannelResolution.value[0] = this.bufferB.uniforms.iResolution.value;
 
 							// bufferImage section
+							//this.bufferImage.uniforms.iChannel0.value = this.bufferMario.readBuffer.texture;
 							this.bufferImage.uniforms.iChannel1.value = this.bufferA.readBuffer.texture;
 
 							// Render section
@@ -118,14 +109,14 @@
 				}
 
 				class Buffer {
-					constructor(isMainCamera, fragmentShader, renderer, camera, size, clock, uniforms = {}) {
+					constructor(isMainCamera, fragmentShader, renderer, camera, size, uniforms = {}) {
 						this.isMainCamera = isMainCamera;
 						this.renderer = renderer;
 						this.camera = camera;
 						this.size = size;
-						this.clock = clock;
 						this.counter = 0;
 						this.uniforms = uniforms;
+						this.clock = new THREE.Clock();
 						this.scene = new THREE.Scene();
 						this.geometry = new THREE.PlaneBufferGeometry(size.width, size.height);
 						this.material = new THREE.ShaderMaterial({
