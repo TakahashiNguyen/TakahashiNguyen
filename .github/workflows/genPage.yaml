@@ -3,6 +3,8 @@ name: Khai triển Github Page
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
 
 permissions:
   contents: read
