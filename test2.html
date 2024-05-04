@@ -52,10 +52,6 @@
 							this.mousePosition.setY(this.size.height - event.clientY);
 						});
 						window.addEventListener("resize", setDOMSize);
-
-						this.targetA = new BufferManager(this.renderer, this.size);
-						this.targetB = new BufferManager(this.renderer, this.size);
-						this.targetImage = new BufferManager(this.renderer, this.size);
 					}
 
 					async start() {
@@ -72,7 +68,7 @@
 							iChannel2 = null,
 							iChannel3 = null
 						) =>
-							new BufferShader(ShaderToyToGLSL(fragmentShader), {
+							new Buffer(ShaderToyToGLSL(fragmentShader), this.renderer, this.size, {
 								iFrame: { value: 0 },
 								iResolution: { value: resolution },
 								iChannelResolution: { value: [resolution, resolution, resolution, resolution] },
@@ -100,24 +96,26 @@
 						requestAnimationFrame(() => {
 							this.bufferA.uniforms.iFrame.value = this.counter++;
 
-							this.bufferA.uniforms["iChannel0"].value = this.targetA.readBuffer.texture;
-							this.bufferA.uniforms["iChannel1"].value = this.targetB.readBuffer.texture;
-							this.targetA.render(this.bufferA.scene, this.camera);
+							this.bufferA.uniforms["iChannel0"].value = this.bufferA.readBuffer.texture;
+							this.bufferA.uniforms["iChannel1"].value = this.bufferB.readBuffer.texture;
+							this.bufferA.render(this.bufferA.scene, this.camera);
 
-							this.bufferB.uniforms["iChannel0"].value = this.targetB.readBuffer.texture;
-							this.targetB.render(this.bufferB.scene, this.camera);
+							this.bufferB.uniforms["iChannel0"].value = this.bufferB.readBuffer.texture;
+							this.bufferB.render(this.bufferB.scene, this.camera);
 
-							this.bufferImage.uniforms["iChannel1"].value = this.targetA.readBuffer.texture;
-							this.targetImage.render(this.bufferImage.scene, this.camera, true);
+							this.bufferImage.uniforms["iChannel1"].value = this.bufferA.readBuffer.texture;
+							this.bufferImage.render(this.bufferImage.scene, this.camera, true);
 
 							this.animate();
 						});
 					}
 				}
 
-				class BufferShader {
-					constructor(fragmentShader, uniforms = {}) {
+				class Buffer {
+					constructor(fragmentShader, renderer, size, uniforms = {}) {
 						this.uniforms = uniforms;
+						this.renderer = renderer;
+						this.size = size;
 
 						this.scene = new THREE.Scene();
 						this.geometry = new THREE.PlaneBufferGeometry(2, 2);
@@ -133,14 +131,8 @@
 						this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
 
 						this.scene.add(this.plane);
-					}
-				}
 
-				class BufferManager {
-					constructor(renderer, size) {
-						this.renderer = renderer;
-						this.size = size;
-
+						// Buffer section
 						this.readBuffer = new THREE.WebGLRenderTarget(size.width, size.height, {
 							minFilter: THREE.LinearFilter,
 							magFilter: THREE.LinearFilter,
