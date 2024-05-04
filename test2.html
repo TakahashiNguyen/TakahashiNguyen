@@ -22,58 +22,9 @@
 	<body id="body">
 		<script>
 			(async () => {
-				// Port from Shadertoy to THREE.js: https://www.shadertoy.com/view/4sG3WV
-
-				const BUFFER_B_FRAG = `
-			    uniform vec4 iMouse;
-			    uniform sampler2D iChannel0;
-			    uniform vec3 iResolution;
-			    varying vec2 vUv;
-
-			    bool pixelAt(vec2 coord, float a, float b) {
-			        return (floor(coord.x) == a && floor(coord.y) == b);
-			    }
-
-			    vec4 backbuffer(float a,float b) {
-			      return texture2D( iChannel0, (0.5+vec2(a,b)) / iResolution.xy, -100.0 );
-			    }
-
-			    void main( ) {
-
-			        vec2 uv = vUv;// / iResolution.xy;
-			        vec4 color = texture2D(iChannel0,uv);
-
-			        if (pixelAt(gl_FragCoord.xy,0.,0.)) { //Surface position
-			            gl_FragColor = vec4(backbuffer(0.,0.).rg+(backbuffer(4.,0.).r*(backbuffer(2.,0.).rg-backbuffer(1.,0.).rg)),0.,1.);
-			        } else if (pixelAt(gl_FragCoord.xy,1.,0.)) { //New mouse position
-			            gl_FragColor = vec4(iMouse.xy/iResolution.xy,0.,1.);
-			        } else if (pixelAt(gl_FragCoord.xy,2.,0.)) { //Old mouse position
-			            gl_FragColor = vec4(backbuffer(1.,0.).rg,0.,1.);
-			        } else if (pixelAt(gl_FragCoord.xy,3.,0.)) { //New mouse holded
-			            gl_FragColor = vec4(clamp(iMouse.z,0.,1.),0.,0.,1.);
-			        } else if (pixelAt(gl_FragCoord.xy,4.,0.)) { //Old mouse holded
-			            gl_FragColor = vec4(backbuffer(3.,0.).r,0.,0.,1.);
-			        } else {
-			            gl_FragColor = vec4(0.,0.,0.,1.);
-			        }
-
-			    }
-			`;
-
-				const BUFFER_FINAL_FRAG = `
-			    uniform sampler2D iChannel0;
-			    uniform sampler2D iChannel1;
-			    varying vec2 vUv;
-
-			    void main() {
-			        vec2 uv = vUv;
-			        vec2 a = texture2D(iChannel1,uv).xy;
-			        gl_FragColor = vec4(texture2D(iChannel0,a).rgb,1.0);
-			    }
-			`;
-
 				class App {
 					constructor() {
+						this.clock = new THREE.Clock();
 						this.width = 1024;
 						this.height = 512;
 
@@ -88,7 +39,6 @@
 
 						this.renderer.domElement.addEventListener("mousedown", () => {
 							this.mousePosition.setZ(1);
-							this.counter = 0;
 						});
 
 						this.renderer.domElement.addEventListener("mouseup", () => {
@@ -108,7 +58,7 @@
 							width: this.width,
 							height: this.height,
 						});
-						this.targetC = new BufferManager(this.renderer, {
+						this.targetImage = new BufferManager(this.renderer, {
 							width: this.width,
 							height: this.height,
 						});
@@ -128,7 +78,7 @@
 							iChannel2 = null,
 							iChannel3 = null
 						) =>
-							new BufferShader(fragmentShader, {
+							new BufferShader(ShaderToyToGLSL(fragmentShader), {
 								iFrame: { value: 0 },
 								iResolution: { value: resolution },
 								iChannelResolution: { value: [resolution, resolution, resolution, resolution] },
@@ -140,14 +90,10 @@
 								iTime: { type: "f", value: 0.1 },
 							});
 
-						await fetchFromURL("./.frag/liquify/a.frag").then(
-							(data) => (this.bufferA = initBuffer(ShaderToyToGLSL(data)))
-						);
-						await fetchFromURL("./.frag/liquify/b.frag").then(
-							(data) => (this.bufferB = initBuffer(ShaderToyToGLSL(data)))
-						);
+						await fetchFromURL("./.frag/liquify/a.frag").then((data) => (this.bufferA = initBuffer(data)));
+						await fetchFromURL("./.frag/liquify/b.frag").then((data) => (this.bufferB = initBuffer(data)));
 						await fetchFromURL("./.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = initBuffer(ShaderToyToGLSL(data), channel0))
+							(data) => (this.bufferImage = initBuffer(data, channel0))
 						);
 
 						this.animate();
@@ -155,7 +101,7 @@
 
 					animate() {
 						requestAnimationFrame(() => {
-							this.bufferA.uniforms["iFrame"].value = this.counter++;
+							this.bufferA.uniforms.iFrame.value = this.counter++;
 
 							this.bufferA.uniforms["iChannel0"].value = this.targetA.readBuffer.texture;
 							this.bufferA.uniforms["iChannel1"].value = this.targetB.readBuffer.texture;
@@ -165,7 +111,7 @@
 							this.targetB.render(this.bufferB.scene, this.orthoCamera);
 
 							this.bufferImage.uniforms["iChannel1"].value = this.targetA.readBuffer.texture;
-							this.targetC.render(this.bufferImage.scene, this.orthoCamera, true);
+							this.targetImage.render(this.bufferImage.scene, this.orthoCamera, true);
 
 							this.animate();
 						});
