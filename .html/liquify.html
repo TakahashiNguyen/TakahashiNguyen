@@ -77,48 +77,49 @@
 						});
 					}
 
-					initBuffer(isMainCamera, fragmentShader, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
-						return new Buffer(isMainCamera, ShaderToyToGLSL(fragmentShader), this.renderer, this.size, {
-							iFrame: { value: 0 },
-							iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
-							iChannelResolution: {
-								value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
-							},
-							iMouse: { value: this.mousePosition },
-							iChannel0: { value: iC0 },
-							iChannel1: { value: iC1 },
-							iChannel2: { value: iC2 },
-							iChannel3: { value: iC3 },
-							iTime: { type: "f", value: 0.1 },
-						});
+					async initBuffer(isMainCamera, fragmentShaderURL, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
+						return new Buffer(
+							isMainCamera,
+							ShaderToyToGLSL(await fetchFromURL(fragmentShaderURL)),
+							this.renderer,
+							this.size,
+							{
+								iFrame: { value: 0 },
+								iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
+								iChannelResolution: {
+									value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+								},
+								iMouse: { value: this.mousePosition },
+								iChannel0: { value: iC0 },
+								iChannel1: { value: iC1 },
+								iChannel2: { value: iC2 },
+								iChannel3: { value: iC3 },
+								iTime: { type: "f", value: 0.1 },
+							}
+						);
 					}
 
 					async start() {
 						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
-						await fetchFromURL("../.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
-						await fetchFromURL("../.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
-						await fetchFromURL("../.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = this.initBuffer(true, data, this.mainChannel))
-						);
+						this.bufferA = await this.initBuffer(false, "../.frag/liquify/a.frag");
+						this.bufferB = await this.initBuffer(false, "../.frag/liquify/b.frag");
+						this.bufferImage = await this.initBuffer(true, "../.frag/liquify/image.frag", this.mainChannel);
 
 						this.animate();
 					}
 
 					animate() {
-						requestAnimationFrame(() => {
+						requestAnimationFrame(async () => {
 							// bufferA section
-							this.bufferA.uniforms.iChannel0.value = this.bufferA.readBuffer.texture;
-							this.bufferA.uniforms.iChannelResolution.value[0] = this.bufferA.uniforms.iResolution.value;
-							this.bufferA.uniforms.iChannel1.value = this.bufferB.readBuffer.texture;
-							this.bufferA.uniforms.iChannelResolution.value[1] = this.bufferB.uniforms.iResolution.value;
+							this.bufferA.setChannel(0, this.bufferA);
+							this.bufferA.setChannel(1, this.bufferB);
 
 							// bufferB section
-							this.bufferB.uniforms.iChannel0.value = this.bufferB.readBuffer.texture;
-							this.bufferB.uniforms.iChannelResolution.value[0] = this.bufferB.uniforms.iResolution.value;
+							this.bufferB.setChannel(0, this.bufferB);
 
 							// bufferImage section
 							//this.bufferImage.uniforms.iChannel0.value = this.bufferMario.readBuffer.texture;
-							this.bufferImage.uniforms.iChannel1.value = this.bufferA.readBuffer.texture;
+							this.bufferImage.setChannel(1, this.bufferA);
 
 							// Render section
 							this.bufferA.render();
@@ -169,13 +170,18 @@
 						this.writeBuffer = this.readBuffer.clone();
 					}
 
-					swap() {
+					async setChannel(number, buffer) {
+						this.uniforms[`iChannel${number}`].value = buffer.readBuffer.texture;
+						this.uniforms.iChannelResolution.value[number] = buffer.uniforms.iResolution.value;
+					}
+
+					async swap() {
 						const temp = this.readBuffer;
 						this.readBuffer = this.writeBuffer;
 						this.writeBuffer = temp;
 					}
 
-					render() {
+					async render() {
 						if (this.isMainCamera) {
 							this.renderer.render(this.scene, this.camera);
 							this.camera.lookAt(this.scene.position);
