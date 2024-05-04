@@ -20,30 +20,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body id="body">
-		<script type="x-shader/x-vertex" id="vertexShader">
-			varying vec2 vUv;
-			void main()
-			{
-				vUv = uv;
-
-			  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
-			  gl_Position = projectionMatrix * mvPosition;
-			}
-		</script>
-
-		<script type="x-shader/x-fragment" id="inputFragmentValues">
-			uniform float     iTime;
-			uniform sampler2D iChannel0;
-			uniform sampler2D iChannel1;
-			uniform vec4      iMouse;
-			uniform vec3      iResolution;
-			varying vec2      vUv;
-		</script>
-
-    <script>
-      (async () => {
-        const clock = new THREE.Clock(),
-          { clientWidth, clientHeight } = ele("body");
+		<script>
+			(async () => {
+				const clock = new THREE.Clock(),
+					{ clientWidth, clientHeight } = ele("body");
 
 				var tuniform = {
 					iTime: { type: "f", value: 0.1 },
@@ -58,18 +38,14 @@
 				tuniform.iChannel1.value.wrapS = tuniform.iChannel1.value.wrapT = THREE.RepeatWrapping;
 
 				// Load vertex shader and fragment shader sources
-				const vertexShaderSource = document.getElementById("vertexShader").textContent;
-				let fragmentShaderSource = document.getElementById("inputFragmentValues").textContent;
+				let fragmentShaderSource;
 				await fetch("./.frag/mario.frag")
 					.then((response) => response.blob())
 					.then(async (blob) => {
 						var reader = new FileReader();
 						reader.readAsText(blob);
 						while (reader.readyState != 2) await delay(100);
-						fragmentShaderSource += reader.result
-							.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
-							.replaceAll("fragColor", "gl_FragColor")
-							.replaceAll("fragCoord", "gl_FragCoord");
+						fragmentShaderSource = ShaderToyToGLSL(reader.result);
 					})
 					.catch((error) => {
 						console.error(error);
@@ -83,7 +59,7 @@
 					geometry = new THREE.PlaneBufferGeometry(clientWidth, clientHeight),
 					material = new THREE.ShaderMaterial({
 						uniforms: tuniform,
-						vertexShader: vertexShaderSource,
+						vertexShader: vertexShader,
 						fragmentShader: fragmentShaderSource,
 						side: THREE.DoubleSide,
 					});
@@ -92,13 +68,13 @@
 				camera.lookAt(scene.position);
 				renderer.setSize(clientWidth, clientHeight);
 
-        document.body.appendChild(renderer.domElement);
+				document.body.appendChild(renderer.domElement);
 
-        const plane = new THREE.Mesh(geometry, material);
-        plane.receiveShadow = true;
-        plane.position.x = plane.position.y = plane.position.z = 0;
+				const plane = new THREE.Mesh(geometry, material);
+				plane.receiveShadow = true;
+				plane.position.x = plane.position.y = plane.position.z = 0;
 
-        scene.add(plane);
+				scene.add(plane);
 
 				document.addEventListener("mousemove", (event) => {
 					const { clientX, clientY } = event;

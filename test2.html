@@ -27,44 +27,39 @@
 						this.clock = new THREE.Clock();
 						const setDOMSize = () => {
 							const { clientWidth, clientHeight } = ele("body");
-							this.width = clientWidth;
-							this.height = clientHeight;
+							this.size = { width: clientWidth, height: clientHeight };
 						};
 
+						setDOMSize();
+
+						this.camera = new THREE.PerspectiveCamera(1, this.size.width / this.size.height, 0.1, 1000);
 						this.renderer = new THREE.WebGLRenderer();
 						this.loader = new THREE.TextureLoader();
 						this.mousePosition = new THREE.Vector4();
-						this.orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 						this.counter = 0;
 
-						setDOMSize();
-						this.renderer.setSize(this.width, this.height);
+						// Set camera position
+						this.camera.position.x = this.camera.position.y = 0;
+						this.camera.position.z = 100;
+
+						this.renderer.setSize(this.size.width, this.size.height);
 						document.body.appendChild(this.renderer.domElement);
 
 						this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
 						this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
 						this.renderer.domElement.addEventListener("mousemove", (event) => {
 							this.mousePosition.setX(event.clientX);
-							this.mousePosition.setY(this.height - event.clientY);
+							this.mousePosition.setY(this.size.height - event.clientY);
 						});
 						window.addEventListener("resize", setDOMSize);
 
-						this.targetA = new BufferManager(this.renderer, {
-							width: this.width,
-							height: this.height,
-						});
-						this.targetB = new BufferManager(this.renderer, {
-							width: this.width,
-							height: this.height,
-						});
-						this.targetImage = new BufferManager(this.renderer, {
-							width: this.width,
-							height: this.height,
-						});
+						this.targetA = new BufferManager(this.renderer, this.size);
+						this.targetB = new BufferManager(this.renderer, this.size);
+						this.targetImage = new BufferManager(this.renderer, this.size);
 					}
 
 					async start() {
-						const resolution = new THREE.Vector3(this.width, this.height, window.devicePixelRatio);
+						const resolution = new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio);
 						const channel0 = this.loader.load(
 							"https://res.cloudinary.com/di4jisedp/image/upload/v1523722553/wallpaper.jpg"
 						);
@@ -95,6 +90,9 @@
 							(data) => (this.bufferImage = initBuffer(data, channel0))
 						);
 
+						// Set camera look at image
+						this.camera.lookAt(this.bufferImage.scene.position);
+
 						this.animate();
 					}
 
@@ -104,13 +102,13 @@
 
 							this.bufferA.uniforms["iChannel0"].value = this.targetA.readBuffer.texture;
 							this.bufferA.uniforms["iChannel1"].value = this.targetB.readBuffer.texture;
-							this.targetA.render(this.bufferA.scene, this.orthoCamera);
+							this.targetA.render(this.bufferA.scene, this.camera);
 
 							this.bufferB.uniforms["iChannel0"].value = this.targetB.readBuffer.texture;
-							this.targetB.render(this.bufferB.scene, this.orthoCamera);
+							this.targetB.render(this.bufferB.scene, this.camera);
 
 							this.bufferImage.uniforms["iChannel1"].value = this.targetA.readBuffer.texture;
-							this.targetImage.render(this.bufferImage.scene, this.orthoCamera, true);
+							this.targetImage.render(this.bufferImage.scene, this.camera, true);
 
 							this.animate();
 						});
@@ -141,6 +139,7 @@
 				class BufferManager {
 					constructor(renderer, size) {
 						this.renderer = renderer;
+						this.size = size;
 
 						this.readBuffer = new THREE.WebGLRenderTarget(size.width, size.height, {
 							minFilter: THREE.LinearFilter,
@@ -168,6 +167,12 @@
 							this.renderer.render(scene, camera);
 							this.renderer.setRenderTarget(null);
 						}
+
+						// Dynamic sizing
+						camera.aspect = this.size.width / this.size.height;
+						camera.updateProjectionMatrix();
+						this.renderer.setSize(this.size.width, this.size.height);
+
 						this.swap();
 					}
 				}
