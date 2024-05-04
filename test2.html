@@ -140,18 +140,7 @@
 								iTime: { type: "f", value: 0.1 },
 							});
 
-						await fetch("./.frag/liquify/a.frag")
-							.then((response) => response.blob())
-							.then(async (blob) => {
-								var reader = new FileReader();
-								reader.readAsText(blob);
-								while (reader.readyState != 2) await delay(100);
-								this.bufferA = initBuffer(ShaderToyToGLSL(reader.result));
-							})
-							.catch((error) => {
-								console.error(error);
-								return "";
-							});
+						this.bufferA = initBuffer(ShaderToyToGLSL(await fetchFromURL("./.frag/liquify/a.frag")));
 						this.bufferB = initBuffer(BUFFER_B_FRAG);
 						this.bufferImage = initBuffer(BUFFER_FINAL_FRAG, channel0);
 

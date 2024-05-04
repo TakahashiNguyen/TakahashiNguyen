@@ -51,4 +51,19 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 		e
 			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
 			.replaceAll("fragColor", "gl_FragColor")
-			.replaceAll("fragCoord", "gl_FragCoord");
+			.replaceAll("fragCoord", "gl_FragCoord"),
+	fetchFromURL = async (URL) => {
+		return await fetch(URL)
+			.then((response) => response.blob())
+			.then(async (blob) => {
+				var reader = new FileReader();
+				reader.readAsText(blob);
+				while (reader.readyState != 2) await delay(100);
+				console.log(1);
+				return reader.result;
+			})
+			.catch((error) => {
+				console.error(error);
+				return "";
+			});
+	};
