@@ -1,6 +1,16 @@
 const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
+	vertexShader = `
+      varying vec2 vUv;
+			void main()
+			{
+				vUv = uv;
+
+			  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
+			  gl_Position = projectionMatrix * mvPosition;
+			}
+  `,
 	ele = (s) => document.getElementById(s),
 	getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`),
 	abs = (v) => Math.abs(v),

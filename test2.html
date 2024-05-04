@@ -20,113 +20,57 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body id="body">
-		<script type="x-shader/x-vertex" id="vertexShader">
-			varying vec2 vUv;
-			void main()
-			{
-				vUv = uv;
-
-			  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
-			  gl_Position = projectionMatrix * mvPosition;
-			}
-		</script>
-
-		<script type="x-shader/x-fragment" id="inputFragmentValues">
-			uniform float     iTime;
-			uniform sampler2D iChannel0;
-			uniform sampler2D iChannel1;
-			uniform vec4      iMouse;
-			uniform vec3      iResolution;
-			varying vec2      vUv;
-		</script>
-
 		<script>
 			(async () => {
-				const vertexShaderSource = document.getElementById("vertexShader").textContent;
 				// Port from Shadertoy to THREE.js: https://www.shadertoy.com/view/4sG3WV
 
-				const BUFFER_A_FRAG = `
-    uniform vec4 iMouse;
-    uniform sampler2D iChannel0;
-    uniform sampler2D iChannel1;
-    uniform vec2 iResolution;
-    uniform float iFrame;
-    varying vec2 vUv;
-    
-    #define mousedata(a,b) texture2D( iChannel1, (0.5+vec2(a,b)) / iResolution.xy, -0.0 )
-    #define backbuffer(uv) texture2D( iChannel0, uv ).xy
-    
-    float lineDist(vec2 p, vec2 start, vec2 end, float width) {
-        vec2 dir = start - end;
-        float lngth = length(dir);
-        dir /= lngth;
-        vec2 proj = max(0.0, min(lngth, dot((start - p), dir))) * dir;
-        return length( (start - p) - proj ) - (width / 2.0);
-    }
-    
-    void main() {
-        vec2 uv = vUv;
-        vec2 col = uv;
-        if (iFrame > 2.) {
-            col = texture2D(iChannel0,uv).xy;
-            vec2 mouse = iMouse.xy/iResolution.xy;
-            vec2 p_mouse = mousedata(2.,0.).xy;
-            if (mousedata(4.,0.).x > 0.) {
-                col = backbuffer(uv+((p_mouse-mouse)*clamp(1.-(lineDist(uv,mouse,p_mouse,0.)*20.),0.,1.)*.7));
-            }
-        }
-        gl_FragColor = vec4(col,0.0,1.0);
-    }
-
-`;
-
 				const BUFFER_B_FRAG = `
-    uniform vec4 iMouse;
-    uniform sampler2D iChannel0;
-    uniform vec3 iResolution;
-    varying vec2 vUv;
-    
-    bool pixelAt(vec2 coord, float a, float b) {
-        return (floor(coord.x) == a && floor(coord.y) == b);
-    }
-    
-    vec4 backbuffer(float a,float b) {
-      return texture2D( iChannel0, (0.5+vec2(a,b)) / iResolution.xy, -100.0 );
-    }
-    
-    void main( ) {
-    
-        vec2 uv = vUv;// / iResolution.xy;
-        vec4 color = texture2D(iChannel0,uv);
-    
-        if (pixelAt(gl_FragCoord.xy,0.,0.)) { //Surface position
-            gl_FragColor = vec4(backbuffer(0.,0.).rg+(backbuffer(4.,0.).r*(backbuffer(2.,0.).rg-backbuffer(1.,0.).rg)),0.,1.);
-        } else if (pixelAt(gl_FragCoord.xy,1.,0.)) { //New mouse position
-            gl_FragColor = vec4(iMouse.xy/iResolution.xy,0.,1.);
-        } else if (pixelAt(gl_FragCoord.xy,2.,0.)) { //Old mouse position
-            gl_FragColor = vec4(backbuffer(1.,0.).rg,0.,1.);
-        } else if (pixelAt(gl_FragCoord.xy,3.,0.)) { //New mouse holded
-            gl_FragColor = vec4(clamp(iMouse.z,0.,1.),0.,0.,1.);
-        } else if (pixelAt(gl_FragCoord.xy,4.,0.)) { //Old mouse holded
-            gl_FragColor = vec4(backbuffer(3.,0.).r,0.,0.,1.);
-        } else {
-            gl_FragColor = vec4(0.,0.,0.,1.);
-        }
-    
-    }
-`;
+			    uniform vec4 iMouse;
+			    uniform sampler2D iChannel0;
+			    uniform vec3 iResolution;
+			    varying vec2 vUv;
+
+			    bool pixelAt(vec2 coord, float a, float b) {
+			        return (floor(coord.x) == a && floor(coord.y) == b);
+			    }
+
+			    vec4 backbuffer(float a,float b) {
+			      return texture2D( iChannel0, (0.5+vec2(a,b)) / iResolution.xy, -100.0 );
+			    }
+
+			    void main( ) {
+
+			        vec2 uv = vUv;// / iResolution.xy;
+			        vec4 color = texture2D(iChannel0,uv);
+
+			        if (pixelAt(gl_FragCoord.xy,0.,0.)) { //Surface position
+			            gl_FragColor = vec4(backbuffer(0.,0.).rg+(backbuffer(4.,0.).r*(backbuffer(2.,0.).rg-backbuffer(1.,0.).rg)),0.,1.);
+			        } else if (pixelAt(gl_FragCoord.xy,1.,0.)) { //New mouse position
+			            gl_FragColor = vec4(iMouse.xy/iResolution.xy,0.,1.);
+			        } else if (pixelAt(gl_FragCoord.xy,2.,0.)) { //Old mouse position
+			            gl_FragColor = vec4(backbuffer(1.,0.).rg,0.,1.);
+			        } else if (pixelAt(gl_FragCoord.xy,3.,0.)) { //New mouse holded
+			            gl_FragColor = vec4(clamp(iMouse.z,0.,1.),0.,0.,1.);
+			        } else if (pixelAt(gl_FragCoord.xy,4.,0.)) { //Old mouse holded
+			            gl_FragColor = vec4(backbuffer(3.,0.).r,0.,0.,1.);
+			        } else {
+			            gl_FragColor = vec4(0.,0.,0.,1.);
+			        }
+
+			    }
+			`;
 
 				const BUFFER_FINAL_FRAG = `
-    uniform sampler2D iChannel0;
-    uniform sampler2D iChannel1;
-    varying vec2 vUv;
-    
-    void main() {
-        vec2 uv = vUv;
-        vec2 a = texture2D(iChannel1,uv).xy;
-        gl_FragColor = vec4(texture2D(iChannel0,a).rgb,1.0);
-    }
-`;
+			    uniform sampler2D iChannel0;
+			    uniform sampler2D iChannel1;
+			    varying vec2 vUv;
+
+			    void main() {
+			        vec2 uv = vUv;
+			        vec2 a = texture2D(iChannel1,uv).xy;
+			        gl_FragColor = vec4(texture2D(iChannel0,a).rgb,1.0);
+			    }
+			`;
 
 				class App {
 					constructor() {
@@ -170,7 +114,7 @@
 						});
 					}
 
-					start() {
+					async start() {
 						const resolution = new THREE.Vector3(this.width, this.height, window.devicePixelRatio);
 						const channel0 = this.loader.load(
 							"https://res.cloudinary.com/di4jisedp/image/upload/v1523722553/wallpaper.jpg"
@@ -187,6 +131,7 @@
 							new BufferShader(fragmentShader, {
 								iFrame: { value: 0 },
 								iResolution: { value: resolution },
+								iChannelResolution: { value: [resolution, resolution, resolution, resolution] },
 								iMouse: { value: this.mousePosition },
 								iChannel0: { value: iChannel0 },
 								iChannel1: { value: iChannel1 },
@@ -195,7 +140,18 @@
 								iTime: { type: "f", value: 0.1 },
 							});
 
-						this.bufferA = initBuffer(BUFFER_A_FRAG);
+						await fetch("./.frag/liquify/a.frag")
+							.then((response) => response.blob())
+							.then(async (blob) => {
+								var reader = new FileReader();
+								reader.readAsText(blob);
+								while (reader.readyState != 2) await delay(100);
+								this.bufferA = initBuffer(ShaderToyToGLSL(reader.result));
+							})
+							.catch((error) => {
+								console.error(error);
+								return "";
+							});
 						this.bufferB = initBuffer(BUFFER_B_FRAG);
 						this.bufferImage = initBuffer(BUFFER_FINAL_FRAG, channel0);
 
@@ -226,7 +182,7 @@
 						this.uniforms = uniforms;
 						this.material = new THREE.ShaderMaterial({
 							fragmentShader: fragmentShader,
-							vertexShader: vertexShaderSource,
+							vertexShader: vertexShader,
 							uniforms: uniforms,
 						});
 						this.scene = new THREE.Scene();
