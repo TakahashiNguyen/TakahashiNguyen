@@ -16,7 +16,7 @@
 			}
 		</style>
 
-		<script type="text/javascript" src=".js/utils.js"></script>
+		<script type="text/javascript" src="../.js/utils.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body id="body">
@@ -81,12 +81,12 @@
 					}
 
 					async start() {
-						const channel0 = this.loader.load("./.jpg/ISS.jpg");
+						const channel0 = this.loader.load("../.jpg/ISS.jpg");
 						this.loader.setCrossOrigin("");
 
-						await fetchFromURL("./.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
-						await fetchFromURL("./.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
-						await fetchFromURL("./.frag/liquify/image.frag").then(
+						await fetchFromURL("../.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
+						await fetchFromURL("../.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
+						await fetchFromURL("../.frag/liquify/image.frag").then(
 							(data) => (this.bufferImage = this.initBuffer(true, data, channel0))
 						);
 
