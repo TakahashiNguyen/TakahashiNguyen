@@ -23,30 +23,55 @@
 		<script>
 			(async () => {
 				class App {
-					constructor() {
-						this.size = new THREE.Vector2();
-						this.renderer = new THREE.WebGLRenderer();
-						this.loader = new THREE.TextureLoader();
-						this.mousePosition = new THREE.Vector4();
+					setDOMSize() {
+						const { clientWidth, clientHeight } = ele(this.element);
+						this.size.set(clientWidth, clientHeight);
+					}
 
-						const setDOMSize = () => {
-							const { clientWidth, clientHeight } = ele("body");
-							this.size.set(clientWidth, clientHeight);
-						};
-						setDOMSize();
+					constructor(element = "body") {
+						return new Promise(async (resolve) => {
+							if (element != "body") {
+								if (isVideoEle(ele(element))) {
+									while (ele(element).readyState < 2) await delay(100);
+								}
+								var originalElement = ele(element);
+								var outerDiv = document.createElement("div");
 
-						// Append canvas to body
-						this.renderer.setSize(this.size.width, this.size.height);
-						document.body.appendChild(this.renderer.domElement);
+								outerDiv.setAttribute("id", `outer-${element}`);
+								outerDiv.style.border = "1px solid black";
+								outerDiv.style.display = "flex";
+								outerDiv.style.flexDirection = "row";
+								outerDiv.style.position = "absolute";
 
-						// Setup events
-						this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
-						this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
-						this.renderer.domElement.addEventListener("mousemove", (event) => {
-							this.mousePosition.setX(event.clientX);
-							this.mousePosition.setY(this.size.height - event.clientY);
+								originalElement.parentNode.insertBefore(outerDiv, originalElement);
+								outerDiv.appendChild(originalElement);
+							}
+
+							// Init GLSL
+							this.element = element;
+							this.size = new THREE.Vector2();
+							this.renderer = new THREE.WebGLRenderer();
+							this.loader = new THREE.TextureLoader();
+							this.mousePosition = new THREE.Vector4();
+
+							this.loader.setCrossOrigin("");
+							this.setDOMSize();
+
+							// Append canvas to body
+							this.renderer.setSize(this.size.width, this.size.height);
+							this.renderer.domElement.style.position = "absolute";
+							ele(`outer-${element}`).appendChild(this.renderer.domElement);
+
+							// Setup events
+							this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
+							this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
+							this.renderer.domElement.addEventListener("mousemove", (event) => {
+								this.mousePosition.setX(event.clientX);
+								this.mousePosition.setY(this.size.height - event.clientY);
+							});
+
+							resolve(this);
 						});
-						window.addEventListener("resize", setDOMSize);
 					}
 
 					initBuffer(isMainCamera, fragmentShader, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
@@ -66,14 +91,14 @@
 					}
 
 					async start() {
-						const channel0 = this.loader.load("../.jpg/ISS.jpg");
-						this.loader.setCrossOrigin("");
+						const imageChannel = this.loader.load("../.jpg/ISS.jpg"),
+							videoChannel = new THREE.VideoTexture(ele("videoChannel"));
 
 						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
 						await fetchFromURL("../.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = this.initBuffer(true, data, channel0))
+							(data) => (this.bufferImage = this.initBuffer(true, data, videoChannel))
 						);
 
 						this.animate();
@@ -179,10 +204,14 @@
 					}
 				}
 
-				document.addEventListener("DOMContentLoaded", () => {
-					new App().start();
+				document.addEventListener("DOMContentLoaded", async () => {
+					(await new App("videoChannel")).start();
 				});
 			})();
 		</script>
+
+		<div style="position: relative">
+			<video id="videoChannel" autoplay loop muted src="../.webm/greenScreenMan.webm"></video>
+		</div>
 	</body>
 </html>
