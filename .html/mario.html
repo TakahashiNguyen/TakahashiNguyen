@@ -16,7 +16,7 @@
 			}
 		</style>
 
-		<script type="text/javascript" src=".js/utils.js"></script>
+		<script type="text/javascript" src="../.js/utils.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body id="body">
@@ -27,8 +27,8 @@
 
 				var tuniform = {
 					iTime: { type: "f", value: 0.1 },
-					iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/Dorset.jpg") },
-					iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("./.jpg/ISS.jpg") },
+					iChannel0: { type: "t", value: THREE.ImageUtils.loadTexture("../.jpg/Dorset.jpg") },
+					iChannel1: { type: "t", value: THREE.ImageUtils.loadTexture("../.jpg/ISS.jpg") },
 					iMouse: { value: new THREE.Vector2() },
 					iResolution: { value: new THREE.Vector2(clientWidth, clientHeight) },
 				};
@@ -39,7 +39,7 @@
 
 				// Load vertex shader and fragment shader sources
 				let fragmentShaderSource;
-				await fetch("./.frag/mario.frag")
+				await fetch("../.frag/mario.frag")
 					.then((response) => response.blob())
 					.then(async (blob) => {
 						var reader = new FileReader();

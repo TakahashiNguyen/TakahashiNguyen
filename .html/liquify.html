@@ -24,7 +24,7 @@
 			(async () => {
 				class App {
 					setDOMSize() {
-						const { clientWidth, clientHeight } = ele(this.element);
+						const { clientWidth, clientHeight } = this.outerElement;
 						this.size.set(clientWidth, clientHeight);
 					}
 
@@ -33,27 +33,31 @@
 							if (element != "body") {
 								if (isVideoEle(ele(element))) {
 									while (ele(element).readyState < 2) await delay(100);
-									this.mainChannel = new THREE.VideoTexture(ele("videoChannel"));
+									this.mainChannel = new THREE.VideoTexture(ele(element));
 								} else if (isImageEle(ele(element))) {
 									while (ele(element).readyState < 2) await delay(100);
 									this.mainChannel = new THREE.Texture(ele(element));
+									this.mainChannel.needsUpdate = true;
 								}
 								var originalElement = ele(element);
 								var outerDiv = document.createElement("div");
+								var outerOuterDiv = document.createElement("div");
 
 								outerDiv.setAttribute("id", `outer-${element}`);
 								outerDiv.style.border = "1px solid black";
 								outerDiv.style.display = "flex";
 								outerDiv.style.flexDirection = "row";
-								outerDiv.style.position = "relative";
 
-								originalElement.parentNode.insertBefore(outerDiv, originalElement);
-								originalElement.style.opacity = "0";
+								outerOuterDiv.style.display = "flex";
+
+								originalElement.parentNode.insertBefore(outerOuterDiv, originalElement);
+								//originalElement.style.opacity = "0";
 								outerDiv.appendChild(originalElement);
+								outerOuterDiv.appendChild(outerDiv);
 							}
 
 							// Init GLSL
-							this.element = element;
+							this.outerElement = ele(`outer-${element}`);
 							this.size = new THREE.Vector2();
 							this.renderer = new THREE.WebGLRenderer();
 							this.mousePosition = new THREE.Vector4();
@@ -63,14 +67,15 @@
 							// Append canvas to body
 							this.renderer.setSize(this.size.width, this.size.height);
 							this.renderer.domElement.style.position = "fixed";
-							ele(`outer-${element}`).appendChild(this.renderer.domElement);
+							this.outerElement.appendChild(this.renderer.domElement);
 
 							// Setup events
 							this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
 							this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
 							this.renderer.domElement.addEventListener("mousemove", (event) => {
-								this.mousePosition.setX(event.clientX);
-								this.mousePosition.setY(this.size.height - event.clientY);
+								const rect = event.target.getBoundingClientRect();
+								this.mousePosition.setX(event.clientX - rect.left);
+								this.mousePosition.setY(this.size.height - event.clientY + rect.top);
 							});
 
 							resolve(this);
@@ -126,6 +131,7 @@
 							this.bufferB.render();
 							this.bufferImage.render();
 
+							this.setDOMSize();
 							this.animate();
 						});
 					}
@@ -212,13 +218,21 @@
 
 				document.addEventListener("DOMContentLoaded", async () => {
 					(await new App("videoChannel")).start();
+					(await new App("imageChannel")).start();
 				});
 			})();
 		</script>
 
-		<div style="position: absolute; display: flex; flex-direction: column">
-			<video id="videoChannel" autoplay loop muted src="../.webm/greenScreenMan.webm"></video>
-			<img src="../.jpg/ISS.jpg" alt="" width="1000" height="100" />
+		<div style="position: relative; display: flex; flex-direction: column">
+			<video
+				id="videoChannel"
+				autoplay
+				loop
+				muted
+				src="../.webm/greenScreenMan.webm"
+				style="width: 100%; display: block"
+			></video>
+			<img src="../.jpg/ISS.jpg" alt="" width="500" height="500" id="imageChannel" />
 		</div>
 	</body>
 </html>
