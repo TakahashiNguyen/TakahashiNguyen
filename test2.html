@@ -25,26 +25,28 @@
 				class App {
 					constructor() {
 						this.clock = new THREE.Clock();
-						const setDOMSize = () => {
-							const { clientWidth, clientHeight } = ele("body");
-							this.size = { width: clientWidth, height: clientHeight };
-						};
-
-						setDOMSize();
-
-						this.camera = new THREE.PerspectiveCamera(1, this.size.width / this.size.height, 0.1, 1000);
+						this.size = new THREE.Vector2();
 						this.renderer = new THREE.WebGLRenderer();
 						this.loader = new THREE.TextureLoader();
 						this.mousePosition = new THREE.Vector4();
 						this.counter = 0;
 
-						// Set camera position
+						const setDOMSize = () => {
+							const { clientWidth, clientHeight } = ele("body");
+							this.size.set(clientWidth, clientHeight);
+						};
+						setDOMSize();
+
+						// Setup camera
+						this.camera = new THREE.PerspectiveCamera(1, this.size.width / this.size.height, 0.1, 1000);
 						this.camera.position.x = this.camera.position.y = 0;
 						this.camera.position.z = 100;
 
+						// Append canvas to body
 						this.renderer.setSize(this.size.width, this.size.height);
 						document.body.appendChild(this.renderer.domElement);
 
+						// Setup events
 						this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
 						this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
 						this.renderer.domElement.addEventListener("mousemove", (event) => {
@@ -122,10 +124,8 @@
 						this.renderer = renderer;
 						this.size = size;
 						this.clock = clock;
-
 						this.scene = new THREE.Scene();
-						this.geometry = new THREE.PlaneBufferGeometry(2, 2);
-						// this.geometry = new THREE.PlaneBufferGeometry(2, 2); !!WORKING
+						this.geometry = new THREE.PlaneBufferGeometry(size.width, size.height);
 						this.material = new THREE.ShaderMaterial({
 							fragmentShader: fragmentShader,
 							vertexShader: vertexShader,
