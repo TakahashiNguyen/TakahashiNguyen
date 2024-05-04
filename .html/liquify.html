@@ -29,9 +29,9 @@
 
 					async start() {
 						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
-						this.bufferA = await this.initBuffer(false, "../.frag/liquify/a.frag");
-						this.bufferB = await this.initBuffer(false, "../.frag/liquify/b.frag");
-						this.bufferImage = await this.initBuffer(true, "../.frag/liquify/image.frag", this.mainChannel);
+						this.bufferA = await this.initBuffer(false, "../.frag/liquify/a.frag", "");
+						this.bufferB = await this.initBuffer(false, "../.frag/liquify/b.frag", "");
+						this.bufferImage = await this.initBuffer(true, "../.frag/liquify/image.frag", "", this.mainChannel);
 
 						this.animate();
 					}

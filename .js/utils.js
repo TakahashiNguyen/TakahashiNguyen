@@ -68,9 +68,9 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 					resolve(reader.result);
 				})
 				.catch((error) => reject(error));
-		}),
-	isVideoEle = (ele) => ele.tagName === "VIDEO",
-	isImageEle = (ele) => ele.tagName === "IMG";
+	})),
+	(isVideoEle = (ele) => ele.tagName === "VIDEO"),
+	(isImageEle = (ele) => ele.tagName === "IMG");
 class GLSLElement {
 	setDOMSize() {
 		const { clientWidth, clientHeight } = this.outerElement;
@@ -131,10 +131,10 @@ class GLSLElement {
 		});
 	}
 
-	async initBuffer(isMainCamera, fragmentShaderURL, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
+	async initBuffer(isMainCamera, fragmentShaderURL, commonURL, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
 		return new GLSLBuffer(
 			isMainCamera,
-			ShaderToyToGLSL(await fetchFromURL(fragmentShaderURL)),
+			(await fetchFromURL(commonURL)) + ShaderToyToGLSL(await fetchFromURL(fragmentShaderURL)),
 			this.renderer,
 			this.size,
 			{
