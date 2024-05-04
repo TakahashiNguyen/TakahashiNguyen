@@ -25,8 +25,11 @@
 				class App {
 					constructor() {
 						this.clock = new THREE.Clock();
-						this.width = 1024;
-						this.height = 512;
+						const setDOMSize = () => {
+							const { clientWidth, clientHeight } = ele("body");
+							this.width = clientWidth;
+							this.height = clientHeight;
+						};
 
 						this.renderer = new THREE.WebGLRenderer();
 						this.loader = new THREE.TextureLoader();
@@ -34,21 +37,17 @@
 						this.orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 						this.counter = 0;
 
+						setDOMSize();
 						this.renderer.setSize(this.width, this.height);
 						document.body.appendChild(this.renderer.domElement);
 
-						this.renderer.domElement.addEventListener("mousedown", () => {
-							this.mousePosition.setZ(1);
-						});
-
-						this.renderer.domElement.addEventListener("mouseup", () => {
-							this.mousePosition.setZ(0);
-						});
-
+						this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
+						this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
 						this.renderer.domElement.addEventListener("mousemove", (event) => {
 							this.mousePosition.setX(event.clientX);
 							this.mousePosition.setY(this.height - event.clientY);
 						});
+						window.addEventListener("resize", setDOMSize);
 
 						this.targetA = new BufferManager(this.renderer, {
 							width: this.width,
@@ -121,13 +120,21 @@
 				class BufferShader {
 					constructor(fragmentShader, uniforms = {}) {
 						this.uniforms = uniforms;
+
+						this.scene = new THREE.Scene();
+						this.geometry = new THREE.PlaneBufferGeometry(2, 2);
+						// this.geometry = new THREE.PlaneBufferGeometry(2, 2); !!WORKING
 						this.material = new THREE.ShaderMaterial({
 							fragmentShader: fragmentShader,
 							vertexShader: vertexShader,
-							uniforms: uniforms,
+							uniforms: this.uniforms,
 						});
-						this.scene = new THREE.Scene();
-						this.scene.add(new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), this.material));
+						this.plane = new THREE.Mesh(this.geometry, this.material);
+
+						this.plane.receiveShadow = true;
+						this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
+
+						this.scene.add(this.plane);
 					}
 				}
 
