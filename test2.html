@@ -55,7 +55,6 @@
 					}
 
 					async start() {
-						const resolution = new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio);
 						const channel0 = this.loader.load(
 							"https://res.cloudinary.com/di4jisedp/image/upload/v1523722553/wallpaper.jpg"
 						);
@@ -68,10 +67,12 @@
 							iChannel2 = null,
 							iChannel3 = null
 						) =>
-							new Buffer(ShaderToyToGLSL(fragmentShader), this.renderer, this.size, {
+							new Buffer(ShaderToyToGLSL(fragmentShader), this.renderer, this.size, this.clock, {
 								iFrame: { value: 0 },
-								iResolution: { value: resolution },
-								iChannelResolution: { value: [resolution, resolution, resolution, resolution] },
+								iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
+								iChannelResolution: {
+									value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+								},
 								iMouse: { value: this.mousePosition },
 								iChannel0: { value: iChannel0 },
 								iChannel1: { value: iChannel1 },
@@ -97,13 +98,17 @@
 							this.bufferA.uniforms.iFrame.value = this.counter++;
 
 							this.bufferA.uniforms["iChannel0"].value = this.bufferA.readBuffer.texture;
+							this.bufferA.uniforms.iChannelResolution.value[0] = this.bufferA.uniforms.iResolution.value;
 							this.bufferA.uniforms["iChannel1"].value = this.bufferB.readBuffer.texture;
-							this.bufferA.render(this.bufferA.scene, this.camera);
+							this.bufferA.uniforms.iChannelResolution.value[1] = this.bufferB.uniforms.iResolution.value;
 
 							this.bufferB.uniforms["iChannel0"].value = this.bufferB.readBuffer.texture;
-							this.bufferB.render(this.bufferB.scene, this.camera);
+							this.bufferB.uniforms.iChannelResolution.value[0] = this.bufferB.uniforms.iResolution.value;
 
 							this.bufferImage.uniforms["iChannel1"].value = this.bufferA.readBuffer.texture;
+
+							this.bufferA.render(this.bufferA.scene, this.camera);
+							this.bufferB.render(this.bufferB.scene, this.camera);
 							this.bufferImage.render(this.bufferImage.scene, this.camera, true);
 
 							this.animate();
@@ -112,10 +117,11 @@
 				}
 
 				class Buffer {
-					constructor(fragmentShader, renderer, size, uniforms = {}) {
+					constructor(fragmentShader, renderer, size, clock, uniforms = {}) {
 						this.uniforms = uniforms;
 						this.renderer = renderer;
 						this.size = size;
+						this.clock = clock;
 
 						this.scene = new THREE.Scene();
 						this.geometry = new THREE.PlaneBufferGeometry(2, 2);
@@ -163,8 +169,14 @@
 						// Dynamic sizing
 						camera.aspect = this.size.width / this.size.height;
 						camera.updateProjectionMatrix();
+						this.uniforms.iResolution.value = new THREE.Vector3(
+							this.size.width,
+							this.size.height,
+							window.devicePixelRatio
+						);
 						this.renderer.setSize(this.size.width, this.size.height);
 
+						this.uniforms.iTime.value += this.clock.getDelta();
 						this.swap();
 					}
 				}
