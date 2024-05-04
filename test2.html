@@ -56,62 +56,63 @@
 						window.addEventListener("resize", setDOMSize);
 					}
 
-					async start() {
-						const channel0 = this.loader.load(
-							"https://res.cloudinary.com/di4jisedp/image/upload/v1523722553/wallpaper.jpg"
-						);
-						this.loader.setCrossOrigin("");
-
-						const initBuffer = (
-							fragmentShader = "",
-							iChannel0 = null,
-							iChannel1 = null,
-							iChannel2 = null,
-							iChannel3 = null
-						) =>
-							new Buffer(ShaderToyToGLSL(fragmentShader), this.renderer, this.size, this.clock, {
+					initBuffer(isMainCamera, fragmentShader, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
+						return new Buffer(
+							isMainCamera,
+							ShaderToyToGLSL(fragmentShader),
+							this.renderer,
+							this.camera,
+							this.size,
+							this.clock,
+							{
 								iFrame: { value: 0 },
 								iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
 								iChannelResolution: {
 									value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
 								},
 								iMouse: { value: this.mousePosition },
-								iChannel0: { value: iChannel0 },
-								iChannel1: { value: iChannel1 },
-								iChannel2: { value: iChannel2 },
-								iChannel3: { value: iChannel3 },
+								iChannel0: { value: iC0 },
+								iChannel1: { value: iC1 },
+								iChannel2: { value: iC2 },
+								iChannel3: { value: iC3 },
 								iTime: { type: "f", value: 0.1 },
-							});
-
-						await fetchFromURL("./.frag/liquify/a.frag").then((data) => (this.bufferA = initBuffer(data)));
-						await fetchFromURL("./.frag/liquify/b.frag").then((data) => (this.bufferB = initBuffer(data)));
-						await fetchFromURL("./.frag/liquify/image.frag").then(
-							(data) => (this.bufferImage = initBuffer(data, channel0))
+							}
 						);
+					}
 
-						// Set camera look at image
-						this.camera.lookAt(this.bufferImage.scene.position);
+					async start() {
+						const channel0 = this.loader.load("./.jpg/ISS.jpg");
+						this.loader.setCrossOrigin("");
+
+						await fetchFromURL("./.frag/liquify/a.frag").then((data) => (this.bufferA = this.initBuffer(false, data)));
+						await fetchFromURL("./.frag/liquify/b.frag").then((data) => (this.bufferB = this.initBuffer(false, data)));
+						await fetchFromURL("./.frag/liquify/image.frag").then(
+							(data) => (this.bufferImage = this.initBuffer(true, data, channel0))
+						);
 
 						this.animate();
 					}
 
 					animate() {
 						requestAnimationFrame(() => {
+							// bufferA section
 							this.bufferA.uniforms.iFrame.value = this.counter++;
-
-							this.bufferA.uniforms["iChannel0"].value = this.bufferA.readBuffer.texture;
+							this.bufferA.uniforms.iChannel0.value = this.bufferA.readBuffer.texture;
 							this.bufferA.uniforms.iChannelResolution.value[0] = this.bufferA.uniforms.iResolution.value;
-							this.bufferA.uniforms["iChannel1"].value = this.bufferB.readBuffer.texture;
+							this.bufferA.uniforms.iChannel1.value = this.bufferB.readBuffer.texture;
 							this.bufferA.uniforms.iChannelResolution.value[1] = this.bufferB.uniforms.iResolution.value;
 
-							this.bufferB.uniforms["iChannel0"].value = this.bufferB.readBuffer.texture;
+							// bufferB section
+							this.bufferB.uniforms.iChannel0.value = this.bufferB.readBuffer.texture;
 							this.bufferB.uniforms.iChannelResolution.value[0] = this.bufferB.uniforms.iResolution.value;
 
-							this.bufferImage.uniforms["iChannel1"].value = this.bufferA.readBuffer.texture;
+							// bufferImage section
+							this.bufferImage.uniforms.iChannel1.value = this.bufferA.readBuffer.texture;
 
-							this.bufferA.render(this.bufferA.scene, this.camera);
-							this.bufferB.render(this.bufferB.scene, this.camera);
-							this.bufferImage.render(this.bufferImage.scene, this.camera, true);
+							// Render section
+							this.bufferA.render();
+							this.bufferB.render();
+							this.bufferImage.render();
 
 							this.animate();
 						});
@@ -119,11 +120,13 @@
 				}
 
 				class Buffer {
-					constructor(fragmentShader, renderer, size, clock, uniforms = {}) {
-						this.uniforms = uniforms;
+					constructor(isMainCamera, fragmentShader, renderer, camera, size, clock, uniforms = {}) {
+						this.isMainCamera = isMainCamera;
 						this.renderer = renderer;
+						this.camera = camera;
 						this.size = size;
 						this.clock = clock;
+						this.uniforms = uniforms;
 						this.scene = new THREE.Scene();
 						this.geometry = new THREE.PlaneBufferGeometry(size.width, size.height);
 						this.material = new THREE.ShaderMaterial({
@@ -156,19 +159,20 @@
 						this.writeBuffer = temp;
 					}
 
-					render(scene, camera, toScreen = false) {
-						if (toScreen) {
-							this.renderer.render(scene, camera);
+					render() {
+						if (this.isMainCamera) {
+							this.renderer.render(this.scene, this.camera);
+							this.camera.lookAt(this.scene.position);
 						} else {
 							this.renderer.setRenderTarget(this.writeBuffer);
 							this.renderer.clear();
-							this.renderer.render(scene, camera);
+							this.renderer.render(this.scene, this.camera);
 							this.renderer.setRenderTarget(null);
 						}
 
 						// Dynamic sizing
-						camera.aspect = this.size.width / this.size.height;
-						camera.updateProjectionMatrix();
+						this.camera.aspect = this.size.width / this.size.height;
+						this.camera.updateProjectionMatrix();
 						this.uniforms.iResolution.value = new THREE.Vector3(
 							this.size.width,
 							this.size.height,
