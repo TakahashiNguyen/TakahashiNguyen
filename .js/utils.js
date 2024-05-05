@@ -80,12 +80,20 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG";
 class GLSLElement {
-	setDOMSize() {
-		const { clientWidth, clientHeight } = this.outerElement;
+	async setDOMSize() {
+		const { clientWidth, clientHeight } = this.referenceSize;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
 	}
 
-	constructor(element = "body") {
+	constructor(
+		element = "body",
+		setupBuffer = async () => {
+			this.bf = await this.initBuffer(true, "../.frag/debug.frag", "");
+		},
+		setupChannel = async () => {}
+	) {
+		this.setupBuffer = setupBuffer;
+		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
 			if (element != "body") {
 				if (isVideoEle(ele(element))) {
@@ -102,6 +110,7 @@ class GLSLElement {
 
 				outerDiv.setAttribute("id", `outer-${element}`);
 				outerDiv.style.position = "relative";
+				outerDiv.style.display = "flex";
 
 				outerOuterDiv.style.display = "contents";
 
@@ -112,7 +121,7 @@ class GLSLElement {
 			}
 
 			// Init GLSL
-			this.outerElement = ele(`outer-${element}`);
+			this.referenceSize = originalElement;
 			this.size = new THREE.Vector3();
 			this.renderer = new THREE.WebGLRenderer();
 			this.mousePosition = new THREE.Vector4();
@@ -123,7 +132,7 @@ class GLSLElement {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
-			this.outerElement.appendChild(this.renderer.domElement);
+			ele(`outer-${element}`).appendChild(this.renderer.domElement);
 
 			// Setup events
 			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
@@ -134,7 +143,7 @@ class GLSLElement {
 				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
 			});
 
-			await this.start();
+			await this.setupBuffer(this);
 			this.animate();
 			resolve(this);
 		});
@@ -163,7 +172,7 @@ class GLSLElement {
 		);
 	}
 
-	async start() {
+	static async setupBuffer() {
 		// Init a buffer
 		// this.<bufferName> = await this.initBuffer(isMainCamera: boolean, URL: string, ..iChannel[0..3])
 		// 		isMainCamera: if this is the main to show then true else false
@@ -171,13 +180,13 @@ class GLSLElement {
 		// 		iChannel[0..3]: the channel to render with buffer
 	}
 
-	setupBuffer() {
+	static async setupChannel() {
 		// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
 	}
 
 	async animate() {
-		requestAnimationFrame(() => {
-			this.setupBuffer();
+		requestAnimationFrame(async () => {
+			await this.setupChannel(this);
 			for (let e in this) {
 				try {
 					eval(`this.${e}.render()`);
