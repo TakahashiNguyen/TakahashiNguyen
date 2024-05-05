@@ -48,6 +48,7 @@ const isWindows = /Windows/i.test(navigator.userAgent),
       	uniform float     iChannelTime[4];
       	uniform vec3      iChannelResolution[4]; 
 		varying vec2      vUv;
+		uniform vec4      iDate; 
 		` +
 		e
 			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
@@ -81,7 +82,7 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 class GLSLElement {
 	setDOMSize() {
 		const { clientWidth, clientHeight } = this.outerElement;
-		this.size.set(clientWidth, clientHeight);
+		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
 	}
 
 	constructor(element = "body") {
@@ -112,14 +113,14 @@ class GLSLElement {
 
 			// Init GLSL
 			this.outerElement = ele(`outer-${element}`);
-			this.size = new THREE.Vector2();
+			this.size = new THREE.Vector3();
 			this.renderer = new THREE.WebGLRenderer();
 			this.mousePosition = new THREE.Vector4();
 
 			this.setDOMSize();
 
 			// Append canvas to body
-			this.renderer.setSize(this.size.width, this.size.height);
+			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
 			this.outerElement.appendChild(this.renderer.domElement);
@@ -130,7 +131,7 @@ class GLSLElement {
 			this.renderer.domElement.addEventListener("mousemove", (event) => {
 				const rect = event.target.getBoundingClientRect();
 				this.mousePosition.setX(event.clientX - rect.left);
-				this.mousePosition.setY(this.size.height - event.clientY + rect.top);
+				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
 			});
 
 			this.start();
@@ -146,7 +147,7 @@ class GLSLElement {
 			this.size,
 			{
 				iFrame: { value: 0 },
-				iResolution: { value: new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio) },
+				iResolution: { value: this.size },
 				iChannelResolution: {
 					value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
 				},
@@ -156,6 +157,7 @@ class GLSLElement {
 				iChannel2: { value: iC2 },
 				iChannel3: { value: iC3 },
 				iTime: { type: "f", value: 0.1 },
+				iDate: { value: new THREE.Vector4() },
 			}
 		);
 	}
@@ -190,7 +192,7 @@ class GLSLBuffer {
 		this.uniforms = uniforms;
 		this.clock = new THREE.Clock();
 		this.scene = new THREE.Scene();
-		this.geometry = new THREE.PlaneBufferGeometry(size.width, size.height);
+		this.geometry = new THREE.PlaneBufferGeometry(size.x, size.y);
 		this.material = new THREE.ShaderMaterial({
 			fragmentShader: fragmentShader,
 			vertexShader: vertexShader,
@@ -204,12 +206,12 @@ class GLSLBuffer {
 		this.scene.add(this.plane);
 
 		// Setup camera
-		this.camera = new THREE.PerspectiveCamera(1, this.size.width / this.size.height, 0.1, 1000);
+		this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
 		this.camera.position.x = this.camera.position.y = 0;
 		this.camera.position.z = 100;
 
 		// Buffer section
-		this.readBuffer = new THREE.WebGLRenderTarget(size.width, size.height, {
+		this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
 			minFilter: THREE.LinearFilter,
 			magFilter: THREE.LinearFilter,
 			format: THREE.RGBAFormat,
@@ -235,18 +237,16 @@ class GLSLBuffer {
 		if (this.isMainCamera) {
 			this.camera.lookAt(this.scene.position);
 			this.renderer.render(this.scene, this.camera);
+			this.renderer.setSize(this.size.x, this.size.y);
+			this.camera.aspect = this.size.x / this.size.y;
+			this.camera.updateProjectionMatrix();
 		} else {
+			this.writeBuffer.setSize(this.size.x, this.size.y);
 			this.renderer.setRenderTarget(this.writeBuffer);
 			this.renderer.clear();
 			this.renderer.render(this.scene, this.camera);
 			this.renderer.setRenderTarget(null);
 		}
-
-		// Dynamic sizing
-		this.camera.aspect = this.size.width / this.size.height;
-		this.camera.updateProjectionMatrix();
-		this.uniforms.iResolution.value = new THREE.Vector3(this.size.width, this.size.height, window.devicePixelRatio);
-		this.renderer.setSize(this.size.width, this.size.height);
 
 		// Update uniforms data
 		this.uniforms.iTime.value += this.clock.getDelta();
