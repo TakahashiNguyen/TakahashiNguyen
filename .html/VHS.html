@@ -44,42 +44,27 @@
 							null,
 							this.mainChannel
 						);
-
-						this.animate();
 					}
 
-					animate() {
-						requestAnimationFrame(async () => {
-							// bufferB section
-							this.bufferB.setChannel(0, this.bufferA);
+					setupBuffer() {
+						// bufferB section
+						this.bufferB.setChannel(0, this.bufferA);
 
-							// bufferC section
-							this.bufferC.setChannel(0, this.bufferC);
-							this.bufferC.setChannel(1, this.bufferB);
+						// bufferC section
+						this.bufferC.setChannel(0, this.bufferC);
+						this.bufferC.setChannel(1, this.bufferB);
 
-							// bufferD section
-							this.bufferD.setChannel(0, this.bufferC);
+						// bufferD section
+						this.bufferD.setChannel(0, this.bufferC);
 
-							// bufferImage section
-							this.bufferImage.setChannel(0, this.bufferD);
-
-							// Render section
-							this.bufferA.render();
-							this.bufferB.render();
-							this.bufferC.render();
-							this.bufferD.render();
-							this.bufferImage.render();
-
-							this.setDOMSize();
-							this.animate();
-							this.mainChannel.needsUpdate = true;
-						});
+						// bufferImage section
+						this.bufferImage.setChannel(0, this.bufferD);
 					}
 				}
 
 				document.addEventListener("DOMContentLoaded", async () => {
 					new App("videoChannel");
-					//new App("imageChannel");
+					new App("imageChannel");
 				});
 			})();
 		</script>

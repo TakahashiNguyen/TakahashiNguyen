@@ -134,7 +134,8 @@ class GLSLElement {
 				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
 			});
 
-			this.start();
+			await this.start();
+			this.animate();
 			resolve(this);
 		});
 	}
@@ -168,14 +169,20 @@ class GLSLElement {
 		// 		isMainCamera: if this is the main to show then true else false
 		// 		URL: the url to load the fragment shader
 		// 		iChannel[0..3]: the channel to render with buffer
-
-		this.animate();
 	}
 
-	animate() {
-		requestAnimationFrame(async () => {
-			// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
-			// (Require) this.<bufferName>.render()
+	setupBuffer() {
+		// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
+	}
+
+	async animate() {
+		requestAnimationFrame(() => {
+			this.setupBuffer();
+			for (let e in this) {
+				try {
+					eval(`this.${e}.render()`);
+				} catch (error) {}
+			}
 
 			this.setDOMSize();
 			this.animate();
