@@ -1,4 +1,6 @@
-const isWindows = /Windows/i.test(navigator.userAgent),
+import * as THREE from "three";
+
+export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
 	vertexShader = `
@@ -79,7 +81,7 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG";
-class GLSLElement {
+export class GLSLElement {
 	async setDOMSize() {
 		const { clientWidth, clientHeight } = this.referenceSize;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
@@ -104,6 +106,10 @@ class GLSLElement {
 					this.mainChannel = new THREE.Texture(ele(element));
 					this.mainChannel.needsUpdate = true;
 				}
+
+				// canvas section
+				//this.mainChannel =
+
 				var originalElement = ele(element);
 				var outerDiv = document.createElement("div");
 				var outerOuterDiv = document.createElement("div");
@@ -208,7 +214,7 @@ class GLSLBuffer {
 		this.uniforms = uniforms;
 		this.clock = new THREE.Clock();
 		this.scene = new THREE.Scene();
-		this.geometry = new THREE.PlaneBufferGeometry(size.x, size.y);
+		this.geometry = new THREE.PlaneGeometry(size.x, size.y);
 		this.material = new THREE.ShaderMaterial({
 			fragmentShader: fragmentShader,
 			vertexShader: vertexShader,

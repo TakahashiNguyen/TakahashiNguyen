@@ -4,6 +4,53 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://threejs.org/build/three.module.js"
+				}
+			}
+		</script>
+		<script type="module">
+			import * as THREE from "three";
+			import * as utils from "../.js/utils.js";
+
+			class App extends utils.GLSLElement {
+				constructor(element) {
+					super(
+						element,
+						async (t) => {
+							t.bufferA = await t.initBuffer(false, "../.frag/VHS/a.frag", "../.frag/VHS/_common.frag", t.mainChannel);
+							t.bufferB = await t.initBuffer(false, "../.frag/VHS/b.frag", "../.frag/VHS/_common.frag");
+							t.bufferC = await t.initBuffer(false, "../.frag/VHS/c.frag", "../.frag/VHS/_common.frag");
+							t.bufferD = await t.initBuffer(false, "../.frag/VHS/d.frag", "../.frag/VHS/_common.frag");
+							t.bufferImage = await t.initBuffer(true, "../.frag/VHS/_main.frag", "../.frag/VHS/_common.frag");
+						},
+						async (t) => {
+							// bufferB section
+							t.bufferB.setChannel(0, t.bufferA);
+
+							// bufferC section
+							t.bufferC.setChannel(0, t.bufferC);
+							t.bufferC.setChannel(1, t.bufferB);
+
+							// bufferD section
+							t.bufferD.setChannel(0, t.bufferC);
+
+							// bufferImage section
+							t.bufferImage.setChannel(0, t.bufferD);
+						}
+					);
+				}
+			}
+
+			document.addEventListener("DOMContentLoaded", async () => {
+				new App("videoChannel");
+				new App("imageChannel");
+				new utils.GLSLElement("debugChannel");
+			});
+		</script>
+
 		<style>
 			body {
 				margin: 0;
@@ -15,55 +62,8 @@
 				display: block;
 			}
 		</style>
-
-		<script type="text/javascript" src="../.js/utils.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body id="body">
-		<script>
-			(async () => {
-				class App extends GLSLElement {
-					constructor(element) {
-						super(
-							element,
-							async (t) => {
-								t.bufferA = await t.initBuffer(
-									false,
-									"../.frag/VHS/a.frag",
-									"../.frag/VHS/_common.frag",
-									t.mainChannel
-								);
-								t.bufferB = await t.initBuffer(false, "../.frag/VHS/b.frag", "../.frag/VHS/_common.frag");
-								t.bufferC = await t.initBuffer(false, "../.frag/VHS/c.frag", "../.frag/VHS/_common.frag");
-								t.bufferD = await t.initBuffer(false, "../.frag/VHS/d.frag", "../.frag/VHS/_common.frag");
-								t.bufferImage = await t.initBuffer(true, "../.frag/VHS/_main.frag", "../.frag/VHS/_common.frag");
-							},
-							async (t) => {
-								// bufferB section
-								t.bufferB.setChannel(0, t.bufferA);
-
-								// bufferC section
-								t.bufferC.setChannel(0, t.bufferC);
-								t.bufferC.setChannel(1, t.bufferB);
-
-								// bufferD section
-								t.bufferD.setChannel(0, t.bufferC);
-
-								// bufferImage section
-								t.bufferImage.setChannel(0, t.bufferD);
-							}
-						);
-					}
-				}
-
-				document.addEventListener("DOMContentLoaded", async () => {
-					new App("videoChannel");
-					new App("imageChannel");
-					new GLSLElement("debugChannel");
-				});
-			})();
-		</script>
-
 		<div style="position: relative; display: flex; flex-direction: column">
 			<video id="videoChannel" autoplay loop muted src="../.webm/greenScreenMan.webm" style="width: 75%"></video>
 			<img src="../.jpg/ISS.jpg" alt="" width="100%" height="200" id="imageChannel" />
