@@ -172,7 +172,7 @@ class GLSLElement {
 		);
 	}
 
-	static async setupBuffer() {
+	async setupBuffer() {
 		// Init a buffer
 		// this.<bufferName> = await this.initBuffer(isMainCamera: boolean, URL: string, ..iChannel[0..3])
 		// 		isMainCamera: if this is the main to show then true else false
@@ -180,7 +180,7 @@ class GLSLElement {
 		// 		iChannel[0..3]: the channel to render with buffer
 	}
 
-	static async setupChannel() {
+	async setupChannel() {
 		// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
 	}
 
