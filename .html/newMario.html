@@ -29,29 +29,13 @@
 
 					async start() {
 						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
-						this.bufferA = await this.initBuffer(false, "../.frag/liquify/a.frag", "");
-						this.bufferB = await this.initBuffer(false, "../.frag/liquify/b.frag", "");
-						this.bufferImage = await this.initBuffer(true, "../.frag/liquify/image.frag", "", this.mainChannel);
+						this.bufferImage = await this.initBuffer(true, "../.frag/mario.frag", "");
 
 						this.animate();
 					}
 
 					animate() {
 						requestAnimationFrame(async () => {
-							// bufferA section
-							this.bufferA.setChannel(0, this.bufferA);
-							this.bufferA.setChannel(1, this.bufferB);
-
-							// bufferB section
-							this.bufferB.setChannel(0, this.bufferB);
-
-							// bufferImage section
-							//this.bufferImage.uniforms.iChannel0.value = this.bufferMario.readBuffer.texture;
-							this.bufferImage.setChannel(1, this.bufferA);
-
-							// Render section
-							this.bufferA.render();
-							this.bufferB.render();
 							this.bufferImage.render();
 
 							this.setDOMSize();
@@ -62,7 +46,7 @@
 
 				document.addEventListener("DOMContentLoaded", async () => {
 					new App("videoChannel");
-					new App("imageChannel");
+					//new App("imageChannel");
 				});
 			})();
 		</script>

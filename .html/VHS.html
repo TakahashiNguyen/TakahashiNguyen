@@ -28,41 +28,58 @@
 					}
 
 					async start() {
-						//await fetchFromURL("../.frag/mario.frag").then((data) => (this.bufferMario = this.initBuffer(false, data)));
-						this.bufferA = await this.initBuffer(false, "../.frag/liquify/a.frag", "");
-						this.bufferB = await this.initBuffer(false, "../.frag/liquify/b.frag", "");
-						this.bufferImage = await this.initBuffer(true, "../.frag/liquify/image.frag", "", this.mainChannel);
+						this.bufferA = await this.initBuffer(
+							false,
+							"../.frag/VHS/a.frag",
+							"../.frag/VHS/_common.frag",
+							this.mainChannel
+						);
+						this.bufferB = await this.initBuffer(false, "../.frag/VHS/b.frag", "../.frag/VHS/_common.frag");
+						this.bufferC = await this.initBuffer(false, "../.frag/VHS/c.frag", "../.frag/VHS/_common.frag");
+						this.bufferD = await this.initBuffer(false, "../.frag/VHS/d.frag", "../.frag/VHS/_common.frag");
+						this.bufferImage = await this.initBuffer(
+							true,
+							"../.frag/VHS/_main.frag",
+							"../.frag/VHS/_common.frag",
+							null,
+							this.mainChannel
+						);
 
 						this.animate();
 					}
 
 					animate() {
 						requestAnimationFrame(async () => {
-							// bufferA section
-							this.bufferA.setChannel(0, this.bufferA);
-							this.bufferA.setChannel(1, this.bufferB);
-
 							// bufferB section
-							this.bufferB.setChannel(0, this.bufferB);
+							this.bufferB.setChannel(0, this.bufferA);
+
+							// bufferC section
+							this.bufferC.setChannel(0, this.bufferC);
+							this.bufferC.setChannel(1, this.bufferB);
+
+							// bufferD section
+							this.bufferD.setChannel(0, this.bufferC);
 
 							// bufferImage section
-							//this.bufferImage.uniforms.iChannel0.value = this.bufferMario.readBuffer.texture;
-							this.bufferImage.setChannel(1, this.bufferA);
+							this.bufferImage.setChannel(0, this.bufferD);
 
 							// Render section
 							this.bufferA.render();
 							this.bufferB.render();
+							this.bufferC.render();
+							this.bufferD.render();
 							this.bufferImage.render();
 
 							this.setDOMSize();
 							this.animate();
+							this.mainChannel.needsUpdate = true;
 						});
 					}
 				}
 
 				document.addEventListener("DOMContentLoaded", async () => {
 					new App("videoChannel");
-					new App("imageChannel");
+					//new App("imageChannel");
 				});
 			})();
 		</script>
