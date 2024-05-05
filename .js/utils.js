@@ -38,20 +38,27 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 	},
 	ShaderToyToGLSL = (e) =>
 		`
-      precision highp   float;
-      uniform float     iTime;
-			uniform sampler2D iChannel0;
-			uniform sampler2D iChannel1;
-      uniform int       iFrame;
-			uniform vec4      iMouse;
-			uniform vec3      iResolution;
-      uniform float     iChannelTime[4];
-      uniform vec3      iChannelResolution[4]; 
-			varying vec2      vUv;` +
+      	precision highp   float;
+      	uniform float     iTime;
+		uniform sampler2D iChannel0;
+		uniform sampler2D iChannel1;
+      	uniform int       iFrame;
+		uniform vec4      iMouse;
+		uniform vec3      iResolution;
+      	uniform float     iChannelTime[4];
+      	uniform vec3      iChannelResolution[4]; 
+		varying vec2      vUv;
+		` +
 		e
-			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "main()")
-			.replaceAll("fragColor", "gl_FragColor")
-			.replaceAll("fragCoord", "gl_FragCoord"),
+			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
+			.replaceAll("fragColor", "gl_FragColor") +
+		`
+		void main()
+		{
+			vec2 fragCoord = vec2(gl_FragCoord.x, gl_FragCoord.y);
+			mainImage(fragCoord);
+		}
+		`,
 	fetchFromURL = (URL) =>
 		new Promise((resolve, reject) => {
 			fetch(URL)
@@ -65,12 +72,12 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 					var reader = new FileReader();
 					reader.readAsText(data);
 					while (reader.readyState != 2) await delay(100);
-					resolve(reader.result);
+					resolve(URL == "" ? "" : reader.result);
 				})
 				.catch((error) => reject(error));
-	})),
-	(isVideoEle = (ele) => ele.tagName === "VIDEO"),
-	(isImageEle = (ele) => ele.tagName === "IMG");
+		}),
+	isVideoEle = (ele) => ele.tagName === "VIDEO",
+	isImageEle = (ele) => ele.tagName === "IMG";
 class GLSLElement {
 	setDOMSize() {
 		const { clientWidth, clientHeight } = this.outerElement;
@@ -189,8 +196,8 @@ class GLSLBuffer {
 			vertexShader: vertexShader,
 			uniforms: this.uniforms,
 		});
-		this.plane = new THREE.Mesh(this.geometry, this.material);
 
+		this.plane = new THREE.Mesh(this.geometry, this.material);
 		this.plane.receiveShadow = true;
 		this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
 
@@ -226,8 +233,8 @@ class GLSLBuffer {
 
 	async render() {
 		if (this.isMainCamera) {
-			this.renderer.render(this.scene, this.camera);
 			this.camera.lookAt(this.scene.position);
+			this.renderer.render(this.scene, this.camera);
 		} else {
 			this.renderer.setRenderTarget(this.writeBuffer);
 			this.renderer.clear();
