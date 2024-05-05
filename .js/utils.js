@@ -127,7 +127,7 @@ export class GLSLElement {
 			}
 
 			// Init GLSL
-			this.referenceSize = originalElement;
+			this.referenceSize = this.originalElement;
 			this.size = new THREE.Vector3();
 			this.renderer = new THREE.WebGLRenderer();
 			this.mousePosition = new THREE.Vector4();
@@ -138,7 +138,7 @@ export class GLSLElement {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
-			ele(`outer-${element}`).appendChild(this.renderer.domElement);
+			outerOuterDiv.appendChild(this.renderer.domElement);
 
 			// Setup events
 			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
