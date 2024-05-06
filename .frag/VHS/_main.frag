@@ -28,13 +28,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     vec2 uv = fragCoord / iResolution.xy;
 
-    if (iMouse.z <= 0.0)
-    {
-        fragColor = texture(iChannel0, uv, FINAL_BLUR_BIAS);
-        fragColor = Televisionfy(fragColor, uv);
-    }
-    else
-    {
-        fragColor = texture(iChannel1, uv);
-    }
+    fragColor = texture(iChannel0, uv, FINAL_BLUR_BIAS);
+    fragColor = Televisionfy(fragColor, uv);
 }

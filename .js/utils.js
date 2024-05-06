@@ -1,4 +1,6 @@
-const isWindows = /Windows/i.test(navigator.userAgent),
+import * as THREE from "three";
+
+export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
 	vertexShader = `
@@ -78,44 +80,118 @@ const isWindows = /Windows/i.test(navigator.userAgent),
 				.catch((error) => reject(error));
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
-	isImageEle = (ele) => ele.tagName === "IMG";
-class GLSLElement {
-	setDOMSize() {
-		const { clientWidth, clientHeight } = this.outerElement;
+	isImageEle = (ele) => ele.tagName === "IMG",
+	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
+	copyCSS = (elem, origElem) => {
+		var computedStyle = getComputedStyle(origElem);
+		if (isSupportsCSSText) {
+			elem.style.cssText = computedStyle.cssText;
+		} else {
+			for (var prop in computedStyle) {
+				if (
+					isNaN(parseInt(prop, 10)) &&
+					typeof computedStyle[prop] !== "function" &&
+					!/^(cssText|length|parentRule)$/.test(prop)
+				) {
+					elem.style[prop] = computedStyle[prop];
+				}
+			}
+		}
+	},
+	inlineStyles = (elem, origElem) => {
+		var children = elem.querySelectorAll("*"),
+			origChildren = origElem.querySelectorAll("*");
+		copyCSS(elem, origElem, 1);
+		Array.prototype.forEach.call(children, (child, i) => copyCSS(child, origChildren[i]));
+		elem.style.margin =
+			elem.style.marginLeft =
+			elem.style.marginTop =
+			elem.style.marginBottom =
+			elem.style.marginRight =
+				"";
+	},
+	DOMtoImg = (origElem, width, height, left, top) => {
+		(left = left || 0), (top = top || 0);
+
+		var elem = origElem.cloneNode(true);
+		inlineStyles(elem, origElem);
+		elem.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+		var outerDiv = document.createElement("div");
+		(outerDiv.style.position = "absolute"), (outerDiv.style.display = "flex");
+		outerDiv.appendChild(elem);
+		elem.style.opacity = "1";
+
+		var dataUri =
+			"data:image/svg+xml;base64," +
+			btoa(`
+					<svg xmlns='http://www.w3.org/2000/svg' 
+						width='${(width || origElem.clientWidth) + left}'
+						height='${(height || origElem.clientHeight) + top}'
+					>
+						<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
+							${new XMLSerializer().serializeToString(outerDiv)}
+						</foreignObject>
+					</svg>`);
+
+		return new Promise((resolve, reject) => {
+			const image = new Image();
+			image.addEventListener("load", () => resolve(image));
+			image.addEventListener("error", () => reject(new Error("Failed to load image")));
+			image.src = dataUri;
+		});
+	};
+export class GLSLElement {
+	async setDOMSize() {
+		const { clientWidth, clientHeight } = this.referenceSize;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
 	}
 
-	constructor(element = "body") {
+	constructor(
+		element = "body",
+		setupBuffer = async () => {
+			this.bf = await this.initBuffer(true, "../.frag/debug.frag", "");
+		},
+		setupChannel = async () => {}
+	) {
+		this.setupBuffer = setupBuffer;
+		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
-			if (element != "body") {
-				if (isVideoEle(ele(element))) {
-					while (ele(element).readyState < 2) await delay(100);
-					this.mainChannel = new THREE.VideoTexture(ele(element));
-				} else if (isImageEle(ele(element))) {
-					while (ele(element).readyState < 2) await delay(100);
-					this.mainChannel = new THREE.Texture(ele(element));
-					this.mainChannel.needsUpdate = true;
-				}
-				var originalElement = ele(element);
-				var outerDiv = document.createElement("div");
-				var outerOuterDiv = document.createElement("div");
+			this.originalElement = ele(element);
+			this.outerDiv = document.createElement("div");
+			var outerOuterDiv = document.createElement("div");
 
-				outerDiv.setAttribute("id", `outer-${element}`);
-				outerDiv.style.position = "relative";
+			this.outerDiv.style.position = "relative";
+			this.outerDiv.style.display = "flex";
 
-				outerOuterDiv.style.display = "contents";
-
-				originalElement.parentNode.insertBefore(outerOuterDiv, originalElement);
-				originalElement.style.opacity = "0";
-				outerDiv.appendChild(originalElement);
-				outerOuterDiv.appendChild(outerDiv);
-			}
+			outerOuterDiv.style.display = "contents";
+			outerOuterDiv.style.position = "relative";
 
 			// Init GLSL
-			this.outerElement = ele(`outer-${element}`);
+			this.referenceSize = this.originalElement;
 			this.size = new THREE.Vector3();
-			this.renderer = new THREE.WebGLRenderer();
+			this.renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
 			this.mousePosition = new THREE.Vector4();
+
+			if (element != "body") {
+				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
+				if (isVideoEle(ele(element))) {
+					this.mainChannel = new THREE.VideoTexture(ele(element));
+				} else if (isImageEle(ele(element))) {
+					this.mainChannel = new THREE.Texture(ele(element));
+					this.mainChannel.needsUpdate = true;
+				} else {
+					this.canvas = document.createElement("canvas");
+					this.canvasCTX = this.canvas.getContext("2d");
+
+					this.mainChannel = new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement);
+					this.mainChannel.render();
+				}
+
+				this.originalElement.style.opacity = "0";
+				this.outerDiv.appendChild(this.renderer.domElement);
+				this.outerDiv.appendChild(this.originalElement);
+				outerOuterDiv.appendChild(this.outerDiv);
+			}
 
 			this.setDOMSize();
 
@@ -123,7 +199,6 @@ class GLSLElement {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
-			this.outerElement.appendChild(this.renderer.domElement);
 
 			// Setup events
 			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
@@ -134,7 +209,8 @@ class GLSLElement {
 				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
 			});
 
-			this.start();
+			await this.setupBuffer(this);
+			this.animate();
 			resolve(this);
 		});
 	}
@@ -162,20 +238,26 @@ class GLSLElement {
 		);
 	}
 
-	async start() {
+	async setupBuffer() {
 		// Init a buffer
 		// this.<bufferName> = await this.initBuffer(isMainCamera: boolean, URL: string, ..iChannel[0..3])
 		// 		isMainCamera: if this is the main to show then true else false
 		// 		URL: the url to load the fragment shader
 		// 		iChannel[0..3]: the channel to render with buffer
-
-		this.animate();
 	}
 
-	animate() {
+	async setupChannel() {
+		// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
+	}
+
+	async animate() {
 		requestAnimationFrame(async () => {
-			// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
-			// (Require) this.<bufferName>.render()
+			this.setupChannel(this);
+			for (let e in this) {
+				try {
+					eval(`this.${e}.render()`);
+				} catch (error) {}
+			}
 
 			this.setDOMSize();
 			this.animate();
@@ -192,7 +274,7 @@ class GLSLBuffer {
 		this.uniforms = uniforms;
 		this.clock = new THREE.Clock();
 		this.scene = new THREE.Scene();
-		this.geometry = new THREE.PlaneBufferGeometry(size.x, size.y);
+		this.geometry = new THREE.PlaneGeometry(size.x, size.y);
 		this.material = new THREE.ShaderMaterial({
 			fragmentShader: fragmentShader,
 			vertexShader: vertexShader,
@@ -253,5 +335,24 @@ class GLSLBuffer {
 		this.uniforms.iFrame.value = this.counter++;
 
 		this.swap();
+	}
+}
+class CanvasBuffer extends THREE.CanvasTexture {
+	constructor(canvas, ctx, element) {
+		super(canvas);
+		this.element = element;
+		this.canvas = canvas;
+		this.ctx = ctx;
+	}
+
+	async render() {
+		try {
+			await DOMtoImg(this.element).then((img) => {
+				(this.canvas.width = img.width), (this.canvas.height = img.height);
+				this.ctx.drawImage(img, 0, 0);
+			});
+		} catch (error) {}
+
+		this.dispose();
 	}
 }

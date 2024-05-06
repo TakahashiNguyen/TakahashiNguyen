@@ -1,3 +1,8 @@
+import { getRandomInt, delay, getIdsHasSubString, ele, abs, RGBToHex, HexToRgb, isWindows } from "./utils.js";
+
+// Export const
+window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
+
 // Local utils
 const updateClass = (obj, prefix, main, suffix = "") => {
 		try {
@@ -22,7 +27,6 @@ const updateClass = (obj, prefix, main, suffix = "") => {
 
 // Local const
 const dynamicDuration = 140000,
-	luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6],
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
 	hashTag = "7480201_DKD@QST";
@@ -128,7 +132,7 @@ function updateTextDecoration() {
 }
 
 // Fade animation for element
-async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
+export async function fade(element, duration, from, to, fps = 60, callafter = () => {}) {
 	return new Promise(async (resolve) => {
 		var l = from,
 			i = (from > to ? -1 : 1) * (1 / (duration * (fps / 1000)));
@@ -149,7 +153,7 @@ async function fade(element, duration, from, to, fps = 60, callafter = () => {})
 }
 
 // Text's dynamic size
-async function dynamicTextSizer(name, nickname, hashtag) {
+export async function dynamicTextSizer(name, nickname, hashtag) {
 	const { innerHeight, innerWidth } = window;
 	try {
 		textSquareSize = Math.min(innerHeight, innerWidth);
@@ -165,13 +169,13 @@ async function dynamicTextSizer(name, nickname, hashtag) {
 
 		if (isWindows) {
 			nickname.style.marginBottom = `-${textSquareSize / 74}px`;
-			hashtag.style.marginTop = `${textSquareSize / 150}px`;
+			hashtag.style.marginTop = `${textSquareSize / 100}px`;
 		}
 	} catch (error) {}
 }
 
 // Update text color
-function changeTextColor() {
+export function changeTextColor() {
 	const canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
 	const context = canvas.getContext("2d");
 	const canvaSize = Math.min(ele("myImg").width, ele("myImg").height) / 14;
