@@ -81,6 +81,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG",
+	isBody = (ele) => document.body === ele,
 	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
 	copyCSS = (elem, origElem) => {
 		var computedStyle = getComputedStyle(origElem);
@@ -147,24 +148,17 @@ export class GLSLElement {
 	}
 
 	constructor(
-		element = "body",
+		element,
 		setupBuffer = async () => {
 			this.bf = await this.initBuffer(true, "../.frag/debug.frag", "");
 		},
-		setupChannel = async () => {}
+		setupChannel = async () => {},
+		backgroundColor = "transparent"
 	) {
 		this.setupBuffer = setupBuffer;
 		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
 			this.originalElement = ele(element);
-			this.outerDiv = document.createElement("div");
-			var outerOuterDiv = document.createElement("div");
-
-			this.outerDiv.style.position = "relative";
-			this.outerDiv.style.display = "flex";
-
-			outerOuterDiv.style.display = "contents";
-			outerOuterDiv.style.position = "relative";
 
 			// Init GLSL
 			this.referenceSize = this.originalElement;
@@ -172,7 +166,16 @@ export class GLSLElement {
 			this.renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
 			this.mousePosition = new THREE.Vector4();
 
-			if (element != "body") {
+			if (!isBody(this.originalElement)) {
+				this.outerDiv = document.createElement("div");
+				var outerOuterDiv = document.createElement("div");
+
+				this.outerDiv.style.position = "relative";
+				this.outerDiv.style.display = "flex";
+
+				outerOuterDiv.style.display = "contents";
+				outerOuterDiv.style.position = "relative";
+
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				if (isVideoEle(ele(element))) {
 					this.mainChannel = new THREE.VideoTexture(ele(element));
@@ -191,6 +194,9 @@ export class GLSLElement {
 				this.outerDiv.appendChild(this.renderer.domElement);
 				this.outerDiv.appendChild(this.originalElement);
 				outerOuterDiv.appendChild(this.outerDiv);
+			} else {
+				resolve(this);
+				return;
 			}
 
 			this.setDOMSize();
@@ -199,6 +205,7 @@ export class GLSLElement {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
+			this.renderer.domElement.style.backgroundColor = backgroundColor;
 
 			// Setup events
 			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
