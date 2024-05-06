@@ -80,7 +80,66 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 				.catch((error) => reject(error));
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
-	isImageEle = (ele) => ele.tagName === "IMG";
+	isImageEle = (ele) => ele.tagName === "IMG",
+	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
+	copyCSS = (elem, origElem) => {
+		var computedStyle = getComputedStyle(origElem);
+		if (isSupportsCSSText) {
+			elem.style.cssText = computedStyle.cssText;
+		} else {
+			for (var prop in computedStyle) {
+				if (
+					isNaN(parseInt(prop, 10)) &&
+					typeof computedStyle[prop] !== "function" &&
+					!/^(cssText|length|parentRule)$/.test(prop)
+				) {
+					elem.style[prop] = computedStyle[prop];
+				}
+			}
+		}
+	},
+	inlineStyles = (elem, origElem) => {
+		var children = elem.querySelectorAll("*"),
+			origChildren = origElem.querySelectorAll("*");
+		copyCSS(elem, origElem, 1);
+		Array.prototype.forEach.call(children, (child, i) => copyCSS(child, origChildren[i]));
+		elem.style.margin =
+			elem.style.marginLeft =
+			elem.style.marginTop =
+			elem.style.marginBottom =
+			elem.style.marginRight =
+				"";
+	},
+	DOMtoImg = (origElem, width, height, left, top) => {
+		(left = left || 0), (top = top || 0);
+
+		var elem = origElem.cloneNode(true);
+		inlineStyles(elem, origElem);
+		elem.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+		var outerDiv = document.createElement("div");
+		(outerDiv.style.position = "absolute"), (outerDiv.style.display = "flex");
+		outerDiv.appendChild(elem);
+		elem.style.opacity = "1";
+
+		var dataUri =
+			"data:image/svg+xml;base64," +
+			btoa(`
+					<svg xmlns='http://www.w3.org/2000/svg' 
+						width='${(width || origElem.clientWidth) + left}'
+						height='${(height || origElem.clientHeight) + top}'
+					>
+						<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
+							${new XMLSerializer().serializeToString(outerDiv)}
+						</foreignObject>
+					</svg>`);
+
+		return new Promise((resolve, reject) => {
+			const image = new Image();
+			image.addEventListener("load", () => resolve(image));
+			image.addEventListener("error", () => reject(new Error("Failed to load image")));
+			image.src = dataUri;
+		});
+	};
 export class GLSLElement {
 	async setDOMSize() {
 		const { clientWidth, clientHeight } = this.referenceSize;
@@ -97,40 +156,42 @@ export class GLSLElement {
 		this.setupBuffer = setupBuffer;
 		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
-			if (element != "body") {
-				if (isVideoEle(ele(element))) {
-					while (ele(element).readyState < 2) await delay(100);
-					this.mainChannel = new THREE.VideoTexture(ele(element));
-				} else if (isImageEle(ele(element))) {
-					while (ele(element).readyState < 2) await delay(100);
-					this.mainChannel = new THREE.Texture(ele(element));
-					this.mainChannel.needsUpdate = true;
-				}
+			this.originalElement = ele(element);
+			this.outerDiv = document.createElement("div");
+			var outerOuterDiv = document.createElement("div");
 
-				// canvas section
-				//this.mainChannel =
+			this.outerDiv.style.position = "relative";
+			this.outerDiv.style.display = "flex";
 
-				var originalElement = ele(element);
-				var outerDiv = document.createElement("div");
-				var outerOuterDiv = document.createElement("div");
-
-				outerDiv.setAttribute("id", `outer-${element}`);
-				outerDiv.style.position = "relative";
-				outerDiv.style.display = "flex";
-
-				outerOuterDiv.style.display = "contents";
-
-				originalElement.parentNode.insertBefore(outerOuterDiv, originalElement);
-				originalElement.style.opacity = "0";
-				outerDiv.appendChild(originalElement);
-				outerOuterDiv.appendChild(outerDiv);
-			}
+			outerOuterDiv.style.display = "contents";
+			outerOuterDiv.style.position = "relative";
 
 			// Init GLSL
 			this.referenceSize = this.originalElement;
 			this.size = new THREE.Vector3();
-			this.renderer = new THREE.WebGLRenderer();
+			this.renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
 			this.mousePosition = new THREE.Vector4();
+
+			if (element != "body") {
+				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
+				if (isVideoEle(ele(element))) {
+					this.mainChannel = new THREE.VideoTexture(ele(element));
+				} else if (isImageEle(ele(element))) {
+					this.mainChannel = new THREE.Texture(ele(element));
+					this.mainChannel.needsUpdate = true;
+				} else {
+					this.canvas = document.createElement("canvas");
+					this.canvasCTX = this.canvas.getContext("2d");
+
+					this.mainChannel = new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement);
+					this.mainChannel.render();
+				}
+
+				this.originalElement.style.opacity = "0";
+				this.outerDiv.appendChild(this.renderer.domElement);
+				this.outerDiv.appendChild(this.originalElement);
+				outerOuterDiv.appendChild(this.outerDiv);
+			}
 
 			this.setDOMSize();
 
@@ -138,7 +199,6 @@ export class GLSLElement {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.renderer.domElement.style.position = "absolute";
 			this.renderer.domElement.style.top = "0";
-			outerOuterDiv.appendChild(this.renderer.domElement);
 
 			// Setup events
 			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
@@ -192,7 +252,7 @@ export class GLSLElement {
 
 	async animate() {
 		requestAnimationFrame(async () => {
-			await this.setupChannel(this);
+			this.setupChannel(this);
 			for (let e in this) {
 				try {
 					eval(`this.${e}.render()`);
@@ -275,5 +335,24 @@ class GLSLBuffer {
 		this.uniforms.iFrame.value = this.counter++;
 
 		this.swap();
+	}
+}
+class CanvasBuffer extends THREE.CanvasTexture {
+	constructor(canvas, ctx, element) {
+		super(canvas);
+		this.element = element;
+		this.canvas = canvas;
+		this.ctx = ctx;
+	}
+
+	async render() {
+		try {
+			await DOMtoImg(this.element).then((img) => {
+				(this.canvas.width = img.width), (this.canvas.height = img.height);
+				this.ctx.drawImage(img, 0, 0);
+			});
+		} catch (error) {}
+
+		this.dispose();
 	}
 }
