@@ -80,6 +80,42 @@
 					});
 				});
 			}
+
+			import * as utils from "../.js/utils.js";
+
+			class App extends utils.GLSLElement {
+				constructor(element, backgroundColor = "transparent") {
+					super(
+						element,
+						async (t) => {
+							t.bufferA = await t.initBuffer(false, "../.frag/VHS/a.frag", "../.frag/VHS/_common.frag", t.mainChannel);
+							t.bufferB = await t.initBuffer(false, "../.frag/VHS/b.frag", "../.frag/VHS/_common.frag");
+							t.bufferC = await t.initBuffer(false, "../.frag/VHS/c.frag", "../.frag/VHS/_common.frag");
+							t.bufferD = await t.initBuffer(false, "../.frag/VHS/d.frag", "../.frag/VHS/_common.frag");
+							t.bufferImage = await t.initBuffer(true, "../.frag/VHS/_main.frag", "../.frag/VHS/_common.frag");
+						},
+						async (t) => {
+							// bufferB section
+							t.bufferB.setChannel(0, t.bufferA);
+
+							// bufferC section
+							t.bufferC.setChannel(0, t.bufferC);
+							t.bufferC.setChannel(1, t.bufferB);
+
+							// bufferD section
+							t.bufferD.setChannel(0, t.bufferC);
+
+							// bufferImage section
+							t.bufferImage.setChannel(0, t.bufferD);
+						},
+						backgroundColor
+					);
+				}
+			}
+
+			document.addEventListener("DOMContentLoaded", async () => {
+				new App("thePage");
+			});
 		</script>
 
 		<style type="text/tailwindcss">

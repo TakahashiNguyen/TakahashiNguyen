@@ -167,14 +167,11 @@ export class GLSLElement {
 			this.mousePosition = new THREE.Vector4();
 
 			if (!isBody(this.originalElement)) {
-				this.outerDiv = document.createElement("div");
-				var outerOuterDiv = document.createElement("div");
+				var outerOuterDiv = document.createElement("div"),
+					outerDiv = document.createElement("div");
 
-				this.outerDiv.style.position = "relative";
-				this.outerDiv.style.display = "flex";
-
-				outerOuterDiv.style.display = "contents";
-				outerOuterDiv.style.position = "relative";
+				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
+				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				if (isVideoEle(ele(element))) {
@@ -183,17 +180,32 @@ export class GLSLElement {
 					this.mainChannel = new THREE.Texture(ele(element));
 					this.mainChannel.needsUpdate = true;
 				} else {
+					var innerDiv = document.createElement("div");
+
 					this.canvas = document.createElement("canvas");
 					this.canvasCTX = this.canvas.getContext("2d");
+
+					innerDiv.append(...this.originalElement.children);
+					innerDiv.style.width = innerDiv.style.height = "100%";
+					[innerDiv, this.originalElement] = [this.originalElement, innerDiv];
+					for (var property in innerDiv.style) {
+						if (property.toLowerCase().includes("color")) {
+							this.originalElement.style[property] = innerDiv.style[property];
+						}
+					}
+
+					innerDiv.appendChild(outerOuterDiv);
+					outerDiv.style.width = outerDiv.style.height = "100%";
 
 					this.mainChannel = new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement);
 					this.mainChannel.render();
 				}
 
+				this.testChannel = await this.initBuffer(false, this.mainChannel);
+
 				this.originalElement.style.opacity = "0";
-				this.outerDiv.appendChild(this.renderer.domElement);
-				this.outerDiv.appendChild(this.originalElement);
-				outerOuterDiv.appendChild(this.outerDiv);
+				outerDiv.append(this.renderer.domElement, this.originalElement);
+				outerOuterDiv.appendChild(outerDiv);
 			} else {
 				resolve(this);
 				return;
@@ -222,27 +234,21 @@ export class GLSLElement {
 		});
 	}
 
-	async initBuffer(isMainCamera, fragmentShaderURL, commonURL, iC0 = null, iC1 = null, iC2 = null, iC3 = null) {
-		return new GLSLBuffer(
-			isMainCamera,
-			(await fetchFromURL(commonURL)) + ShaderToyToGLSL(await fetchFromURL(fragmentShaderURL)),
-			this.renderer,
-			this.size,
-			{
-				iFrame: { value: 0 },
-				iResolution: { value: this.size },
-				iChannelResolution: {
-					value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
-				},
-				iMouse: { value: this.mousePosition },
-				iChannel0: { value: iC0 },
-				iChannel1: { value: iC1 },
-				iChannel2: { value: iC2 },
-				iChannel3: { value: iC3 },
-				iTime: { type: "f", value: 0.1 },
-				iDate: { value: new THREE.Vector4() },
-			}
-		);
+	async initBuffer(isMainCamera, input) {
+		return new ElementBuffer(isMainCamera, input, this.renderer, this.size, {
+			iFrame: { value: 0 },
+			iResolution: { value: this.size },
+			iChannelResolution: {
+				value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+			},
+			iMouse: { value: this.mousePosition },
+			iChannel0: { value: null },
+			iChannel1: { value: null },
+			iChannel2: { value: null },
+			iChannel3: { value: null },
+			iTime: { type: "f", value: 0.1 },
+			iDate: { value: new THREE.Vector4() },
+		});
 	}
 
 	async setupBuffer() {
@@ -272,48 +278,59 @@ export class GLSLElement {
 	}
 }
 
-class GLSLBuffer {
-	constructor(isMainCamera, fragmentShader, renderer, size, uniforms = {}) {
-		this.isMainCamera = isMainCamera;
-		this.renderer = renderer;
-		this.size = size;
-		this.counter = 0;
-		this.uniforms = uniforms;
-		this.clock = new THREE.Clock();
-		this.scene = new THREE.Scene();
-		this.geometry = new THREE.PlaneGeometry(size.x, size.y);
-		this.material = new THREE.ShaderMaterial({
-			fragmentShader: fragmentShader,
-			vertexShader: vertexShader,
-			uniforms: this.uniforms,
+class ElementBuffer {
+	constructor(isMainCamera, input, renderer, size, uniforms = {}) {
+		return new Promise(async (resolve) => {
+			(this.isMainCamera = isMainCamera), (this.renderer = renderer), (this.size = size);
+			(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
+			(this.scene = new THREE.Scene()), (this.geometry = new THREE.PlaneGeometry(size.x, size.y));
+			if (input instanceof THREE.Texture) {
+				this.material = new THREE.MeshBasicMaterial({ map: input, transparent: true });
+			} else if (typeof input === "string" || input instanceof String) {
+				const commonFilePath = () => {
+					let arr = input.split("/");
+					arr[arr.length - 1] = "_common.frag";
+					return arr.join("/");
+				};
+				this.material = new THREE.ShaderMaterial({
+					fragmentShader: (await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
+					vertexShader: vertexShader,
+					uniforms: this.uniforms,
+				});
+			}
+
+			this.plane = new THREE.Mesh(this.geometry, this.material);
+			this.plane.receiveShadow = true;
+			this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
+
+			this.scene.add(this.plane);
+
+			// Setup camera
+			this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
+			this.camera.position.x = this.camera.position.y = 0;
+			this.camera.position.z = 100;
+
+			// Buffer section
+			this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter,
+				format: THREE.RGBAFormat,
+				type: THREE.FloatType,
+				stencilBuffer: false,
+			});
+
+			this.writeBuffer = this.readBuffer.clone();
+			resolve(this);
 		});
-
-		this.plane = new THREE.Mesh(this.geometry, this.material);
-		this.plane.receiveShadow = true;
-		this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
-
-		this.scene.add(this.plane);
-
-		// Setup camera
-		this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-		this.camera.position.x = this.camera.position.y = 0;
-		this.camera.position.z = 100;
-
-		// Buffer section
-		this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
-			minFilter: THREE.LinearFilter,
-			magFilter: THREE.LinearFilter,
-			format: THREE.RGBAFormat,
-			type: THREE.FloatType,
-			stencilBuffer: false,
-		});
-
-		this.writeBuffer = this.readBuffer.clone();
 	}
 
 	async setChannel(number, buffer) {
 		this.uniforms[`iChannel${number}`].value = buffer.readBuffer.texture;
-		this.uniforms.iChannelResolution.value[number] = buffer.uniforms.iResolution.value;
+		try {
+			this.uniforms.iChannelResolution.value[number] = buffer.uniforms.iResolution.value;
+		} catch (error) {
+			this.uniforms.iChannelResolution.value[number] = buffer.size;
+		}
 	}
 
 	async swap() {
