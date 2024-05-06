@@ -199,6 +199,8 @@ export class GLSLElement {
 
 					this.mainChannel = new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement);
 					this.mainChannel.render();
+
+					if (true) document.body.appendChild(this.canvas);
 				}
 
 				this.testChannel = await this.initBuffer(false, this.mainChannel);
@@ -317,7 +319,11 @@ class ElementBuffer {
 	}
 
 	async setChannel(number, buffer) {
-		this.uniforms[`iChannel${number}`].value = buffer.readBuffer.texture;
+		try {
+			this.uniforms[`iChannel${number}`].value = buffer.readBuffer.texture;
+		} catch (error) {
+			this.uniforms[`iChannel${number}`].value = buffer.material;
+		}
 		try {
 			this.uniforms.iChannelResolution.value[number] = buffer.uniforms.iResolution.value;
 		} catch (error) {
