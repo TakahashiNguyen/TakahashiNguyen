@@ -299,25 +299,17 @@ class ElementBuffer {
 				});
 			}
 
-			this.plane = new THREE.Mesh(this.geometry, this.material);
-			this.plane.receiveShadow = true;
+			(this.plane = new THREE.Mesh(this.geometry, this.material)), (this.plane.receiveShadow = true);
 			this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
 
 			this.scene.add(this.plane);
 
 			// Setup camera
 			this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-			this.camera.position.x = this.camera.position.y = 0;
-			this.camera.position.z = 100;
+			(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
 
 			// Buffer section
-			this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
-				minFilter: THREE.LinearFilter,
-				magFilter: THREE.LinearFilter,
-				format: THREE.RGBAFormat,
-				type: THREE.FloatType,
-				stencilBuffer: false,
-			});
+			this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.FloatType, stencilBuffer: true });
 
 			this.writeBuffer = this.readBuffer.clone();
 			resolve(this);
