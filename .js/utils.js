@@ -287,7 +287,7 @@ class ElementBuffer {
 			(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 			(this.scene = new THREE.Scene()), (this.geometry = new THREE.PlaneGeometry(size.x, size.y));
 			if (input instanceof THREE.Texture) {
-				this.material = new THREE.MeshBasicMaterial({ map: input, transparent: true });
+				this.material = input;
 			} else if (typeof input === "string" || input instanceof String) {
 				const commonFilePath = () => {
 					let arr = input.split("/");
@@ -299,21 +299,21 @@ class ElementBuffer {
 					vertexShader: vertexShader,
 					uniforms: this.uniforms,
 				});
+
+				(this.plane = new THREE.Mesh(this.geometry, this.material)), (this.plane.receiveShadow = true);
+				(this.isFragment = true), (this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
+
+				this.scene.add(this.plane);
+
+				// Setup camera
+				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
+				(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
+
+				// Buffer section
+				this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.FloatType, stencilBuffer: true });
+
+				this.writeBuffer = this.readBuffer.clone();
 			}
-
-			(this.plane = new THREE.Mesh(this.geometry, this.material)), (this.plane.receiveShadow = true);
-			this.plane.position.x = this.plane.position.y = this.plane.position.z = 0;
-
-			this.scene.add(this.plane);
-
-			// Setup camera
-			this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-			(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
-
-			// Buffer section
-			this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.FloatType, stencilBuffer: true });
-
-			this.writeBuffer = this.readBuffer.clone();
 			resolve(this);
 		});
 	}
@@ -344,7 +344,7 @@ class ElementBuffer {
 			this.renderer.setSize(this.size.x, this.size.y);
 			this.camera.aspect = this.size.x / this.size.y;
 			this.camera.updateProjectionMatrix();
-		} else {
+		} else if (this.isFragment) {
 			this.writeBuffer.setSize(this.size.x, this.size.y);
 			this.renderer.setRenderTarget(this.writeBuffer);
 			this.renderer.clear();
