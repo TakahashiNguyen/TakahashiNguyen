@@ -6,17 +6,18 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<title>Nguyễn Việt Anh✨</title>
-
-		<link rel="icon" type="image/x-icon" href=".png/Larry_Chief_Mouser.png" />
-		<link rel="stylesheet" href=".css/style.css" type="text/css" />
-
 		<script src="https://cdn.tailwindcss.com"></script>
-		<script type="text/javascript" src=".js/utils.js"></script>
-		<script type="text/javascript" src=".js/functions.js"></script>
-		<script type="text/javascript" src=".js/website.js"></script>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://threejs.org/build/three.module.js"
+				}
+			}
+		</script>
+		<script type="module">
+			import { bannerTime } from "./.js/website.js";
+			import { changeTextColor } from "./.js/functions.js";
 
-		<script>
 			tailwind.config = {
 				theme: {
 					extend: {
@@ -46,7 +47,9 @@
 				},
 			};
 
-			let isBanner = false;
+			window.isBanner = false;
+			window.bannerTime = bannerTime;
+			window.changeTextColor = changeTextColor;
 
 			function toggleDarkMode() {
 				["bg", "text", "fill"].forEach((obj) => {
@@ -113,6 +116,11 @@
 				}
 			}
 		</style>
+
+		<title>Nguyễn Việt Anh✨</title>
+
+		<link rel="icon" type="image/x-icon" href=".png/Larry_Chief_Mouser.png" />
+		<link rel="stylesheet" href=".css/style.css" type="text/css" />
 	</head>
 	<body class="bg-white dark:bg-black select-none subpixel-antialiased overflow-hidden">
 		<div
