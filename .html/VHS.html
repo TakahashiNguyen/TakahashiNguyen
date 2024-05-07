@@ -27,7 +27,7 @@
 						},
 						async (t) => {
 							// bufferA section
-							t.bufferA.setChannel(0, t.testChannel)
+							t.bufferA.setChannel(0, t.mainChannel);
 
 							// bufferB section
 							t.bufferB.setChannel(0, t.bufferA);
@@ -48,8 +48,8 @@
 			}
 
 			document.addEventListener("DOMContentLoaded", async () => {
-				//new App("videoChannel", "black");
-				//new App("imageChannel");
+				new App("videoChannel", "black");
+				new App("imageChannel", "#370037");
 				new App("debugChannel");
 			});
 		</script>
