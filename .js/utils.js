@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { CSS3DRenderer } from "CSS3DRenderer";
 
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
@@ -90,6 +91,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG",
 	isBody = (ele) => document.body === ele,
+	isDiv = (ele) => ele.tagName == "DIV",
 	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
 	copyCSS = (elem, origElem) => {
 		var computedStyle = getComputedStyle(origElem);
@@ -155,6 +157,15 @@ export class GLSLElement {
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
 	}
 
+	makeRenderer(make, backgroundColor) {
+		const renderer = make();
+		renderer.setSize(this.size.x, this.size.y);
+		renderer.domElement.style.backgroundColor = backgroundColor;
+		renderer.domElement.style.top = renderer.domElement.style.left = 0;
+		renderer.domElement.style.position = "absolute";
+		return renderer;
+	}
+
 	constructor(
 		element,
 		setupBuffer = async () => {
@@ -171,7 +182,11 @@ export class GLSLElement {
 			// Init GLSL
 			this.referenceSize = this.originalElement;
 			this.size = new THREE.Vector3();
-			this.renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
+			this.rendererGL = this.makeRenderer(
+				() => new THREE.WebGLRenderer({ preserveDrawingBuffer: true }),
+				backgroundColor
+			);
+			this.renderer = this.makeRenderer(() => new CSS3DRenderer(), backgroundColor);
 			this.mousePosition = new THREE.Vector4();
 
 			if (!isBody(this.originalElement)) {
@@ -213,12 +228,17 @@ export class GLSLElement {
 
 					this.mainChannel = await this.initBuffer(
 						false,
-						new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement)
+						//new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement)
+						innerDiv
 					);
 				}
 
 				this.originalElement.style.opacity = "0";
-				outerDiv.append(this.renderer.domElement, this.originalElement);
+				outerDiv.append(
+					this.renderer.domElement,
+					this.rendererGL.domElement,
+					this.originalElement
+				);
 				outerOuterDiv.appendChild(outerDiv);
 			} else {
 				resolve(this);
@@ -227,20 +247,14 @@ export class GLSLElement {
 
 			this.setDOMSize();
 
-			// Append canvas to body
-			this.renderer.setSize(this.size.x, this.size.y);
-			this.renderer.domElement.style.position = "absolute";
-			this.renderer.domElement.style.top = "0";
-			this.renderer.domElement.style.backgroundColor = backgroundColor;
-
 			// Setup events
-			this.renderer.domElement.addEventListener("mousedown", () =>
+			this.rendererGL.domElement.addEventListener("mousedown", () =>
 				this.mousePosition.setZ(1)
 			);
-			this.renderer.domElement.addEventListener("mouseup", () =>
+			this.rendererGL.domElement.addEventListener("mouseup", () =>
 				this.mousePosition.setZ(0)
 			);
-			this.renderer.domElement.addEventListener("mousemove", (event) => {
+			this.rendererGL.domElement.addEventListener("mousemove", (event) => {
 				const rect = event.target.getBoundingClientRect();
 				this.mousePosition.setX(event.clientX - rect.left);
 				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
@@ -253,25 +267,32 @@ export class GLSLElement {
 	}
 
 	async initBuffer(isMainCamera, input) {
-		return new ElementBuffer(isMainCamera, input, this.renderer, this.size, {
-			iFrame: { value: 0 },
-			iResolution: { value: this.size },
-			iChannelResolution: {
-				value: [
-					new THREE.Vector3(),
-					new THREE.Vector3(),
-					new THREE.Vector3(),
-					new THREE.Vector3(),
-				],
-			},
-			iMouse: { value: this.mousePosition },
-			iChannel0: { value: null },
-			iChannel1: { value: null },
-			iChannel2: { value: null },
-			iChannel3: { value: null },
-			iTime: { type: "f", value: 0.1 },
-			iDate: { value: new THREE.Vector4() },
-		});
+		return new ElementBuffer(
+			isMainCamera,
+			input,
+			this.renderer,
+			this.rendererGL,
+			this.size,
+			{
+				iFrame: { value: 0 },
+				iResolution: { value: this.size },
+				iChannelResolution: {
+					value: [
+						new THREE.Vector3(),
+						new THREE.Vector3(),
+						new THREE.Vector3(),
+						new THREE.Vector3(),
+					],
+				},
+				iMouse: { value: this.mousePosition },
+				iChannel0: { value: null },
+				iChannel1: { value: null },
+				iChannel2: { value: null },
+				iChannel3: { value: null },
+				iTime: { type: "f", value: 0.1 },
+				iDate: { value: new THREE.Vector4() },
+			}
+		);
 	}
 
 	async setupBuffer() {
@@ -302,47 +323,48 @@ export class GLSLElement {
 }
 
 class ElementBuffer {
-	constructor(isMainCamera, input, renderer, size, uniforms = {}) {
+	constructor(isMainCamera, input, renderer, rendererGL, size, uniforms = {}) {
 		return new Promise(async (resolve) => {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
 			} else if (typeof input === "string" || input instanceof String) {
-				(this.renderer = renderer), (this.size = size);
+				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
 				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				(this.scene = new THREE.Scene()),
 					(this.geometry = new THREE.PlaneGeometry(size.x, size.y));
-				const commonFilePath = () => {
-					let arr = input.split("/");
-					arr[arr.length - 1] = "_common.frag";
-					return arr.join("/");
-				};
-				this.material = new THREE.ShaderMaterial({
-					fragmentShader:
-						(await fetchFromURL(commonFilePath())) +
-						ShaderToyToGLSL(await fetchFromURL(input)),
-					vertexShader: vertexShader,
-					uniforms: this.uniforms,
-				});
+				if (!isDiv(input)) {
+					const commonFilePath = () => {
+						let arr = input.split("/");
+						arr[arr.length - 1] = "_common.frag";
+						return arr.join("/");
+					};
+					this.material = new THREE.ShaderMaterial({
+						fragmentShader:
+							(await fetchFromURL(commonFilePath())) +
+							ShaderToyToGLSL(await fetchFromURL(input)),
+						vertexShader: vertexShader,
+						uniforms: this.uniforms,
+					});
 
-				(this.plane = new THREE.Mesh(this.geometry, this.material)),
-					(this.plane.receiveShadow = true);
-				(this.isFragment = true),
-					(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
+					(this.plane = new THREE.Mesh(this.geometry, this.material)),
+						(this.plane.receiveShadow = true);
+					(this.isFragment = true),
+						(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
 
-				this.scene.add(this.plane);
+					this.scene.add(this.plane);
 
-				// Setup camera
-				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-				(this.camera.position.x = this.camera.position.y = 0),
-					(this.camera.position.z = 100);
+					// Setup camera
+					this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
+					(this.camera.position.x = this.camera.position.y = 0),
+						(this.camera.position.z = 100);
 
-				// Buffer section
-				this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
-					type: THREE.FloatType,
-					stencilBuffer: true,
-				});
-
+					// Buffer section
+					this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
+						type: THREE.FloatType,
+						stencilBuffer: true,
+					});
+				}
 				this.writeBuffer = this.readBuffer.clone();
 			}
 			resolve(this);
@@ -364,15 +386,17 @@ class ElementBuffer {
 		if (this.isMainCamera) {
 			this.camera.lookAt(this.scene.position);
 			this.renderer.render(this.scene, this.camera);
-			this.renderer.setSize(this.size.x, this.size.y);
+			this.rendererGL.render(this.scene, this.camera);
+			this.rendererGL.setSize(this.size.x, this.size.y);
 			this.camera.aspect = this.size.x / this.size.y;
 			this.camera.updateProjectionMatrix();
 		} else if (this.isFragment) {
 			this.writeBuffer.setSize(this.size.x, this.size.y);
-			this.renderer.setRenderTarget(this.writeBuffer);
-			this.renderer.clear();
+			this.rendererGL.setRenderTarget(this.writeBuffer);
+			this.rendererGL.clear();
+			this.rendererGL.render(this.scene, this.camera);
 			this.renderer.render(this.scene, this.camera);
-			this.renderer.setRenderTarget(null);
+			this.rendererGL.setRenderTarget(null);
 			this.swap();
 
 			// Update uniforms data
