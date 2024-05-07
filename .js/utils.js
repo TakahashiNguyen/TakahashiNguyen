@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CSS3DRenderer } from "CSS3DRenderer";
+import { CSS3DRenderer, CSS3DObject } from "CSS3DRenderer";
 
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
@@ -83,7 +83,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 					while (reader.readyState != 2) await delay(100);
 					resolve(URL == "" ? "" : reader.result);
 				})
-				.catch((error) => reject(error));
+				.catch((error) => resolve(""));
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG",
@@ -222,11 +222,10 @@ export class GLSLElement {
 					this.mainChannel = await this.initBuffer(
 						false,
 						//new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement)
-						innerDiv
+						this.originalElement
 					);
 				}
 
-				this.originalElement.style.opacity = "0";
 				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
 			} else {
@@ -237,9 +236,9 @@ export class GLSLElement {
 			this.setDOMSize();
 
 			// Setup events
-			this.rendererGL.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
-			this.rendererGL.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
-			this.rendererGL.domElement.addEventListener("mousemove", (event) => {
+			outerDiv.addEventListener("mousedown", () => this.mousePosition.setZ(1));
+			outerDiv.addEventListener("mouseup", () => this.mousePosition.setZ(0));
+			outerDiv.addEventListener("mousemove", (event) => {
 				const rect = event.target.getBoundingClientRect();
 				this.mousePosition.setX(event.clientX - rect.left);
 				this.mousePosition.setY(this.size.y - event.clientY + rect.top);
@@ -302,16 +301,18 @@ class ElementBuffer {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
-			} else if (typeof input === "string" || input instanceof String) {
+			} else if (typeof input === "string" || input instanceof String || isDiv(input)) {
 				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
 				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
-				(this.scene = new THREE.Scene()), (this.geometry = new THREE.PlaneGeometry(size.x, size.y));
+				this.scene = new THREE.Scene();
 				if (!isDiv(input)) {
 					const commonFilePath = () => {
 						let arr = input.split("/");
 						arr[arr.length - 1] = "_common.frag";
 						return arr.join("/");
 					};
+
+					this.geometry = new THREE.PlaneGeometry(size.x, size.y);
 					this.material = new THREE.ShaderMaterial({
 						fragmentShader:
 							(await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
@@ -325,17 +326,24 @@ class ElementBuffer {
 						(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
 
 					this.scene.add(this.plane);
+				} else {
+					const object = new CSS3DObject(input);
+					object.position.set(0, 0, 0);
+					object.rotation.set(50, 0, 0);
+					object.scale.set(100, 1, 1);
 
-					// Setup camera
-					this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-					(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
-
-					// Buffer section
-					this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
-						type: THREE.FloatType,
-						stencilBuffer: true,
-					});
+					this.scene.add(object);
 				}
+
+				// Setup camera
+				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
+				(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
+
+				// Buffer section
+				this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
+					type: THREE.FloatType,
+					stencilBuffer: true,
+				});
 				this.writeBuffer = this.readBuffer.clone();
 			}
 			resolve(this);
