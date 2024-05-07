@@ -321,11 +321,7 @@ class ElementBuffer {
 
 	async setChannel(number, buffer) {
 		this.uniforms[`iChannel${number}`].value = buffer.readBuffer.texture;
-		try {
-			this.uniforms.iChannelResolution.value[number] = buffer.uniforms.iResolution.value;
-		} catch (error) {
-			this.uniforms.iChannelResolution.value[number] = buffer.size;
-		}
+		this.uniforms.iChannelResolution.value[number] = buffer.size;
 	}
 
 	async swap() {
