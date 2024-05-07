@@ -226,6 +226,7 @@ export class GLSLElement {
 					);
 				}
 
+				this.originalElement.style.zIndex = "-1";
 				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
 			} else {
