@@ -21,7 +21,12 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 	delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 	RGBToHex = (r, g, b) =>
 		"#" +
-		((1 << 24) | (abs(r + luckyColor[0]) << 16) | (abs(g + luckyColor[1]) << 8) | abs(b + luckyColor[2]))
+		(
+			(1 << 24) |
+			(abs(r + luckyColor[0]) << 16) |
+			(abs(g + luckyColor[1]) << 8) |
+			abs(b + luckyColor[2])
+		)
 			.toString(16)
 			.slice(1),
 	HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
@@ -53,7 +58,10 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		uniform vec4      iDate; 
 		` +
 		e
-			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
+			.replace(
+				"mainImage(out vec4 fragColor, in vec2 fragCoord)",
+				"mainImage(in vec2 fragCoord)"
+			)
 			.replaceAll("fragColor", "gl_FragColor") +
 		`
 		void main()
@@ -171,11 +179,15 @@ export class GLSLElement {
 					outerDiv = document.createElement("div");
 
 				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
-				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
+				(outerOuterDiv.style.position = "relative"),
+					(outerOuterDiv.style.display = "contents");
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				if (isVideoEle(ele(element))) {
-					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
+					this.mainChannel = await this.initBuffer(
+						false,
+						new THREE.VideoTexture(ele(element))
+					);
 				} else if (isImageEle(ele(element))) {
 					var mat = new THREE.Texture(ele(element));
 					mat.needsUpdate = true;
@@ -222,8 +234,12 @@ export class GLSLElement {
 			this.renderer.domElement.style.backgroundColor = backgroundColor;
 
 			// Setup events
-			this.renderer.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
-			this.renderer.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
+			this.renderer.domElement.addEventListener("mousedown", () =>
+				this.mousePosition.setZ(1)
+			);
+			this.renderer.domElement.addEventListener("mouseup", () =>
+				this.mousePosition.setZ(0)
+			);
 			this.renderer.domElement.addEventListener("mousemove", (event) => {
 				const rect = event.target.getBoundingClientRect();
 				this.mousePosition.setX(event.clientX - rect.left);
@@ -241,7 +257,12 @@ export class GLSLElement {
 			iFrame: { value: 0 },
 			iResolution: { value: this.size },
 			iChannelResolution: {
-				value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+				value: [
+					new THREE.Vector3(),
+					new THREE.Vector3(),
+					new THREE.Vector3(),
+					new THREE.Vector3(),
+				],
 			},
 			iMouse: { value: this.mousePosition },
 			iChannel0: { value: null },
@@ -289,29 +310,38 @@ class ElementBuffer {
 			} else if (typeof input === "string" || input instanceof String) {
 				(this.renderer = renderer), (this.size = size);
 				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
-				(this.scene = new THREE.Scene()), (this.geometry = new THREE.PlaneGeometry(size.x, size.y));
+				(this.scene = new THREE.Scene()),
+					(this.geometry = new THREE.PlaneGeometry(size.x, size.y));
 				const commonFilePath = () => {
 					let arr = input.split("/");
 					arr[arr.length - 1] = "_common.frag";
 					return arr.join("/");
 				};
 				this.material = new THREE.ShaderMaterial({
-					fragmentShader: (await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
+					fragmentShader:
+						(await fetchFromURL(commonFilePath())) +
+						ShaderToyToGLSL(await fetchFromURL(input)),
 					vertexShader: vertexShader,
 					uniforms: this.uniforms,
 				});
 
-				(this.plane = new THREE.Mesh(this.geometry, this.material)), (this.plane.receiveShadow = true);
-				(this.isFragment = true), (this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
+				(this.plane = new THREE.Mesh(this.geometry, this.material)),
+					(this.plane.receiveShadow = true);
+				(this.isFragment = true),
+					(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
 
 				this.scene.add(this.plane);
 
 				// Setup camera
 				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-				(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
+				(this.camera.position.x = this.camera.position.y = 0),
+					(this.camera.position.z = 100);
 
 				// Buffer section
-				this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.FloatType, stencilBuffer: true });
+				this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {
+					type: THREE.FloatType,
+					stencilBuffer: true,
+				});
 
 				this.writeBuffer = this.readBuffer.clone();
 			}
@@ -348,7 +378,8 @@ class ElementBuffer {
 			// Update uniforms data
 			this.uniforms.iTime.value += this.clock.getDelta();
 			this.uniforms.iFrame.value = this.counter++;
-		} else if (this.isTexture && this.readBuffer.texture instanceof CanvasBuffer) this.readBuffer.texture.render();
+		} else if (this.isTexture && this.readBuffer.texture instanceof CanvasBuffer)
+			this.readBuffer.texture.render();
 	}
 }
 class CanvasBuffer extends THREE.CanvasTexture {
