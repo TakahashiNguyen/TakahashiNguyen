@@ -59,10 +59,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		uniform vec4      iDate; 
 		` +
 		e
-			.replace(
-				"mainImage(out vec4 fragColor, in vec2 fragCoord)",
-				"mainImage(in vec2 fragCoord)"
-			)
+			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
 			.replaceAll("fragColor", "gl_FragColor") +
 		`
 		void main()
@@ -194,15 +191,11 @@ export class GLSLElement {
 					outerDiv = document.createElement("div");
 
 				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
-				(outerOuterDiv.style.position = "relative"),
-					(outerOuterDiv.style.display = "contents");
+				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				if (isVideoEle(ele(element))) {
-					this.mainChannel = await this.initBuffer(
-						false,
-						new THREE.VideoTexture(ele(element))
-					);
+					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
 				} else if (isImageEle(ele(element))) {
 					var mat = new THREE.Texture(ele(element));
 					mat.needsUpdate = true;
@@ -234,11 +227,7 @@ export class GLSLElement {
 				}
 
 				this.originalElement.style.opacity = "0";
-				outerDiv.append(
-					this.renderer.domElement,
-					this.rendererGL.domElement,
-					this.originalElement
-				);
+				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
 			} else {
 				resolve(this);
@@ -248,12 +237,8 @@ export class GLSLElement {
 			this.setDOMSize();
 
 			// Setup events
-			this.rendererGL.domElement.addEventListener("mousedown", () =>
-				this.mousePosition.setZ(1)
-			);
-			this.rendererGL.domElement.addEventListener("mouseup", () =>
-				this.mousePosition.setZ(0)
-			);
+			this.rendererGL.domElement.addEventListener("mousedown", () => this.mousePosition.setZ(1));
+			this.rendererGL.domElement.addEventListener("mouseup", () => this.mousePosition.setZ(0));
 			this.rendererGL.domElement.addEventListener("mousemove", (event) => {
 				const rect = event.target.getBoundingClientRect();
 				this.mousePosition.setX(event.clientX - rect.left);
@@ -267,44 +252,33 @@ export class GLSLElement {
 	}
 
 	async initBuffer(isMainCamera, input) {
-		return new ElementBuffer(
-			isMainCamera,
-			input,
-			this.renderer,
-			this.rendererGL,
-			this.size,
-			{
-				iFrame: { value: 0 },
-				iResolution: { value: this.size },
-				iChannelResolution: {
-					value: [
-						new THREE.Vector3(),
-						new THREE.Vector3(),
-						new THREE.Vector3(),
-						new THREE.Vector3(),
-					],
-				},
-				iMouse: { value: this.mousePosition },
-				iChannel0: { value: null },
-				iChannel1: { value: null },
-				iChannel2: { value: null },
-				iChannel3: { value: null },
-				iTime: { type: "f", value: 0.1 },
-				iDate: { value: new THREE.Vector4() },
-			}
-		);
+		return new ElementBuffer(isMainCamera, input, this.renderer, this.rendererGL, this.size, {
+			iFrame: { value: 0 },
+			iResolution: { value: this.size },
+			iChannelResolution: {
+				value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()],
+			},
+			iMouse: { value: this.mousePosition },
+			iChannel0: { value: null },
+			iChannel1: { value: null },
+			iChannel2: { value: null },
+			iChannel3: { value: null },
+			iTime: { type: "f", value: 0.1 },
+			iDate: { value: new THREE.Vector4() },
+		});
 	}
 
 	async setupBuffer() {
 		// Init a buffer
-		// this.<bufferName> = await this.initBuffer(isMainCamera: boolean, URL: string, ..iChannel[0..3])
+		// this.<bufferName> = await this.initBuffer(isMainCamera: boolean, URL: string)
 		// 		isMainCamera: if this is the main to show then true else false
 		// 		URL: the url to load the fragment shader
 		// 		iChannel[0..3]: the channel to render with buffer
 	}
 
 	async setupChannel() {
-		// Modify buffer channel by using menthod this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
+		// Modify buffer channel by using menthod
+		// 		this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
 	}
 
 	async animate() {
@@ -331,8 +305,7 @@ class ElementBuffer {
 			} else if (typeof input === "string" || input instanceof String) {
 				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
 				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
-				(this.scene = new THREE.Scene()),
-					(this.geometry = new THREE.PlaneGeometry(size.x, size.y));
+				(this.scene = new THREE.Scene()), (this.geometry = new THREE.PlaneGeometry(size.x, size.y));
 				if (!isDiv(input)) {
 					const commonFilePath = () => {
 						let arr = input.split("/");
@@ -341,8 +314,7 @@ class ElementBuffer {
 					};
 					this.material = new THREE.ShaderMaterial({
 						fragmentShader:
-							(await fetchFromURL(commonFilePath())) +
-							ShaderToyToGLSL(await fetchFromURL(input)),
+							(await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
 						vertexShader: vertexShader,
 						uniforms: this.uniforms,
 					});
@@ -356,8 +328,7 @@ class ElementBuffer {
 
 					// Setup camera
 					this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
-					(this.camera.position.x = this.camera.position.y = 0),
-						(this.camera.position.z = 100);
+					(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
 
 					// Buffer section
 					this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y, {

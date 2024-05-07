@@ -1,6 +1,6 @@
 {
   "tabWidth": 2,
   "useTabs": true,
-  "printWidth": 90,
+  "printWidth": 100,
   "bracketSameLine": false
 }
