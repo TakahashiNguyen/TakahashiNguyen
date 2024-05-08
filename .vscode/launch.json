@@ -24,15 +24,5 @@
         "index.html"
       ]
     },
-    {
-      "name": "Launch Edge",
-      "request": "launch",
-      "type": "msedge",
-      "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}/nvietuk.github.io/src",
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
-      }
-    },
   ]
 }
