@@ -190,10 +190,12 @@ export class GLSLElement {
 				var outerOuterDiv = document.createElement("div"),
 					outerDiv = document.createElement("div");
 
+				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement);
 				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
 				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
+				outerOuterDiv.appendChild(outerDiv);
 				if (isVideoEle(ele(element))) {
 					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
 				} else if (isImageEle(ele(element))) {
@@ -227,8 +229,6 @@ export class GLSLElement {
 				}
 
 				this.originalElement.style.zIndex = "-1";
-				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement, this.originalElement);
-				outerOuterDiv.appendChild(outerDiv);
 			} else {
 				resolve(this);
 				return;
@@ -246,7 +246,18 @@ export class GLSLElement {
 			});
 
 			await this.setupBuffer(this);
-			this.animate();
+			const animate = () => {
+				requestAnimationFrame(animate);
+				this.setupChannel(this);
+				for (let e in this) {
+					try {
+						eval(`this.${e}.render()`);
+					} catch (error) {}
+				}
+
+				this.setDOMSize();
+			};
+			animate();
 			resolve(this);
 		});
 	}
@@ -280,20 +291,6 @@ export class GLSLElement {
 		// Modify buffer channel by using menthod
 		// 		this.<bufferName>.setChannel(number: int, this.<targetBuffer>)
 	}
-
-	async animate() {
-		requestAnimationFrame(async () => {
-			this.setupChannel(this);
-			for (let e in this) {
-				try {
-					eval(`this.${e}.render()`);
-				} catch (error) {}
-			}
-
-			this.setDOMSize();
-			this.animate();
-		});
-	}
 }
 
 class ElementBuffer {
@@ -313,28 +310,31 @@ class ElementBuffer {
 						return arr.join("/");
 					};
 
-					this.geometry = new THREE.PlaneGeometry(size.x, size.y);
 					this.material = new THREE.ShaderMaterial({
 						fragmentShader:
 							(await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
 						vertexShader: vertexShader,
 						uniforms: this.uniforms,
 					});
-
-					(this.plane = new THREE.Mesh(this.geometry, this.material)),
-						(this.plane.receiveShadow = true);
-					(this.isFragment = true),
-						(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
-
-					this.scene.add(this.plane);
+					this.isFragment = true;
 				} else {
 					const object = new CSS3DObject(input);
 					object.position.set(0, 0, 0);
-					object.rotation.set(50, 0, 0);
-					object.scale.set(100, 1, 1);
+					object.rotation.set(0, 0, 0);
+					object.scale.set(1, 1, 1);
 
 					this.scene.add(object);
+
+					this.material = new THREE.MeshBasicMaterial({
+						color: new THREE.Color("green"),
+					});
 				}
+
+				this.geometry = new THREE.PlaneGeometry(size.x, size.y);
+				(this.plane = new THREE.Mesh(this.geometry, this.material)),
+					(this.plane.receiveShadow = true),
+					(this.plane.position.x = this.plane.position.y = this.plane.position.z = 0);
+				this.scene.add(this.plane);
 
 				// Setup camera
 				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
@@ -366,6 +366,7 @@ class ElementBuffer {
 		if (this.isMainCamera) {
 			this.camera.lookAt(this.scene.position);
 			this.renderer.render(this.scene, this.camera);
+			this.renderer.setSize(this.size.x, this.size.y);
 			this.rendererGL.render(this.scene, this.camera);
 			this.rendererGL.setSize(this.size.x, this.size.y);
 			this.camera.aspect = this.size.x / this.size.y;
@@ -376,6 +377,7 @@ class ElementBuffer {
 			this.rendererGL.clear();
 			this.rendererGL.render(this.scene, this.camera);
 			this.renderer.render(this.scene, this.camera);
+			this.renderer.setSize(this.size.x, this.size.y);
 			this.rendererGL.setRenderTarget(null);
 			this.swap();
 
