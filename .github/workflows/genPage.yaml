@@ -30,6 +30,7 @@ jobs:
       - name: Generate WEBP files
         working-directory: ./.jpg/
         run: |
+          mkdir ../.webp
           for file in ./*; do cwebp -q 50 "$file" -o "../.webp/${file%.*}.webp"; done
       - name: Setup Pages
         uses: actions/configure-pages@v5
