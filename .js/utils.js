@@ -83,7 +83,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 					while (reader.readyState != 2) await delay(100);
 					resolve(URL == "" ? "" : reader.result);
 				})
-				.catch((error) => resolve(""));
+				.catch((e) => resolve(""));
 		}),
 	isVideoEle = (ele) => ele.tagName === "VIDEO",
 	isImageEle = (ele) => ele.tagName === "IMG",
@@ -168,9 +168,7 @@ export class GLSLElement {
 
 	constructor(
 		element,
-		setupBuffer = async () => {
-			this.bf = await this.initBuffer(true, "../.frag/debug.frag");
-		},
+		setupBuffer = async () => {},
 		setupChannel = async () => {},
 		backgroundColor = "transparent"
 	) {
@@ -202,10 +200,12 @@ export class GLSLElement {
 				outerOuterDiv.appendChild(outerDiv);
 				if (isVideoEle(ele(element))) {
 					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
+					this.renderer.domElement.style.display = "none";
 				} else if (isImageEle(ele(element))) {
 					var mat = new THREE.Texture(ele(element));
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
+					this.renderer.domElement.style.display = "none";
 				} else {
 					this.innerInnerDiv = document.createElement("div");
 					this.referenceSize = outerDiv;

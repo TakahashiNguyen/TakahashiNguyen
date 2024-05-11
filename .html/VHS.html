@@ -20,6 +20,7 @@
 					super(
 						element,
 						async (t) => {
+							t.bufferDebug = await t.initBuffer(false, "../.frag/debug.frag");
 							t.bufferA = await t.initBuffer(false, "../.frag/VHS/a.frag");
 							t.bufferB = await t.initBuffer(false, "../.frag/VHS/b.frag");
 							t.bufferC = await t.initBuffer(false, "../.frag/VHS/c.frag");
@@ -41,7 +42,34 @@
 							t.bufferD.setChannel(0, t.bufferC);
 
 							// bufferImage section
-							t.bufferImage.setChannel(0, t.bufferD);
+							t.bufferImage.setChannel(0, t.bufferDebug);
+						},
+						backgroundColor
+					);
+				}
+			}
+
+			class App2 extends GLSLElement {
+				constructor(element, backgroundColor = "transparent") {
+					super(
+						element,
+						async (t) => {
+							t.bufferDebug = await t.initBuffer(false, "../.frag/debug.frag");
+							t.bufferA = await t.initBuffer(false, "../.frag/Liquify/a.frag");
+							t.bufferB = await t.initBuffer(false, "../.frag/Liquify/b.frag");
+							t.bufferImage = await t.initBuffer(true, "../.frag/Liquify/image.frag");
+						},
+						async (t) => {
+							// bufferA section
+							t.bufferA.setChannel(0, t.bufferA);
+							t.bufferA.setChannel(1, t.bufferB);
+
+							// bufferB section
+							t.bufferB.setChannel(0, t.bufferB);
+
+							// bufferImage section
+							t.bufferImage.setChannel(1, t.bufferA);
+							t.bufferImage.setChannel(0, t.mainChannel);
 						},
 						backgroundColor
 					);
@@ -50,7 +78,8 @@
 
 			document.addEventListener("DOMContentLoaded", async () => {
 				new GLSLElement("debugChannel");
-				//new App('videoChannel', 'black')
+				new App("videoChannel", "black");
+				new App2("imageChannel", "#370037");
 			});
 		</script>
 
