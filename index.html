@@ -48,10 +48,6 @@
 				},
 			};
 
-			window.isBanner = false;
-			window.bannerTime = bannerTime;
-			window.changeTextColor = changeTextColor;
-
 			function toggleDarkMode() {
 				["bg", "text", "fill"].forEach((obj) => {
 					const e1 = [...document.getElementsByClassName(`${obj}-white dark:${obj}-black`)];
@@ -81,6 +77,11 @@
 					});
 				});
 			}
+
+			window.isBanner = false;
+			window.bannerTime = bannerTime;
+			window.toggleDarkMode = toggleDarkMode;
+			window.changeTextColor = changeTextColor;
 		</script>
 
 		<style type="text/tailwindcss">
