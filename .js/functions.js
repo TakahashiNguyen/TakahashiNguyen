@@ -102,7 +102,7 @@ Promise.all(
 		"Yellowstone",
 	].map(async (imageName) => {
 		return await imgUrltoData(
-			`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
+			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`
 		);
 	})
 ).then((values) => {
