@@ -38,7 +38,7 @@ export const updateClass = (obj, prefix, main, suffix = "") => {
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "7480201_DKD@QST";
+	hashTag = "_______________________________________";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
