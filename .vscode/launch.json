@@ -5,21 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/svg2gif.js",
-      "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "node"
-    },
-    {
       "name": "Generate GIF file",
       "type": "debugpy",
       "request": "launch",
       "program": "svg2gif.py",
       "console": "integratedTerminal",
-      "justMyCode": true,
+      "justMyCode": false,
       "args": [
         "index.html"
       ]

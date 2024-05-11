@@ -1,5 +1,5 @@
 import { abs, ele } from "./utils.js";
-import { dynamicTextSizer, fade } from "./functions.js";
+import { dynamicTextSizer, fade, imgUrltoData } from "./functions.js";
 
 // Export variables
 window.textSquareSize = 0;
@@ -38,7 +38,10 @@ const cat = () => {
 };
 window.addEventListener("load", async () => {
 	githubButton.addEventListener("click", () => {
-		window.open(getRandomInt(6) ? "https://github.com/TakahashiNguyen" : "https://www.youtube.com/@vtv24", "_blank");
+		window.open(
+			getRandomInt(6) ? "https://github.com/TakahashiNguyen" : "https://www.youtube.com/@vtv24",
+			"_blank"
+		);
 	});
 
 	fade(loadingPage, 1975, 1, 0, 144, () => {

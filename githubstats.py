@@ -61,4 +61,4 @@ def generate_quote():
 
 
 print(generate_quote())
-os.system("python3 ./svg2gif.py index.html")
+os.system("python3 ./svg2gif.py")
