@@ -23,21 +23,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check for keyword
+      - name: Generate WEBP files
         run: |
-          keyword="ReDeploy"  # Replace with your desired keyword
-          message=$(git log -1 --pretty=%B)
-          if [[ $message =~ $keyword ]]; then
-              echo "Keyword found. Proceeding with actions."
-              # Add your desired actions here (within another step)
-          else
-              echo "Keyword not found. Terminating workflow."
-              exit 0
-          fi
+          cd ./.jpg/
+          for file in ./*; do cwebp -q 50 "$file" -o "../.webp/${file%.*}.webp"; done
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Remove Unnecessary
-        run: rm "Góc học tập" -fr
+        run: |
+          rm "Góc học tập" -fr
+          rm ./.jpg/ -fr
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
