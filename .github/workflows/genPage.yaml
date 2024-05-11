@@ -23,11 +23,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: webp
+          version: 1.0
       - name: Generate WEBP files
         run: |
           cd ./.jpg/
           for file in ./*; do cwebp -q 50 "$file" -o "../.webp/${file%.*}.webp"; done
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Remove Unnecessary
