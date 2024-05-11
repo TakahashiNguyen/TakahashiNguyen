@@ -43,8 +43,8 @@ const dynamicDuration = 140000,
 // Dynamic variables
 let imageBackgroundBrightness = 0,
 	textNameColor = "",
-	randomImageDelayLeft = 0,
 	images = [];
+window.randomImageDelayLeft = 0;
 
 // Local values' initations
 Promise.all(
