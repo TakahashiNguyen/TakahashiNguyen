@@ -1,10 +1,19 @@
-import { getRandomInt, delay, getIdsHasSubString, ele, abs, RGBToHex, HexToRgb, isWindows } from "./utils.js";
+import {
+	getRandomInt,
+	delay,
+	getIdsHasSubString,
+	ele,
+	abs,
+	RGBToHex,
+	HexToRgb,
+	isWindows,
+} from "./utils.js";
 
 // Export const
 window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
 
 // Local utils
-const updateClass = (obj, prefix, main, suffix = "") => {
+export const updateClass = (obj, prefix, main, suffix = "") => {
 		try {
 			const classes = obj.classList;
 			classes.remove(classes[classes.length - 1]);
