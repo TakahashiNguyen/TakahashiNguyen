@@ -30,7 +30,7 @@ def captureBanner(fname, darkMode=False, width=900, height=200):
     os.makedirs(folder)
 
     opts = webdriver.EdgeOptions()
-    # opts.add_argument("--headless")
+    opts.add_argument("--headless")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(width, height)
     driver.get(f"https://takahashinguyen.github.io/TakahashiNguyen/")
