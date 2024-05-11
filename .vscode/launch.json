@@ -11,9 +11,6 @@
       "program": "svg2gif.py",
       "console": "integratedTerminal",
       "justMyCode": false,
-      "args": [
-        "index.html"
-      ]
     },
   ]
 }
