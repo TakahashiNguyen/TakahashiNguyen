@@ -152,6 +152,9 @@ export class GLSLElement {
 	async setDOMSize() {
 		const { clientWidth, clientHeight } = this.referenceSize;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
+		if (this.referenceSize != this.originalElement)
+			(this.innerInnerDiv.style.width = `${clientWidth * 1.2}px`),
+				(this.innerInnerDiv.style.height = `${clientHeight * 1.2}px`);
 	}
 
 	makeRenderer(make, backgroundColor) {
@@ -166,7 +169,7 @@ export class GLSLElement {
 	constructor(
 		element,
 		setupBuffer = async () => {
-			this.bf = await this.initBuffer(true, "../.frag/debug.frag", "");
+			this.bf = await this.initBuffer(true, "../.frag/debug.frag");
 		},
 		setupChannel = async () => {},
 		backgroundColor = "transparent"
@@ -191,6 +194,7 @@ export class GLSLElement {
 					outerDiv = document.createElement("div");
 
 				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement);
+				(this.rendererGL.domElement.style.zIndex = 1), (this.renderer.domElement.style.zIndex = 2);
 				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
 				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
 
@@ -203,28 +207,27 @@ export class GLSLElement {
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
 				} else {
-					var innerDiv = document.createElement("div");
+					this.innerInnerDiv = document.createElement("div");
+					this.referenceSize = outerDiv;
 
 					this.canvas = document.createElement("canvas");
 					this.canvasCTX = this.canvas.getContext("2d");
 
-					innerDiv.append(...this.originalElement.children);
-					innerDiv.style.width = innerDiv.style.height = "100%";
-					[innerDiv, this.originalElement] = [this.originalElement, innerDiv];
-					for (var property in innerDiv.style) {
+					this.innerInnerDiv.append(...this.originalElement.children);
+					for (var property in this.originalElement.style) {
 						if (property.toLowerCase().includes("color")) {
-							this.originalElement.style[property] = innerDiv.style[property];
-							innerDiv.style[property] = "";
+							this.innerInnerDiv.style[property] = this.originalElement.style[property];
+							this.originalElement.style[property] = "";
 						}
 					}
 
-					innerDiv.appendChild(outerOuterDiv);
+					this.originalElement.appendChild(outerOuterDiv);
 					outerDiv.style.width = outerDiv.style.height = "100%";
 
 					this.mainChannel = await this.initBuffer(
-						false,
+						true,
 						//new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement)
-						this.originalElement
+						this.innerInnerDiv
 					);
 				}
 
@@ -319,9 +322,6 @@ class ElementBuffer {
 					this.isFragment = true;
 				} else {
 					const object = new CSS3DObject(input);
-					object.position.set(0, 0, 0);
-					object.rotation.set(0, 0, 0);
-					object.scale.set(1, 1, 1);
 
 					this.scene.add(object);
 
@@ -337,7 +337,12 @@ class ElementBuffer {
 				this.scene.add(this.plane);
 
 				// Setup camera
-				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
+				this.camera = new THREE.PerspectiveCamera(
+					isDiv(input) ? 100 : 1,
+					size.x / size.y,
+					0.1,
+					1000
+				);
 				(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
 
 				// Buffer section
