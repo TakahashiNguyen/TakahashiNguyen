@@ -19,7 +19,7 @@ jobs:
           echo "Installing dependencies and caching them."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - uses: browser-actions/setup-edge@master
+      - uses: browser-actions/setup-edge@latest
       - uses: Platane/snk/svg-only@main
         with:
           github_user_name: ${{ github.repository_owner }}
