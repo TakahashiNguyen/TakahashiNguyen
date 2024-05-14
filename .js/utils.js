@@ -4,7 +4,7 @@ import { CSS3DRenderer, CSS3DObject } from "CSS3DRenderer";
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
-	vertexShader = `
+	VERTEX_SHADER = `
       varying vec2 vUv;
 			void main()
 			{
@@ -14,13 +14,13 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			  gl_Position = projectionMatrix * mvPosition;
 			}
   `,
-	ele = (s) => document.getElementById(s),
-	getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`),
-	abs = (v) => Math.abs(v),
-	floor = (v) => Math.floor(v),
+	getElementById = (id) => document.getElementById(id),
+	getElementsWithSubstring = (substring) => document.querySelectorAll(`[id*=${substring}]`),
+	abs = (value) => Math.abs(value),
+	floor = (value) => Math.floor(value),
 	getRandomInt = (max) => Math.floor(Math.random() * max),
 	delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-	RGBToHex = (r, g, b) =>
+	rgbToHex = (r, g, b) =>
 		"#" +
 		(
 			(1 << 24) |
@@ -30,8 +30,8 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		)
 			.toString(16)
 			.slice(1),
-	HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
-		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
+	hexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
 		return [
 			parseInt(result[1], 16) + rr + luckyColor[0],
 			parseInt(result[2], 16) + gg + luckyColor[1],
@@ -39,12 +39,12 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		];
 	},
 	replaceAt = (str, pos, char) => {
-		let firstPart = str.substr(0, pos),
+		const firstPart = str.substr(0, pos),
 			lastPart = str.substr(pos + 1);
 
 		return firstPart + char + lastPart;
 	},
-	ShaderToyToGLSL = (e) =>
+	convertShaderToyToGLSL = (shader) =>
 		`
       	precision highp   float;
       	uniform float     iTime;
@@ -58,7 +58,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		varying vec2      vUv;
 		uniform vec4      iDate; 
 		` +
-		e
+		shader
 			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
 			.replaceAll("fragColor", "gl_FragColor") +
 		`
@@ -68,9 +68,10 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			mainImage(fragCoord);
 		}
 		`,
-	fetchFromURL = (URL, isImage = false) =>
+	fetchFromURL = (url, isImage = false) =>
 		new Promise((resolve) => {
-			fetch(URL)
+			if (!url) resolve("");
+			fetch(url)
 				.then((response) => {
 					if (!response.ok) {
 						throw new Error("Network response was not ok");
@@ -78,68 +79,69 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 					return response.blob();
 				})
 				.then(async (data) => {
-					var reader = new FileReader();
+					const reader = new FileReader();
 					isImage ? reader.readAsDataURL(data) : reader.readAsText(data);
-					while (reader.readyState != 2) await delay(100);
-					resolve(URL == "" ? "" : reader.result);
+					while (reader.readyState !== 2) await delay(100);
+					resolve(reader.result);
 				})
-				.catch((e) => resolve(""));
+				.catch((error) => resolve(""));
 		}),
-	isVideoEle = (ele) => ele.tagName === "VIDEO",
-	isImageEle = (ele) => ele.tagName === "IMG",
-	isBody = (ele) => document.body === ele,
-	isDiv = (ele) => ele.tagName == "DIV",
+	isVideoElement = (element) => element.tagName === "VIDEO",
+	isImageElement = (element) => element.tagName === "IMG",
+	isBodyElement = (element) => document.body === element,
+	isDivElement = (element) => element.tagName === "DIV",
 	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
-	copyCSS = (elem, origElem) => {
-		var computedStyle = getComputedStyle(origElem);
+	copyCSS = (element, originalElement) => {
+		const computedStyle = getComputedStyle(originalElement);
 		if (isSupportsCSSText) {
-			elem.style.cssText = computedStyle.cssText;
+			element.style.cssText = computedStyle.cssText;
 		} else {
-			for (var prop in computedStyle) {
+			for (const prop in computedStyle) {
 				if (
 					isNaN(parseInt(prop, 10)) &&
 					typeof computedStyle[prop] !== "function" &&
 					!/^(cssText|length|parentRule)$/.test(prop)
 				) {
-					elem.style[prop] = computedStyle[prop];
+					element.style[prop] = computedStyle[prop];
 				}
 			}
 		}
 	},
-	inlineStyles = (elem, origElem) => {
-		var children = elem.querySelectorAll("*"),
-			origChildren = origElem.querySelectorAll("*");
-		copyCSS(elem, origElem, 1);
-		Array.prototype.forEach.call(children, (child, i) => copyCSS(child, origChildren[i]));
-		elem.style.margin =
-			elem.style.marginLeft =
-			elem.style.marginTop =
-			elem.style.marginBottom =
-			elem.style.marginRight =
+	inlineStyles = (element, originalElement) => {
+		const children = Array.from(element.querySelectorAll("*")),
+			origChildren = Array.from(originalElement.querySelectorAll("*"));
+		copyCSS(element, originalElement, 1);
+		children.forEach((child, i) => copyCSS(child, origChildren[i]));
+		element.style.margin =
+			element.style.marginLeft =
+			element.style.marginTop =
+			element.style.marginBottom =
+			element.style.marginRight =
 				"";
 	},
-	DOMtoImg = (origElem, width, height, left, top) => {
-		(left = left || 0), (top = top || 0);
+	DOMtoImg = (originalElement, width, height, left, top) => {
+		left || (left = 0), top || (top = 0);
 
-		var elem = origElem.cloneNode(true);
-		inlineStyles(elem, origElem);
+		const elem = originalElement.cloneNode(true);
+		inlineStyles(elem, originalElement);
 		elem.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-		var outerDiv = document.createElement("div");
+		const outerDiv = document.createElement("div");
 		(outerDiv.style.position = "absolute"), (outerDiv.style.display = "flex");
 		outerDiv.appendChild(elem);
 		elem.style.opacity = "1";
 
-		var dataUri =
+		const dataUri =
 			"data:image/svg+xml;base64," +
 			btoa(`
-					<svg xmlns='http://www.w3.org/2000/svg' 
-						width='${(width || origElem.clientWidth) + left}'
-						height='${(height || origElem.clientHeight) + top}'
-					>
-						<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
-							${new XMLSerializer().serializeToString(outerDiv)}
-						</foreignObject>
-					</svg>`);
+				<svg xmlns='http://www.w3.org/2000/svg' 
+					width='${(width || origElem.clientWidth) + left}'
+					height='${(height || origElem.clientHeight) + top}'
+				>
+					<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
+						${new XMLSerializer().serializeToString(outerDiv)}
+					</foreignObject>
+				</svg>
+			`);
 
 		return new Promise((resolve, reject) => {
 			const image = new Image();
@@ -148,6 +150,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			image.src = dataUri;
 		});
 	};
+
 export class GLSLElement {
 	async setDOMSize() {
 		const { clientWidth, clientHeight } = this.referenceSize;

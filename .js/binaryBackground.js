@@ -1,4 +1,4 @@
-import { floor, ele, getRandomInt, replaceAt, delay } from "./utils.js";
+import { floor, getElementById, getRandomInt, replaceAt, delay } from "./utils.js";
 
 // Local utils
 const genBinary = (previous = "") => {
@@ -90,7 +90,7 @@ async function initBinaryRows(from = 0) {
 		const curSpeed = prevSpeed + (getRandomInt(initSpeed() / 100) + 1) * (getRandomInt(2) ? -1 : 1),
 			text = genSVGBlock(i, curSpeed);
 
-		ele("binaryDefs").appendChild(text);
+		getElementById("binaryDefs").appendChild(text);
 		prevSpeed = curSpeed;
 	}
 }
@@ -106,11 +106,11 @@ async function resizeSVG() {
 // Resize text
 async function textResize() {
 	for (let i = 0; i < addRowNum; i++) {
-		let text = ele(`text${i}`),
-			rect1 = ele(`rectBlock${i}_1`),
-			rect2 = ele(`rectBlock${i}_2`),
-			rect3 = ele(`rectBlock${i}_3`),
-			rect = ele(`rect${i}`);
+		let text = getElementById(`text${i}`),
+			rect1 = getElementById(`rectBlock${i}_1`),
+			rect2 = getElementById(`rectBlock${i}_2`),
+			rect3 = getElementById(`rectBlock${i}_3`),
+			rect = getElementById(`rect${i}`);
 		text.style.fontSize = getFontSize() + "px";
 		[rect1, rect2, rect3, rect].forEach(async (r) => {
 			r.style.width = text.getComputedTextLength();
@@ -123,7 +123,7 @@ async function textResize() {
 async function updateStrings() {
 	randomDigitDelay = 1;
 	for (let i = 0; i < addRowNum; i++) {
-		ele(`text${i}`).textContent = genBinary(ele(`text${i}`).textContent);
+		getElementById(`text${i}`).textContent = genBinary(getElementById(`text${i}`).textContent);
 	}
 	do {
 		randomDigitDelay -= 1;
@@ -142,8 +142,8 @@ async function updateCombo() {
 	initBinaryRows(addRowNum);
 
 	textResize();
-	ele("binaryRect").style.width = ele(`text${addRowNum - 1}`).getComputedTextLength();
-	ele("binaryRect").style.height = addRowNum * getFontHeight();
+	getElementById("binaryRect").style.width = getElementById(`text${addRowNum - 1}`).getComputedTextLength();
+	getElementById("binaryRect").style.height = addRowNum * getFontHeight();
 	resizeSVG();
 }
 

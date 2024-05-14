@@ -1,4 +1,4 @@
-import { abs, ele, getRandomInt, fetchFromURL } from "./utils.js";
+import { abs, getElementById, getRandomInt, fetchFromURL } from "./utils.js";
 import { dynamicTextSizer, fade } from "./functions.js";
 
 // Export variables
@@ -109,15 +109,15 @@ window.addEventListener("load", async () => {
 
 // Resize text
 const textResize = () => {
-	dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
-	dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+	dynamicTextSizer(getElementById("textDiv"), getElementById("nickName"), getElementById("myHashTag"));
+	dynamicTextSizer(getElementById("textDivSub"), getElementById("nickNameSub"), getElementById("myHashTagSub"));
 };
 
 // It's banner time!
 export function bannerTime() {
-	ele("thePage").classList.remove("full");
-	ele("thePage").classList.add("bannerPageStyle");
-	ele("mySpotify").classList.add("hidden");
+	getElementById("thePage").classList.remove("full");
+	getElementById("thePage").classList.add("bannerPageStyle");
+	getElementById("mySpotify").classList.add("hidden");
 
 	isBanner = true;
 	textResize();

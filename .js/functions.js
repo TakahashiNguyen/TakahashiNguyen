@@ -1,12 +1,11 @@
 import {
 	getRandomInt,
 	delay,
-	getIdsHasSubString,
-	ele,
+	getElementsWithSubstring,
+	getElementById,
 	abs,
-	RGBToHex,
-	HexToRgb,
-	isWindows,
+	rgbToHex,
+	hexToRgb,
 	fetchFromURL,
 } from "./utils.js";
 
@@ -103,7 +102,7 @@ Promise.all(
 
 // Replace background image
 async function randomImage(dur, loop = false) {
-	var currentIndex = images.indexOf(ele("myImg").src);
+	var currentIndex = images.indexOf(getElementById("myImg").src);
 	randomImageDelayLeft = 100;
 	do {
 		var newIndex = getRandomInt(images.length);
@@ -113,24 +112,24 @@ async function randomImage(dur, loop = false) {
 
 	if (bool) {
 		await Promise.all([
-			fade(ele("myImg"), (dur * 7) / 100, 1, 0),
-			fade(ele("textDivSub"), (dur * 3) / 100, 0, 1),
+			fade(getElementById("myImg"), (dur * 7) / 100, 1, 0),
+			fade(getElementById("textDivSub"), (dur * 3) / 100, 0, 1),
 
-			fade(ele("textDiv"), (dur * 5) / 100, 1, 0),
-			fade(ele("githubSpin"), (dur * 2) / 100, 1, 0),
+			fade(getElementById("textDiv"), (dur * 5) / 100, 1, 0),
+			fade(getElementById("githubSpin"), (dur * 2) / 100, 1, 0),
 		]);
 
-		ele("myImg").setAttribute("src", data);
+		getElementById("myImg").setAttribute("src", data);
 		try {
 			mySpotify.src += "";
 		} catch (error) {}
 
 		await Promise.all([
-			fade(ele("myImg"), (dur * 7) / 100, 0, 1),
-			fade(ele("textDivSub"), (dur * 3) / 100, 1, 0),
+			fade(getElementById("myImg"), (dur * 7) / 100, 0, 1),
+			fade(getElementById("textDivSub"), (dur * 3) / 100, 1, 0),
 
-			fade(ele("textDiv"), (dur * 5) / 100, 0, 1),
-			fade(ele("githubSpin"), (dur * 2) / 100, 0, 1),
+			fade(getElementById("textDiv"), (dur * 5) / 100, 0, 1),
+			fade(getElementById("githubSpin"), (dur * 2) / 100, 0, 1),
 		]);
 	}
 	if (bool) {
@@ -144,19 +143,19 @@ async function randomImage(dur, loop = false) {
 
 // Update text decoration
 function updateTextDecoration() {
-	updateClass(ele("githubSpin"), "outline", textNameColor);
+	updateClass(getElementById("githubSpin"), "outline", textNameColor);
 
 	const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
-	const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
+	const color = rgbToHex(...hexToRgb(textNameColor, updateColor, updateColor, updateColor));
 	const siz = (e) => (textSquareSize / (1941 * 2)) * e;
-	ele("textDiv").style.textShadow = `
+	getElementById("textDiv").style.textShadow = `
     ${-siz(1)}px ${siz(1)}px ${siz(1)}px ${color},
     ${-siz(3)}px ${siz(3)}px ${siz(3)}px ${color},
     ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color},
     ${-siz(10)}px ${siz(10)}px ${siz(10)}px ${color},
     ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color}
   `;
-	ele("textDiv").style.color = textNameColor;
+	getElementById("textDiv").style.color = textNameColor;
 }
 
 // Fade animation for element
@@ -201,13 +200,19 @@ export async function dynamicTextSizer(name, nickname, hashtag) {
 export function changeTextColor() {
 	const canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
 	const context = canvas.getContext("2d");
-	const canvaSize = Math.min(ele("myImg").width, ele("myImg").height) / 14;
+	const canvaSize = Math.min(getElementById("myImg").width, getElementById("myImg").height) / 14;
 	canvas.width = canvaSize * 11;
 	canvas.height = canvaSize * 4;
-	var x = (ele("myImg").width - canvas.width) / 2;
-	var y = (ele("myImg").height - canvas.height) / 2;
+	var x = (getElementById("myImg").width - canvas.width) / 2;
+	var y = (getElementById("myImg").height - canvas.height) / 2;
 
-	context.drawImage(ele("myImg"), -x, -y, ele("myImg").width, ele("myImg").height);
+	context.drawImage(
+		getElementById("myImg"),
+		-x,
+		-y,
+		getElementById("myImg").width,
+		getElementById("myImg").height
+	);
 	const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 	const data = imageData.data;
 
@@ -231,7 +236,7 @@ export function changeTextColor() {
 	const averageG = abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
 	const averageB = abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
 	imageBackgroundBrightness = brightness;
-	textNameColor = RGBToHex(averageR, averageG, averageB);
+	textNameColor = rgbToHex(averageR, averageG, averageB);
 	updateTextDecoration();
 }
 
@@ -247,14 +252,14 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-	getIdsHasSubString("name").forEach((obj) => (obj.textContent = myName));
-	getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
-	getIdsHasSubString("myHashTag").forEach(
+	getElementsWithSubstring("name").forEach((obj) => (obj.textContent = myName));
+	getElementsWithSubstring("nickName").forEach((obj) => (obj.textContent = myNickName));
+	getElementsWithSubstring("myHashTag").forEach(
 		(obj) => (obj.textContent = (hashTag !== "" ? "#" : "") + hashTag)
 	);
 
 	dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
 	randomImage(randomImageDuration, true);
 	if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
-		ele("textDiv").style.color = "black";
+		getElementById("textDiv").style.color = "black";
 });
