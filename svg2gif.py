@@ -3,7 +3,6 @@ import contextlib
 import re
 import os
 import shutil
-import sys
 import time
 
 from PIL import Image, GifImagePlugin
@@ -14,17 +13,17 @@ from multiprocessing import Pool
 SCREENSHOTS_PER_SECOND = 8  # This arbitrary number worked but is not perfect
 total_time_animated = 80
 
-if len(sys.argv) == 2:
-    FILE_NAME = sys.argv[1]
-    ABSOLUTE_FILE_PATH = os.getcwd()
-elif len(sys.argv) == 1:
-    ABSOLUTE_FILE_PATH = os.getcwd()
-    FILE_NAME = "examples/test.svg"
-else:
-    raise Exception("Usage: python svg2gif.py <SVG_file>")
-
 
 def captureBanner(fname, darkMode=False, width=900, height=200):
+    def wait_loading():
+        wait_time = 0
+        while (
+            driver.execute_script("return document.readyState;") != "complete"
+            and wait_time < 10
+        ):
+            wait_time += 0.1
+            time.sleep(0.1)
+
     folder = f"_screenshots-{fname}"
     if os.path.exists(folder):
         shutil.rmtree(folder)
@@ -34,13 +33,15 @@ def captureBanner(fname, darkMode=False, width=900, height=200):
     opts.add_argument("--headless")
     driver = webdriver.Edge(options=opts)
     driver.set_window_size(width, height)
-    driver.get(f"file:///{ABSOLUTE_FILE_PATH}/{FILE_NAME}")
-    driver.execute_script("bannerTime()")
+    driver.get(f"https://takahashinguyen.github.io/TakahashiNguyen/")
+
+    wait_loading()
+
     if darkMode:
         driver.execute_script("toggleDarkMode()")
 
+    driver.execute_script("bannerTime()")
     total_screenshots = int(SCREENSHOTS_PER_SECOND * total_time_animated)
-    time.sleep(4)
     start = time.time()
     for i in range(total_screenshots):
         time.sleep(0.05)
@@ -77,7 +78,6 @@ def exportGIF(fp_in, fp_out, tt):
 
 
 if __name__ == "__main__":
-    svg_file = open(FILE_NAME, "r+")
     pool = Pool(processes=4)
     pool.starmap(
         captureBanner,

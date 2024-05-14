@@ -11,7 +11,8 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "https://threejs.org/build/three.module.js"
+					"three": "https://threejs.org/build/three.module.js",
+					"CSS3DRenderer": "https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/jsm/renderers/CSS3DRenderer.js"
 				}
 			}
 		</script>
@@ -46,12 +47,18 @@
 		</style>
 	</head>
 	<body class="">
-		<div class="full absolute flex flex-col justify-center items-center whitespace-nowrap overflow-hidden">
+		<div
+			class="full absolute flex flex-col justify-center items-center whitespace-nowrap overflow-hidden"
+		>
 			<svg class="absolute overflow-hidden font-['consolas'] -rotate-[17deg]" id="binaryDiv">
 				<defs>
 					<mask id="binaryDefs"></mask>
 				</defs>
-				<rect class="fill-[#370037] dark:fill-white" style="mask: url(#binaryDefs)" id="binaryRect"></rect>
+				<rect
+					class="fill-[#370037] dark:fill-white"
+					style="mask: url(#binaryDefs)"
+					id="binaryRect"
+				></rect>
 			</svg>
 		</div>
 	</body>

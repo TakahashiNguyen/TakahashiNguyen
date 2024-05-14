@@ -3,43 +3,33 @@ on:
   schedule:
     - cron: "30 */3 * * *"
   workflow_dispatch:
+  pull_request:
 jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@main # checkout the repository content
+      - uses: actions/setup-python@main
         with:
           python-version: "3.10" # install the python version needed
           cache: pip
-
       - name: Install Dependencies
         run: |
           echo "Installing dependencies and caching them."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Setup Microsoft Edge
-        uses: browser-actions/setup-edge@v1
-
-      - name: Generating snake eat contribution streak
-        uses: Platane/snk/svg-only@v3
+      - uses: browser-actions/setup-edge@latest
+      - uses: Platane/snk/svg-only@main
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-
       - name: Get statistics
         id: statsQuote
         run: echo "quote=$(python3 githubstats.py)" >> $GITHUB_OUTPUT
-
-      - name: Push results to Github
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+      - uses: crazy-max/ghaction-github-pages@dev
         with:
           target_branch: output
           commit_message: ${{steps.statsQuote.outputs.quote}}

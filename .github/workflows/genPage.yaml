@@ -2,9 +2,7 @@ name: Khai triển Github Page
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  pull_request:
 
 permissions:
   contents: read
@@ -19,32 +17,28 @@ jobs:
   Deploy:
     name: "Khai triển trang Github"
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '[ReDeploy]')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Check for keyword
+      - uses: actions/checkout@v4.1.5
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: webp
+          version: 1.0
+      - name: Generate WEBP files
+        working-directory: ./.jpg/
         run: |
-          keyword="ReDeploy"  # Replace with your desired keyword
-          message=$(git log -1 --pretty=%B)
-          if [[ $message =~ $keyword ]]; then
-              echo "Keyword found. Proceeding with actions."
-              # Add your desired actions here (within another step)
-          else
-              echo "Keyword not found. Terminating workflow."
-              exit 0
-          fi
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+          mkdir ../.webp
+          for file in ./*; do cwebp -q 25 "$file" -o "../.webp/${file%.*}.webp"; done
+      - uses: actions/configure-pages@main
       - name: Remove Unnecessary
-        run: rm "Góc học tập" -fr
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        run: |
+          rm "Góc học tập" -fr
+          rm ./.jpg/ -fr
+      - uses: actions/upload-pages-artifact@main
         with:
           path: "."
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@main

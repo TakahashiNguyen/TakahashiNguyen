@@ -1,10 +1,19 @@
-import { getRandomInt, delay, getIdsHasSubString, ele, abs, RGBToHex, HexToRgb, isWindows } from "./utils.js";
+import {
+	getRandomInt,
+	delay,
+	getIdsHasSubString,
+	ele,
+	abs,
+	RGBToHex,
+	HexToRgb,
+	isWindows,
+} from "./utils.js";
 
 // Export const
 window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
 
 // Local utils
-const updateClass = (obj, prefix, main, suffix = "") => {
+export const updateClass = (obj, prefix, main, suffix = "") => {
 		try {
 			const classes = obj.classList;
 			classes.remove(classes[classes.length - 1]);
@@ -29,44 +38,71 @@ const updateClass = (obj, prefix, main, suffix = "") => {
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "7480201_DKD@QST";
+	hashTag = "_______________________________________";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
 	textNameColor = "",
-	randomImageDelayLeft = 0,
 	images = [];
+window.randomImageDelayLeft = 0;
 
 // Local values' initations
 Promise.all(
 	[
+		"Aiguille du Midi",
 		"Akiyoshidai",
+		"Bueng Si Fai",
+		"California",
 		"CaoBằng",
 		"Centre-ValDeLoire",
 		"Civita di Bagnoregio",
+		"Corfu",
+		"crescent",
 		"CátBà",
+		"Dolbadarn",
 		"Dorset",
 		"Dorset_1",
+		"Dugongs",
+		"Dunnottar",
+		"Emirgan",
+		"Grundlsee",
+		"Hague",
 		"Halnaker",
 		"Happisburgh",
 		"HCMUS",
+		"Heidelberg",
+		"Hibara",
+		"Hocking",
 		"HoàngCungTokyo",
 		"HồYamanaka",
+		"Iceland.1",
+		"Iceland",
 		"ISS",
 		"Iwakuni",
 		"Killarnery",
 		"Lingmoor",
 		"Lofoten",
 		"LâuĐàiHimeji",
+		"Marseille",
+		"Namib",
+		"Nusa",
 		"Petit Minou",
+		"Raja Ampat",
+		"Sechura",
 		"Shikotsu-Toya",
+		"Suffolk",
+		"Sweden",
 		"SôngCửuLong",
+		"Tekapo",
+		"Tenerife",
+		"the ruhr",
+		"Trinidad",
 		"UnionSquare",
 		"VũngNapa",
 		"Yellowstone",
 	].map(async (imageName) => {
 		return await imgUrltoData(
-			`https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/main/.jpg/${imageName}.jpg`
+			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`
 		);
 	})
 ).then((values) => {
