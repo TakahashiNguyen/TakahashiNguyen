@@ -1,14 +1,19 @@
 @font-face {
-  font-family: Magnies;
-  src: url(../.otf/Magnies.otf);
+	font-family: Magnies;
+	src: url(../.otf/Magnies.otf);
 }
 
 @font-face {
-  font-family: Maginia;
-  src: url(../.ttf/Maginia.ttf);
+	font-family: Maginia;
+	src: url(../.ttf/Maginia.ttf);
 }
 
 @font-face {
-  font-family: GarageGothic;
-  src: url(../.otf/GarageGothic.otf);
+	font-family: GarageGothic;
+	src: url(../.otf/GarageGothic.otf);
+}
+
+@font-face {
+	font-family: LeagueGothic;
+	src: url(../.ttf/LeagueGothic.ttf);
 }

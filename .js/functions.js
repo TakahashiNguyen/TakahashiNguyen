@@ -38,7 +38,7 @@ export const updateClass = (obj, prefix, main, suffix = "") => {
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "_______________________________________";
+	hashTag = "fullOfVulnerability,tooOpermistic?,selfDiciplineErosion";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
@@ -262,7 +262,9 @@ document.addEventListener("visibilitychange", () => {
 window.addEventListener("DOMContentLoaded", async () => {
 	getIdsHasSubString("name").forEach((obj) => (obj.textContent = myName));
 	getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
-	getIdsHasSubString("myHashTag").forEach((obj) => (obj.textContent = "#" + hashTag));
+	getIdsHasSubString("myHashTag").forEach(
+		(obj) => (obj.textContent = (hashTag !== "" ? "#" : "") + hashTag)
+	);
 
 	dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
 	randomImage(randomImageDuration, true);

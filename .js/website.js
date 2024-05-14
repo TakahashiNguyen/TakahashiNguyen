@@ -1,4 +1,4 @@
-import { abs, ele } from "./utils.js";
+import { abs, ele, getRandomInt } from "./utils.js";
 import { dynamicTextSizer, fade, imgUrltoData } from "./functions.js";
 
 // Export variables
