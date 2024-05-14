@@ -1,5 +1,5 @@
-import { abs, ele, getRandomInt } from "./utils.js";
-import { dynamicTextSizer, fade, imgUrltoData } from "./functions.js";
+import { abs, ele, getRandomInt, fetchFromURL } from "./utils.js";
+import { dynamicTextSizer, fade } from "./functions.js";
 
 // Export variables
 window.textSquareSize = 0;
@@ -34,7 +34,7 @@ const countdown = setInterval(() => {
 
 // Website's load trigger
 const cat = () => {
-	return imgUrltoData(`https://cataas.com/cat`);
+	return fetchFromURL(`https://cataas.com/cat`);
 };
 window.addEventListener("load", async () => {
 	githubButton.addEventListener("click", () => {

@@ -7,6 +7,7 @@ import {
 	RGBToHex,
 	HexToRgb,
 	isWindows,
+	fetchFromURL,
 } from "./utils.js";
 
 // Export const
@@ -14,31 +15,18 @@ window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13
 
 // Local utils
 export const updateClass = (obj, prefix, main, suffix = "") => {
-		try {
-			const classes = obj.classList;
-			classes.remove(classes[classes.length - 1]);
-			classes.add(`${prefix}-[${main}]${suffix}`);
-		} catch (error) {}
-	},
-	imgUrltoData = (url) =>
-		fetch(url)
-			.then((response) => response.blob())
-			.then(async (blob) => {
-				var reader = new FileReader();
-				reader.readAsDataURL(blob);
-				while (reader.readyState != 2) await delay(100);
-				return reader.result;
-			})
-			.catch((error) => {
-				console.error(error);
-				return "";
-			});
+	try {
+		const classes = obj.classList;
+		classes.remove(classes[classes.length - 1]);
+		classes.add(`${prefix}-[${main}]${suffix}`);
+	} catch (error) {}
+};
 
 // Local const
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "fullOfVulnerability,tooOpermistic?,selfDiciplineErosion";
+	hashTag = "1*10^-36%";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
@@ -54,6 +42,7 @@ Promise.all(
 		"Bueng Si Fai",
 		"California",
 		"CaoBằng",
+		"Carinthia",
 		"Centre-ValDeLoire",
 		"Civita di Bagnoregio",
 		"Corfu",
@@ -85,6 +74,8 @@ Promise.all(
 		"LâuĐàiHimeji",
 		"Marseille",
 		"Namib",
+		"namibia",
+		"New hampshire",
 		"Nusa",
 		"Petit Minou",
 		"Raja Ampat",
@@ -101,8 +92,9 @@ Promise.all(
 		"VũngNapa",
 		"Yellowstone",
 	].map(async (imageName) => {
-		return await imgUrltoData(
-			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`
+		return await fetchFromURL(
+			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`,
+			true
 		);
 	})
 ).then((values) => {

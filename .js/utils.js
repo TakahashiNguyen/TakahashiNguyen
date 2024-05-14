@@ -68,8 +68,8 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			mainImage(fragCoord);
 		}
 		`,
-	fetchFromURL = (URL) =>
-		new Promise((resolve, reject) => {
+	fetchFromURL = (URL, isImage = false) =>
+		new Promise((resolve) => {
 			fetch(URL)
 				.then((response) => {
 					if (!response.ok) {
@@ -79,7 +79,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 				})
 				.then(async (data) => {
 					var reader = new FileReader();
-					reader.readAsText(data);
+					isImage ? reader.readAsDataURL(data) : reader.readAsText(data);
 					while (reader.readyState != 2) await delay(100);
 					resolve(URL == "" ? "" : reader.result);
 				})
