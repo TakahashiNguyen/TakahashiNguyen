@@ -178,7 +178,7 @@ export class GLSLElement {
 		this.setupBuffer = setupBuffer;
 		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
-			this.originalElement = ele(element);
+			this.originalElement = getElementById(element);
 
 			// Init GLSL
 			this.referenceSize = this.originalElement;
@@ -201,11 +201,11 @@ export class GLSLElement {
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
-				if (isVideoEle(ele(element))) {
-					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
+				if (isVideoEle(getElementById(element))) {
+					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(getElementById(element)));
 					this.renderer.domElement.style.display = "none";
-				} else if (isImageEle(ele(element))) {
-					var mat = new THREE.Texture(ele(element));
+				} else if (isImageEle(getElementById(element))) {
+					var mat = new THREE.Texture(getElementById(element));
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
 					this.renderer.domElement.style.display = "none";
