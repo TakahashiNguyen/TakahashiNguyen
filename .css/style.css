@@ -1,6 +1,6 @@
 @font-face {
-	font-family: Maginia;
-	src: url(../.ttf/Maginia.ttf);
+	font-family: AnonymousPro;
+	src: url(../.ttf/AnonymousPro.ttf);
 }
 
 @font-face {
@@ -31,4 +31,9 @@
 @font-face {
 	font-family: FiraCode;
 	src: url(../.ttf/FiraCode.ttf);
+}
+
+@font-face {
+	font-family: GothicA1;
+	src: url(../.ttf/GothicA1.ttf);
 }

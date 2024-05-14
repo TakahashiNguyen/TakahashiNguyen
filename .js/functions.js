@@ -192,13 +192,8 @@ export async function dynamicTextSizer(name, nickname, hashtag) {
 		name.style.height = name.style.width = `${textSquareSize}px`;
 		name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
 
-		nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
+		nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 40}px`;
 		hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
-
-		if (isWindows) {
-			nickname.style.marginBottom = `-${textSquareSize / 74}px`;
-			hashtag.style.marginTop = `${textSquareSize / 100}px`;
-		}
 	} catch (error) {}
 }
 
