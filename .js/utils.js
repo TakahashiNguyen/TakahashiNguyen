@@ -153,11 +153,12 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 
 export class GLSLElement {
 	async setDOMSize() {
-		const { clientWidth, clientHeight } = this.referenceSize;
+		const { clientWidth, clientHeight } = this.referenceSizeElement;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
-		if (this.referenceSize != this.originalElement)
-			(this.innerInnerDiv.style.width = `${clientWidth}px`),
-				(this.innerInnerDiv.style.height = `${clientHeight}px`);
+		if (this.referenceSizeElement !== this.originalElement) {
+			this.innerInnerDiv.style.width = `${clientWidth}px`;
+			this.innerInnerDiv.style.height = `${clientHeight}px`;
+		}
 	}
 
 	makeRenderer(make, backgroundColor) {
@@ -181,7 +182,7 @@ export class GLSLElement {
 			this.originalElement = getElementById(element);
 
 			// Init GLSL
-			this.referenceSize = this.originalElement;
+			this.referenceSizeElement = this.originalElement;
 			this.size = new THREE.Vector3();
 			this.rendererGL = this.makeRenderer(
 				() => new THREE.WebGLRenderer({ preserveDrawingBuffer: true }),
@@ -214,10 +215,10 @@ export class GLSLElement {
 					this.renderer.domElement.style.display = "none";
 				} else {
 					this.innerInnerDiv = document.createElement("div");
-					this.referenceSize = outerDiv;
+					this.referenceSizeElement = outerDiv;
 
-					this.canvas = document.createElement("canvas");
-					this.canvasCTX = this.canvas.getContext("2d");
+					// this.canvas = document.createElement("canvas");
+					// this.canvasCTX = this.canvas.getContext("2d");
 
 					this.innerInnerDiv.append(...this.originalElement.children);
 					for (var property in this.originalElement.style) {
@@ -308,7 +309,7 @@ class ElementBuffer {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
 			} else if (typeof input === "string" || input instanceof String || isDivElement(input)) {
 				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
-				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
+				(this.frameCounter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				this.scene = new THREE.Scene();
 				if (!isDivElement(input)) {
 					const commonFilePath = () => {
@@ -327,7 +328,7 @@ class ElementBuffer {
 					this.isFragment = true;
 				} else {
 					const object = new CSS3DObject(input);
-					object.scale.set(1.2, 1.2, 1);
+					object.scale.set(1.19125, 1.19125, 1);
 
 					this.scene.add(object);
 
@@ -394,7 +395,7 @@ class ElementBuffer {
 
 			// Update uniforms data
 			this.uniforms.iTime.value += this.clock.getDelta();
-			this.uniforms.iFrame.value = this.counter++;
+			this.uniforms.iFrame.value = this.frameCounter++;
 		} else if (this.isTexture && this.readBuffer.texture instanceof CanvasBuffer)
 			this.readBuffer.texture.render();
 	}
