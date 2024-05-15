@@ -20,7 +20,6 @@
 					super(
 						element,
 						async (t) => {
-							t.bufferDebug = await t.initBuffer(false, "../.frag/debug.frag");
 							t.bufferA = await t.initBuffer(false, "../.frag/VHS/a.frag");
 							t.bufferB = await t.initBuffer(false, "../.frag/VHS/b.frag");
 							t.bufferC = await t.initBuffer(false, "../.frag/VHS/c.frag");
@@ -42,7 +41,7 @@
 							t.bufferD.setChannel(0, t.bufferC);
 
 							// bufferImage section
-							t.bufferImage.setChannel(0, t.bufferDebug);
+							t.bufferImage.setChannel(0, t.bufferD);
 						},
 						backgroundColor
 					);
@@ -54,7 +53,6 @@
 					super(
 						element,
 						async (t) => {
-							t.bufferDebug = await t.initBuffer(false, "../.frag/debug.frag");
 							t.bufferA = await t.initBuffer(false, "../.frag/Liquify/a.frag");
 							t.bufferB = await t.initBuffer(false, "../.frag/Liquify/b.frag");
 							t.bufferImage = await t.initBuffer(true, "../.frag/Liquify/image.frag");
