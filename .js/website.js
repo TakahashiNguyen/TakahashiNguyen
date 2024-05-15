@@ -44,10 +44,6 @@ window.addEventListener("load", async () => {
 		);
 	});
 
-	fade(loadingPage, 1975, 1, 0, 144, () => {
-		loadingPage.classList.add("hidden");
-	});
-
 	Notification.requestPermission().then((status) => {
 		if (status === "granted") {
 			setTimeout(() => {
@@ -109,8 +105,16 @@ window.addEventListener("load", async () => {
 
 // Resize text
 const textResize = () => {
-	dynamicTextSizer(getElementById("textDiv"), getElementById("nickName"), getElementById("myHashTag"));
-	dynamicTextSizer(getElementById("textDivSub"), getElementById("nickNameSub"), getElementById("myHashTagSub"));
+	dynamicTextSizer(
+		getElementById("textDiv"),
+		getElementById("nickName"),
+		getElementById("myHashTag")
+	);
+	dynamicTextSizer(
+		getElementById("textDivSub"),
+		getElementById("nickNameSub"),
+		getElementById("myHashTagSub")
+	);
 };
 
 // It's banner time!
@@ -126,6 +130,9 @@ export function bannerTime() {
 // Website's content finished load trigger
 window.addEventListener("DOMContentLoaded", async () => {
 	textResize();
+	fade(loadingPage, 1975, 1, 0, 144, () => {
+		loadingPage.classList.add("hidden");
+	});
 });
 
 // Website's window resize trigger

@@ -8,12 +8,13 @@ import {
 	hexToRgb,
 	fetchFromURL,
 } from "./utils.js";
+import { imageURLs } from "./imgUrl.js";
 
 // Export const
 window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
 
 // Local utils
-export const updateClass = (obj, prefix, main, suffix = "") => {
+const updateClass = (obj, prefix, main, suffix = "") => {
 	try {
 		const classes = obj.classList;
 		classes.remove(classes[classes.length - 1]);
@@ -34,70 +35,12 @@ let imageBackgroundBrightness = 0,
 window.randomImageDelayLeft = 0;
 
 // Local values' initations
-Promise.all(
-	[
-		"Aiguille du Midi",
-		"Akiyoshidai",
-		"Bueng Si Fai",
-		"California",
-		"CaoBằng",
-		"Carinthia",
-		"Centre-ValDeLoire",
-		"Civita di Bagnoregio",
-		"Corfu",
-		"crescent",
-		"CátBà",
-		"Dolbadarn",
-		"Dorset",
-		"Dorset_1",
-		"Dugongs",
-		"Dunnottar",
-		"Emirgan",
-		"Grundlsee",
-		"Hague",
-		"Halnaker",
-		"Happisburgh",
-		"HCMUS",
-		"Heidelberg",
-		"Hibara",
-		"Hocking",
-		"HoàngCungTokyo",
-		"HồYamanaka",
-		"Iceland.1",
-		"Iceland",
-		"ISS",
-		"Iwakuni",
-		"Killarnery",
-		"Lingmoor",
-		"Lofoten",
-		"LâuĐàiHimeji",
-		"Marseille",
-		"Namib",
-		"namibia",
-		"New hampshire",
-		"Nusa",
-		"Petit Minou",
-		"Raja Ampat",
-		"Sechura",
-		"Shikotsu-Toya",
-		"Suffolk",
-		"Sweden",
-		"SôngCửuLong",
-		"Tekapo",
-		"Tenerife",
-		"the ruhr",
-		"Trinidad",
-		"UnionSquare",
-		"VũngNapa",
-		"Yellowstone",
-	].map(async (imageName) => {
-		return await fetchFromURL(
-			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`,
-			true
-		);
-	})
-).then((values) => {
-	images = values;
+images.length = imageURLs.length;
+imageURLs.map(async (imageName, index) => {
+	fetchFromURL(
+		`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`,
+		true
+	).then((value) => (images[index] = value));
 });
 
 // Replace background image
@@ -106,7 +49,8 @@ async function randomImage(dur, loop = false) {
 	randomImageDelayLeft = 100;
 	do {
 		var newIndex = getRandomInt(images.length);
-	} while (newIndex == currentIndex);
+		await sleep(100);
+	} while (newIndex == currentIndex || !images[newIndex]);
 	var data = images[newIndex];
 	var bool = data != null;
 
