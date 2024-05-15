@@ -34,6 +34,7 @@ jobs:
       - uses: actions/configure-pages@main
       - name: Remove Unnecessary
         run: |
+          chmod +x ./.sh/lazyNameList.sh
           ./.sh/lazyNameList.sh
           rm "Góc học tập" -fr
           rm ./.jpg/ -fr
