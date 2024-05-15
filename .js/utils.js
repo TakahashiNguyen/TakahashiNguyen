@@ -156,8 +156,8 @@ export class GLSLElement {
 		const { clientWidth, clientHeight } = this.referenceSize;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
 		if (this.referenceSize != this.originalElement)
-			(this.innerInnerDiv.style.width = `${clientWidth * 1.2}px`),
-				(this.innerInnerDiv.style.height = `${clientHeight * 1.2}px`);
+			(this.innerInnerDiv.style.width = `${clientWidth}px`),
+				(this.innerInnerDiv.style.height = `${clientHeight}px`);
 	}
 
 	makeRenderer(make, backgroundColor) {
@@ -329,6 +329,7 @@ class ElementBuffer {
 					this.isFragment = true;
 				} else {
 					const object = new CSS3DObject(input);
+					object.scale.set(1.2, 1.2, 1);
 
 					this.scene.add(object);
 
