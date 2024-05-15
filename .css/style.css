@@ -24,11 +24,6 @@
 }
 
 @font-face {
-	font-family: Gentle;
-	src: url(../.otf/Gentle.otf);
-}
-
-@font-face {
 	font-family: FiraCode;
 	src: url(../.ttf/FiraCode.ttf);
 }
@@ -44,6 +39,56 @@
 }
 
 @font-face {
-	font-family: Hugolers;
-	src: url(../.otf/Hugolers.otf);
+	font-family: Chromate;
+	src: url(../.ttf/Chromate.ttf);
+}
+
+@font-face {
+	font-family: Peristiwa;
+	src: url(../.otf/Peristiwa.otf);
+}
+
+@font-face {
+	font-family: TimberWolf;
+	src: url(../.otf/TimberWolf.otf);
+}
+
+@font-face {
+	font-family: Gerlomi;
+	src: url(../.ttf/Gerlomi.ttf);
+}
+
+@font-face {
+	font-family: Amoitar;
+	src: url(../.ttf/Amoitar.ttf);
+}
+
+@font-face {
+	font-family: Sigokae;
+	src: url(../.otf/Sigokae.otf);
+}
+
+@font-face {
+	font-family: Ginger;
+	src: url(../.otf/Ginger.otf);
+}
+
+@font-face {
+	font-family: WylieVoigen;
+	src: url(../.otf/WylieVoigen.otf);
+}
+
+@font-face {
+	font-family: Magnificent;
+	src: url(../.otf/Magnificent.otf);
+}
+
+@font-face {
+	font-family: Karasha;
+	src: url(../.otf/Karasha.otf);
+}
+
+@font-face {
+	font-family: Sofia;
+	src: url(../.ttf/Sofia.ttf);
 }
