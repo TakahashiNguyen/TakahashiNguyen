@@ -37,3 +37,8 @@
 	font-family: GothicA1;
 	src: url(../.ttf/GothicA1.ttf);
 }
+
+@font-face {
+	font-family: Consolas;
+	src: url(../.ttf/Consolas.ttf);
+}
