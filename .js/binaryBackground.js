@@ -2,7 +2,7 @@ import { floor, getElementById, getRandomInt, replaceAt, delay } from "./utils.j
 import "jquery";
 
 // Local utils
-const genBinary = (previous = "") => {
+const generateBinary = (previous = "") => {
 		let output = previous;
 		if (previous == "") {
 			for (let i = 0; i < stringLength; i++) output += `${getRandomInt(2)}`;
@@ -33,51 +33,51 @@ let addRowNum = 0,
 	randomDigitDelay = 0;
 
 // Generate SVG block
-function genSVGBlock(id, speed) {
-	var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-	svg.setAttribute("id", `svg${id}`);
+function generateSVGBlock(id, speed) {
+	const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttribute("id", `svg-${id}`);
 	svg.setAttribute("y", `${id * getFontHeight()}px`);
 	svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
-	var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+	const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
 	svg.appendChild(defs);
 
-	var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
-	mask.setAttribute("id", `mask${id}`);
+	const mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
+	mask.setAttribute("id", `mask-${id}`);
 	defs.appendChild(mask);
 
-	var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 	mask.appendChild(rect);
 	rect.setAttribute("class", "fill-black rectBlock");
 
-	var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 	text.setAttribute("x", "50%");
 	text.setAttribute("y", getFontWidth());
 	text.setAttribute("dominant-baseline", "middle");
 	text.setAttribute("text-anchor", "middle");
 	text.setAttribute("class", "fill-white rectBlock textBlock");
-	text.setAttribute("id", `text${id}`);
-	text.textContent = genBinary();
+	text.id = `text-${id}`;
+	text.textContent = generateBinary();
 	mask.appendChild(text);
 
-	var rectBlock3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	rectBlock3.setAttribute("class", `fill-white rectBlock`);
+	const rectBlock3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	rectBlock3.setAttribute("class", "fill-white rectBlock");
 	svg.appendChild(rectBlock3);
 
-	var rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	const rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 	rectBlock1.setAttribute(
 		"class",
 		`fill-black animate-[marquee1_${speed}s_linear_infinite] rectBlock`
 	);
-	rectBlock1.setAttribute("style", `mask: url(#mask${id})`);
+	rectBlock1.style.mask = `url(#mask-${id})`;
 	svg.appendChild(rectBlock1);
 
-	var rectBlock2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	const rectBlock2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 	rectBlock2.setAttribute(
 		"class",
 		`fill-black animate-[marquee2_${speed}s_linear_infinite] rectBlock`
 	);
-	rectBlock2.setAttribute("style", `mask: url(#mask${id})`);
+	rectBlock2.style.mask = `url(#mask-${id})`;
 	svg.appendChild(rectBlock2);
 
 	return svg;
@@ -91,7 +91,7 @@ async function initBinaryRows(from = 0) {
 	addRowNum = rowNum();
 	for (let i = from; i < addRowNum; i++) {
 		const curSpeed = prevSpeed + (getRandomInt(initSpeed() / 100) + 1) * (getRandomInt(2) ? -1 : 1),
-			text = genSVGBlock(i, curSpeed);
+			text = generateSVGBlock(i, curSpeed);
 
 		getElementById("binaryDefs").appendChild(text);
 		prevSpeed = curSpeed;
@@ -110,14 +110,16 @@ async function resizeSVG() {
 async function textResize() {
 	$(".textBlock").css("font-size", getFontSize() + "px");
 	$(".rectBlock").css("height", getFontSize() + "px");
-	$(".rectBlock").css("width", getElementById(`text${1}`).getComputedTextLength() + "px");
+	$(".rectBlock").css("width", getElementById(`text-${0}`).getComputedTextLength() + "px");
 }
 
 // Update strings
 async function updateStrings() {
 	randomDigitDelay = 1;
 	for (let i = 0; i < addRowNum; i++) {
-		getElementById(`text${i}`).textContent = genBinary(getElementById(`text${i}`).textContent);
+		getElementById(`text-${i}`).textContent = generateBinary(
+			getElementById(`text-${i}`).textContent
+		);
 	}
 	do {
 		randomDigitDelay -= 1;
@@ -137,7 +139,7 @@ async function updateCombo() {
 
 	textResize();
 	getElementById("binaryRect").style.width = getElementById(
-		`text${addRowNum - 1}`
+		`text-${addRowNum - 1}`
 	).getComputedTextLength();
 	getElementById("binaryRect").style.height = addRowNum * getFontHeight();
 	resizeSVG();
@@ -146,5 +148,6 @@ async function updateCombo() {
 // Website's content finished load trigger
 window.addEventListener("load", async () => {
 	updateStrings();
+	await delay(500);
 	updateCombo();
 });
