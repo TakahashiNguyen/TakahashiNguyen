@@ -1,5 +1,5 @@
-import { abs, ele } from "./utils.js";
-import { dynamicTextSizer, fade, imgUrltoData } from "./functions.js";
+import { abs, getElementById, getRandomInt, fetchFromURL } from "./utils.js";
+import { dynamicTextSizer, fade } from "./functions.js";
 
 // Export variables
 window.textSquareSize = 0;
@@ -34,7 +34,7 @@ const countdown = setInterval(() => {
 
 // Website's load trigger
 const cat = () => {
-	return imgUrltoData(`https://cataas.com/cat`);
+	return fetchFromURL(`https://cataas.com/cat`);
 };
 window.addEventListener("load", async () => {
 	githubButton.addEventListener("click", () => {
@@ -42,10 +42,6 @@ window.addEventListener("load", async () => {
 			getRandomInt(6) ? "https://github.com/TakahashiNguyen" : "https://www.youtube.com/@vtv24",
 			"_blank"
 		);
-	});
-
-	fade(loadingPage, 1975, 1, 0, 144, () => {
-		loadingPage.classList.add("hidden");
 	});
 
 	Notification.requestPermission().then((status) => {
@@ -109,15 +105,23 @@ window.addEventListener("load", async () => {
 
 // Resize text
 const textResize = () => {
-	dynamicTextSizer(ele("textDiv"), ele("nickName"), ele("myHashTag"));
-	dynamicTextSizer(ele("textDivSub"), ele("nickNameSub"), ele("myHashTagSub"));
+	dynamicTextSizer(
+		getElementById("textDiv"),
+		getElementById("nickName"),
+		getElementById("myHashTag")
+	);
+	dynamicTextSizer(
+		getElementById("textDivSub"),
+		getElementById("nickNameSub"),
+		getElementById("myHashTagSub")
+	);
 };
 
 // It's banner time!
 export function bannerTime() {
-	ele("thePage").classList.remove("full");
-	ele("thePage").classList.add("bannerPageStyle");
-	ele("mySpotify").classList.add("hidden");
+	getElementById("thePage").classList.remove("full");
+	getElementById("thePage").classList.add("bannerPageStyle");
+	getElementById("mySpotify").classList.add("hidden");
 
 	isBanner = true;
 	textResize();
@@ -126,6 +130,9 @@ export function bannerTime() {
 // Website's content finished load trigger
 window.addEventListener("DOMContentLoaded", async () => {
 	textResize();
+	fade(loadingPage, 1975, 1, 0, 144, () => {
+		loadingPage.classList.add("hidden");
+	});
 });
 
 // Website's window resize trigger

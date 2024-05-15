@@ -10,4 +10,4 @@ for /f "delims=" %%i in ('dir /b .\.jpg') do (
 
 set "fileNames=[%fileNames:~1%]"
 
-echo %fileNames%
+echo export const imageURLs = %fileNames% > ".\.js\imgUrl.js"

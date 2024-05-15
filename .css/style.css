@@ -1,14 +1,49 @@
 @font-face {
-  font-family: Magnies;
-  src: url(../.otf/Magnies.otf);
+	font-family: AnonymousPro;
+	src: url(../.ttf/AnonymousPro.ttf);
 }
 
 @font-face {
-  font-family: Maginia;
-  src: url(../.ttf/Maginia.ttf);
+	font-family: LeagueGothic;
+	src: url(../.ttf/LeagueGothic.ttf);
 }
 
 @font-face {
-  font-family: GarageGothic;
-  src: url(../.otf/GarageGothic.otf);
+	font-family: Oswald;
+	src: url(../.ttf/Oswald.ttf);
+}
+
+@font-face {
+	font-family: JetBrainsMono;
+	src: url(../.ttf/JetBrainsMono.ttf);
+}
+
+@font-face {
+	font-family: Attena;
+	src: url(../.ttf/Attena.ttf);
+}
+
+@font-face {
+	font-family: Gentle;
+	src: url(../.otf/Gentle.otf);
+}
+
+@font-face {
+	font-family: FiraCode;
+	src: url(../.ttf/FiraCode.ttf);
+}
+
+@font-face {
+	font-family: GothicA1;
+	src: url(../.ttf/GothicA1.ttf);
+}
+
+@font-face {
+	font-family: Consolas;
+	src: url(../.ttf/Consolas.ttf);
+}
+
+@font-face {
+	font-family: Hugolers;
+	src: url(../.otf/Hugolers.otf);
 }

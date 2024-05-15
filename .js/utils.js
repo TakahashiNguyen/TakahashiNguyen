@@ -4,7 +4,7 @@ import { CSS3DRenderer, CSS3DObject } from "CSS3DRenderer";
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
-	vertexShader = `
+	MY_VERTEX_SHADER = `
       varying vec2 vUv;
 			void main()
 			{
@@ -14,13 +14,13 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			  gl_Position = projectionMatrix * mvPosition;
 			}
   `,
-	ele = (s) => document.getElementById(s),
-	getIdsHasSubString = (s) => document.querySelectorAll(`[id*=${s}]`),
-	abs = (v) => Math.abs(v),
-	floor = (v) => Math.floor(v),
+	getElementById = (id) => document.getElementById(id),
+	getElementsWithSubstring = (substring) => document.querySelectorAll(`[id*=${substring}]`),
+	abs = (value) => Math.abs(value),
+	floor = (value) => Math.floor(value),
 	getRandomInt = (max) => Math.floor(Math.random() * max),
-	delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-	RGBToHex = (r, g, b) =>
+	sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+	rgbToHex = (r, g, b) =>
 		"#" +
 		(
 			(1 << 24) |
@@ -30,8 +30,8 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		)
 			.toString(16)
 			.slice(1),
-	HexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
-		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
+	hexToRgb = (hex, rr = 0, gg = 0, bb = 0) => {
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || "#000000");
 		return [
 			parseInt(result[1], 16) + rr + luckyColor[0],
 			parseInt(result[2], 16) + gg + luckyColor[1],
@@ -39,12 +39,12 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		];
 	},
 	replaceAt = (str, pos, char) => {
-		let firstPart = str.substr(0, pos),
+		const firstPart = str.substr(0, pos),
 			lastPart = str.substr(pos + 1);
 
 		return firstPart + char + lastPart;
 	},
-	ShaderToyToGLSL = (e) =>
+	convertShaderToyToGLSL = (shader) =>
 		`
       	precision highp   float;
       	uniform float     iTime;
@@ -58,7 +58,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		varying vec2      vUv;
 		uniform vec4      iDate; 
 		` +
-		e
+		shader
 			.replace("mainImage(out vec4 fragColor, in vec2 fragCoord)", "mainImage(in vec2 fragCoord)")
 			.replaceAll("fragColor", "gl_FragColor") +
 		`
@@ -68,9 +68,10 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			mainImage(fragCoord);
 		}
 		`,
-	fetchFromURL = (URL) =>
-		new Promise((resolve, reject) => {
-			fetch(URL)
+	fetchFromURL = (url, isImage = false) =>
+		new Promise((resolve) => {
+			if (!url) resolve("");
+			fetch(url)
 				.then((response) => {
 					if (!response.ok) {
 						throw new Error("Network response was not ok");
@@ -78,68 +79,69 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 					return response.blob();
 				})
 				.then(async (data) => {
-					var reader = new FileReader();
-					reader.readAsText(data);
-					while (reader.readyState != 2) await delay(100);
-					resolve(URL == "" ? "" : reader.result);
+					const reader = new FileReader();
+					isImage ? reader.readAsDataURL(data) : reader.readAsText(data);
+					while (reader.readyState !== 2) await sleep(100);
+					resolve(reader.result);
 				})
-				.catch((e) => resolve(""));
+				.catch((error) => resolve(""));
 		}),
-	isVideoEle = (ele) => ele.tagName === "VIDEO",
-	isImageEle = (ele) => ele.tagName === "IMG",
-	isBody = (ele) => document.body === ele,
-	isDiv = (ele) => ele.tagName == "DIV",
+	isVideoElement = (element) => element.tagName === "VIDEO",
+	isImageElement = (element) => element.tagName === "IMG",
+	isBodyElement = (element) => document.body === element,
+	isDivElement = (element) => element.tagName === "DIV",
 	isSupportsCSSText = getComputedStyle(document.body).cssText !== "",
-	copyCSS = (elem, origElem) => {
-		var computedStyle = getComputedStyle(origElem);
+	copyCSS = (element, originalElement) => {
+		const computedStyle = getComputedStyle(originalElement);
 		if (isSupportsCSSText) {
-			elem.style.cssText = computedStyle.cssText;
+			element.style.cssText = computedStyle.cssText;
 		} else {
-			for (var prop in computedStyle) {
+			for (const prop in computedStyle) {
 				if (
 					isNaN(parseInt(prop, 10)) &&
 					typeof computedStyle[prop] !== "function" &&
 					!/^(cssText|length|parentRule)$/.test(prop)
 				) {
-					elem.style[prop] = computedStyle[prop];
+					element.style[prop] = computedStyle[prop];
 				}
 			}
 		}
 	},
-	inlineStyles = (elem, origElem) => {
-		var children = elem.querySelectorAll("*"),
-			origChildren = origElem.querySelectorAll("*");
-		copyCSS(elem, origElem, 1);
-		Array.prototype.forEach.call(children, (child, i) => copyCSS(child, origChildren[i]));
-		elem.style.margin =
-			elem.style.marginLeft =
-			elem.style.marginTop =
-			elem.style.marginBottom =
-			elem.style.marginRight =
+	inlineStyles = (element, originalElement) => {
+		const children = Array.from(element.querySelectorAll("*")),
+			origChildren = Array.from(originalElement.querySelectorAll("*"));
+		copyCSS(element, originalElement, 1);
+		children.forEach((child, i) => copyCSS(child, origChildren[i]));
+		element.style.margin =
+			element.style.marginLeft =
+			element.style.marginTop =
+			element.style.marginBottom =
+			element.style.marginRight =
 				"";
 	},
-	DOMtoImg = (origElem, width, height, left, top) => {
-		(left = left || 0), (top = top || 0);
+	DOMtoImg = (originalElement, width, height, left, top) => {
+		left || (left = 0), top || (top = 0);
 
-		var elem = origElem.cloneNode(true);
-		inlineStyles(elem, origElem);
+		const elem = originalElement.cloneNode(true);
+		inlineStyles(elem, originalElement);
 		elem.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-		var outerDiv = document.createElement("div");
+		const outerDiv = document.createElement("div");
 		(outerDiv.style.position = "absolute"), (outerDiv.style.display = "flex");
 		outerDiv.appendChild(elem);
 		elem.style.opacity = "1";
 
-		var dataUri =
+		const dataUri =
 			"data:image/svg+xml;base64," +
 			btoa(`
-					<svg xmlns='http://www.w3.org/2000/svg' 
-						width='${(width || origElem.clientWidth) + left}'
-						height='${(height || origElem.clientHeight) + top}'
-					>
-						<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
-							${new XMLSerializer().serializeToString(outerDiv)}
-						</foreignObject>
-					</svg>`);
+				<svg xmlns='http://www.w3.org/2000/svg' 
+					width='${(width || origElem.clientWidth) + left}'
+					height='${(height || origElem.clientHeight) + top}'
+				>
+					<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
+						${new XMLSerializer().serializeToString(outerDiv)}
+					</foreignObject>
+				</svg>
+			`);
 
 		return new Promise((resolve, reject) => {
 			const image = new Image();
@@ -148,13 +150,15 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			image.src = dataUri;
 		});
 	};
+
 export class GLSLElement {
 	async setDOMSize() {
-		const { clientWidth, clientHeight } = this.referenceSize;
+		const { clientWidth, clientHeight } = this.referenceSizeElement;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
-		if (this.referenceSize != this.originalElement)
-			(this.innerInnerDiv.style.width = `${clientWidth * 1.2}px`),
-				(this.innerInnerDiv.style.height = `${clientHeight * 1.2}px`);
+		if (this.referenceSizeElement !== this.originalElement) {
+			this.innerInnerDiv.style.width = `${clientWidth}px`;
+			this.innerInnerDiv.style.height = `${clientHeight}px`;
+		}
 	}
 
 	makeRenderer(make, backgroundColor) {
@@ -175,10 +179,10 @@ export class GLSLElement {
 		this.setupBuffer = setupBuffer;
 		this.setupChannel = setupChannel;
 		return new Promise(async (resolve) => {
-			this.originalElement = ele(element);
+			this.originalElement = getElementById(element);
 
 			// Init GLSL
-			this.referenceSize = this.originalElement;
+			this.referenceSizeElement = this.originalElement;
 			this.size = new THREE.Vector3();
 			this.rendererGL = this.makeRenderer(
 				() => new THREE.WebGLRenderer({ preserveDrawingBuffer: true }),
@@ -187,7 +191,7 @@ export class GLSLElement {
 			this.renderer = this.makeRenderer(() => new CSS3DRenderer(), backgroundColor);
 			this.mousePosition = new THREE.Vector4();
 
-			if (!isBody(this.originalElement)) {
+			if (!isBodyElement(this.originalElement)) {
 				var outerOuterDiv = document.createElement("div"),
 					outerDiv = document.createElement("div");
 
@@ -198,20 +202,23 @@ export class GLSLElement {
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
-				if (isVideoEle(ele(element))) {
-					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(ele(element)));
+				if (isVideoElement(getElementById(element))) {
+					this.mainChannel = await this.initBuffer(
+						false,
+						new THREE.VideoTexture(getElementById(element))
+					);
 					this.renderer.domElement.style.display = "none";
-				} else if (isImageEle(ele(element))) {
-					var mat = new THREE.Texture(ele(element));
+				} else if (isImageElement(getElementById(element))) {
+					var mat = new THREE.Texture(getElementById(element));
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
 					this.renderer.domElement.style.display = "none";
 				} else {
 					this.innerInnerDiv = document.createElement("div");
-					this.referenceSize = outerDiv;
+					this.referenceSizeElement = outerDiv;
 
-					this.canvas = document.createElement("canvas");
-					this.canvasCTX = this.canvas.getContext("2d");
+					// this.canvas = document.createElement("canvas");
+					// this.canvasCTX = this.canvas.getContext("2d");
 
 					this.innerInnerDiv.append(...this.originalElement.children);
 					for (var property in this.originalElement.style) {
@@ -230,8 +237,6 @@ export class GLSLElement {
 						this.innerInnerDiv
 					);
 				}
-
-				this.originalElement.style.zIndex = "-1";
 			} else {
 				resolve(this);
 				return;
@@ -302,11 +307,11 @@ class ElementBuffer {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
-			} else if (typeof input === "string" || input instanceof String || isDiv(input)) {
+			} else if (typeof input === "string" || input instanceof String || isDivElement(input)) {
 				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
-				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
+				(this.frameCounter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				this.scene = new THREE.Scene();
-				if (!isDiv(input)) {
+				if (!isDivElement(input)) {
 					const commonFilePath = () => {
 						let arr = input.split("/");
 						arr[arr.length - 1] = "_common.frag";
@@ -315,13 +320,15 @@ class ElementBuffer {
 
 					this.material = new THREE.ShaderMaterial({
 						fragmentShader:
-							(await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
-						vertexShader: vertexShader,
+							(await fetchFromURL(commonFilePath())) +
+							convertShaderToyToGLSL(await fetchFromURL(input)),
+						vertexShader: MY_VERTEX_SHADER,
 						uniforms: this.uniforms,
 					});
 					this.isFragment = true;
 				} else {
 					const object = new CSS3DObject(input);
+					object.scale.set(1.19125, 1.19125, 1);
 
 					this.scene.add(object);
 
@@ -338,7 +345,7 @@ class ElementBuffer {
 
 				// Setup camera
 				this.camera = new THREE.PerspectiveCamera(
-					isDiv(input) ? 100 : 1,
+					isDivElement(input) ? 100 : 1,
 					size.x / size.y,
 					0.1,
 					1000
@@ -388,7 +395,7 @@ class ElementBuffer {
 
 			// Update uniforms data
 			this.uniforms.iTime.value += this.clock.getDelta();
-			this.uniforms.iFrame.value = this.counter++;
+			this.uniforms.iFrame.value = this.frameCounter++;
 		} else if (this.isTexture && this.readBuffer.texture instanceof CanvasBuffer)
 			this.readBuffer.texture.render();
 	}

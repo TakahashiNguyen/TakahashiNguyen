@@ -1,7 +1,8 @@
-import { floor, ele, getRandomInt, replaceAt, delay } from "./utils.js";
+import { floor, getElementById, getRandomInt, replaceAt, sleep } from "./utils.js";
+import "jquery";
 
 // Local utils
-const genBinary = (previous = "") => {
+const generateBinary = (previous = "") => {
 		let output = previous;
 		if (previous == "") {
 			for (let i = 0; i < stringLength; i++) output += `${getRandomInt(2)}`;
@@ -28,56 +29,55 @@ const genBinary = (previous = "") => {
 	getFontHeight = () => getFontSize() * (3 / 4),
 	rowNum = () => floor(diagonalLength() / getFontHeight());
 let addRowNum = 0,
-	stringLength = 10,
-	randomDigitDelay = 0;
+	stringLength = 10;
 
 // Generate SVG block
-function genSVGBlock(id, speed) {
-	var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-	svg.setAttribute("id", `svg${id}`);
-	svg.setAttribute("y", `${id * getFontHeight()}px`);
-	svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+function generateSVGBlock(id, speed) {
+	const svgEl = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svgEl.id = `svg-${id}`;
+	svgEl.setAttribute("y", `${id * getFontHeight()}px`);
+	svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
-	var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-	svg.appendChild(defs);
+	const defsEl = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+	svgEl.appendChild(defsEl);
 
-	var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
-	mask.setAttribute("id", `mask${id}`);
-	defs.appendChild(mask);
+	const maskEl = document.createElementNS("http://www.w3.org/2000/svg", "mask");
+	maskEl.id = `mask-${id}`;
+	defsEl.appendChild(maskEl);
 
-	var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	mask.appendChild(rect);
-	rect.setAttribute("class", "fill-black");
-	rect.setAttribute("id", `rect${id}`);
+	const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	textEl.setAttribute("x", "50%");
+	textEl.setAttribute("y", getFontWidth());
+	textEl.setAttribute("dominant-baseline", "middle");
+	textEl.setAttribute("text-anchor", "middle");
+	textEl.classList.add("fill-white", "rectBlock", "textBlock");
+	textEl.id = `text-${id}`;
+	textEl.textContent = generateBinary();
+	maskEl.appendChild(textEl);
 
-	var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-	text.setAttribute("x", "50%");
-	text.setAttribute("y", getFontWidth());
-	text.setAttribute("dominant-baseline", "middle");
-	text.setAttribute("text-anchor", "middle");
-	text.setAttribute("class", "fill-white");
-	text.setAttribute("id", `text${id}`);
-	text.textContent = genBinary();
-	mask.appendChild(text);
+	const rectBlock3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	rectBlock3.setAttribute("class", "fill-white rectBlock");
+	svgEl.appendChild(rectBlock3);
 
-	var rectBlock3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	rectBlock3.setAttribute("class", `fill-white`);
-	rectBlock3.setAttribute("id", `rectBlock${id}_3`);
-	svg.appendChild(rectBlock3);
+	const rectBlock1El = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	rectBlock1El.classList.add(
+		"fill-black",
+		`animate-[marquee1_${speed}s_linear_infinite]`,
+		"rectBlock"
+	);
+	rectBlock1El.style.mask = `url(#mask-${id})`;
+	svgEl.appendChild(rectBlock1El);
 
-	var rectBlock1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	rectBlock1.setAttribute("class", `fill-black animate-[marquee1_${speed}s_linear_infinite]`);
-	rectBlock1.setAttribute("style", `mask: url(#mask${id})`);
-	rectBlock1.setAttribute("id", `rectBlock${id}_1`);
-	svg.appendChild(rectBlock1);
+	const rectBlock2El = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	rectBlock2El.classList.add(
+		"fill-black",
+		`animate-[marquee2_${speed}s_linear_infinite]`,
+		"rectBlock"
+	);
+	rectBlock2El.style.mask = `url(#mask-${id})`;
+	svgEl.appendChild(rectBlock2El);
 
-	var rectBlock2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	rectBlock2.setAttribute("class", `fill-black animate-[marquee2_${speed}s_linear_infinite]`);
-	rectBlock2.setAttribute("style", `mask: url(#mask${id})`);
-	rectBlock2.setAttribute("id", `rectBlock${id}_2`);
-	svg.appendChild(rectBlock2);
-
-	return svg;
+	return svgEl;
 }
 
 // Init binary rows
@@ -88,9 +88,9 @@ async function initBinaryRows(from = 0) {
 	addRowNum = rowNum();
 	for (let i = from; i < addRowNum; i++) {
 		const curSpeed = prevSpeed + (getRandomInt(initSpeed() / 100) + 1) * (getRandomInt(2) ? -1 : 1),
-			text = genSVGBlock(i, curSpeed);
+			text = generateSVGBlock(i, curSpeed);
 
-		ele("binaryDefs").appendChild(text);
+		getElementById("binaryDefs").appendChild(text);
 		prevSpeed = curSpeed;
 	}
 }
@@ -105,30 +105,23 @@ async function resizeSVG() {
 
 // Resize text
 async function textResize() {
-	for (let i = 0; i < addRowNum; i++) {
-		let text = ele(`text${i}`),
-			rect1 = ele(`rectBlock${i}_1`),
-			rect2 = ele(`rectBlock${i}_2`),
-			rect3 = ele(`rectBlock${i}_3`),
-			rect = ele(`rect${i}`);
-		text.style.fontSize = getFontSize() + "px";
-		[rect1, rect2, rect3, rect].forEach(async (r) => {
-			r.style.width = text.getComputedTextLength();
-			r.style.height = getFontSize() + "px";
-		});
-	}
+	$(".textBlock").css("font-size", getFontSize() + "px");
+	$(".rectBlock").css("height", getFontSize() + "px");
+	$(".rectBlock").css("width", getElementById(`text-${0}`).getComputedTextLength() + "px");
 }
 
-// Update strings
+// Update binary strings
 async function updateStrings() {
-	randomDigitDelay = 1;
+	let delay = 1;
 	for (let i = 0; i < addRowNum; i++) {
-		ele(`text${i}`).textContent = genBinary(ele(`text${i}`).textContent);
+		getElementById(`text-${i}`).textContent = generateBinary(
+			getElementById(`text-${i}`).textContent
+		);
 	}
 	do {
-		randomDigitDelay -= 1;
-		await delay(200);
-	} while (randomDigitDelay > 0);
+		delay -= 1;
+		await sleep(200);
+	} while (delay > 0);
 	setTimeout(updateStrings);
 }
 
@@ -142,13 +135,16 @@ async function updateCombo() {
 	initBinaryRows(addRowNum);
 
 	textResize();
-	ele("binaryRect").style.width = ele(`text${addRowNum - 1}`).getComputedTextLength();
-	ele("binaryRect").style.height = addRowNum * getFontHeight();
+	getElementById("binaryRect").style.width = getElementById(
+		`text-${addRowNum - 1}`
+	).getComputedTextLength();
+	getElementById("binaryRect").style.height = addRowNum * getFontHeight();
 	resizeSVG();
 }
 
 // Website's content finished load trigger
 window.addEventListener("load", async () => {
-	updateCombo();
 	updateStrings();
+	await sleep(500);
+	updateCombo();
 });

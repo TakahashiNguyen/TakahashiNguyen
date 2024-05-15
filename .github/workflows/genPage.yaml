@@ -30,10 +30,12 @@ jobs:
         working-directory: ./.jpg/
         run: |
           mkdir ../.webp
-          for file in ./*; do cwebp -q 25 "$file" -o "../.webp/${file%.*}.webp"; done
+          for file in ./*; do cwebp -q 10 "$file" -o "../.webp/${file%.*}.webp"; done
       - uses: actions/configure-pages@main
       - name: Remove Unnecessary
         run: |
+          chmod +x ./.sh/lazyNameList.sh
+          bash ./.sh/lazyNameList.sh
           rm "Góc học tập" -fr
           rm ./.jpg/ -fr
       - uses: actions/upload-pages-artifact@main

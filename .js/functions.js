@@ -1,44 +1,32 @@
 import {
 	getRandomInt,
-	delay,
-	getIdsHasSubString,
-	ele,
+	sleep,
+	getElementsWithSubstring,
+	getElementById,
 	abs,
-	RGBToHex,
-	HexToRgb,
-	isWindows,
+	rgbToHex,
+	hexToRgb,
+	fetchFromURL,
 } from "./utils.js";
+import { imageURLs } from "./imgUrl.js";
 
 // Export const
 window.luckyColor = [getRandomInt(13) - 6, getRandomInt(13) - 6, getRandomInt(13) - 6];
 
 // Local utils
-export const updateClass = (obj, prefix, main, suffix = "") => {
-		try {
-			const classes = obj.classList;
-			classes.remove(classes[classes.length - 1]);
-			classes.add(`${prefix}-[${main}]${suffix}`);
-		} catch (error) {}
-	},
-	imgUrltoData = (url) =>
-		fetch(url)
-			.then((response) => response.blob())
-			.then(async (blob) => {
-				var reader = new FileReader();
-				reader.readAsDataURL(blob);
-				while (reader.readyState != 2) await delay(100);
-				return reader.result;
-			})
-			.catch((error) => {
-				console.error(error);
-				return "";
-			});
+const updateClass = (obj, prefix, main, suffix = "") => {
+	try {
+		const classes = obj.classList;
+		classes.remove(classes[classes.length - 1]);
+		classes.add(`${prefix}-[${main}]${suffix}`);
+	} catch (error) {}
+};
 
 // Local const
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "_______________________________________";
+	hashTag = "1*10^-36%";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
@@ -47,124 +35,71 @@ let imageBackgroundBrightness = 0,
 window.randomImageDelayLeft = 0;
 
 // Local values' initations
-Promise.all(
-	[
-		"Aiguille du Midi",
-		"Akiyoshidai",
-		"Bueng Si Fai",
-		"California",
-		"CaoBằng",
-		"Centre-ValDeLoire",
-		"Civita di Bagnoregio",
-		"Corfu",
-		"crescent",
-		"CátBà",
-		"Dolbadarn",
-		"Dorset",
-		"Dorset_1",
-		"Dugongs",
-		"Dunnottar",
-		"Emirgan",
-		"Grundlsee",
-		"Hague",
-		"Halnaker",
-		"Happisburgh",
-		"HCMUS",
-		"Heidelberg",
-		"Hibara",
-		"Hocking",
-		"HoàngCungTokyo",
-		"HồYamanaka",
-		"Iceland.1",
-		"Iceland",
-		"ISS",
-		"Iwakuni",
-		"Killarnery",
-		"Lingmoor",
-		"Lofoten",
-		"LâuĐàiHimeji",
-		"Marseille",
-		"Namib",
-		"Nusa",
-		"Petit Minou",
-		"Raja Ampat",
-		"Sechura",
-		"Shikotsu-Toya",
-		"Suffolk",
-		"Sweden",
-		"SôngCửuLong",
-		"Tekapo",
-		"Tenerife",
-		"the ruhr",
-		"Trinidad",
-		"UnionSquare",
-		"VũngNapa",
-		"Yellowstone",
-	].map(async (imageName) => {
-		return await imgUrltoData(
-			`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`
-		);
-	})
-).then((values) => {
-	images = values;
+images.length = imageURLs.length;
+imageURLs.map(async (imageName, index) => {
+	fetchFromURL(
+		`https://TakahashiNguyen.github.io/TakahashiNguyen/.webp/${imageName}.webp`,
+		true
+	).then((value) => (images[index] = value));
 });
 
 // Replace background image
 async function randomImage(dur, loop = false) {
-	var currentIndex = images.indexOf(ele("myImg").src);
+	var currentIndex = images.indexOf(getElementById("myImg").src);
 	randomImageDelayLeft = 100;
 	do {
 		var newIndex = getRandomInt(images.length);
-	} while (newIndex == currentIndex);
+		await sleep(100);
+	} while (newIndex == currentIndex || !images[newIndex]);
 	var data = images[newIndex];
 	var bool = data != null;
 
 	if (bool) {
 		await Promise.all([
-			fade(ele("myImg"), (dur * 7) / 100, 1, 0),
-			fade(ele("textDivSub"), (dur * 3) / 100, 0, 1),
+			fade(getElementById("myImg"), (dur * 7) / 100, 1, 0),
+			fade(getElementById("textDivSub"), (dur * 3) / 100, 0, 1),
 
-			fade(ele("textDiv"), (dur * 5) / 100, 1, 0),
-			fade(ele("githubSpin"), (dur * 2) / 100, 1, 0),
+			fade(getElementById("textDiv"), (dur * 5) / 100, 1, 0),
+			fade(getElementById("githubSpin"), (dur * 2) / 100, 1, 0),
 		]);
 
-		ele("myImg").setAttribute("src", data);
+		getElementById("myImg").setAttribute("src", data);
 		try {
 			mySpotify.src += "";
 		} catch (error) {}
 
 		await Promise.all([
-			fade(ele("myImg"), (dur * 7) / 100, 0, 1),
-			fade(ele("textDivSub"), (dur * 3) / 100, 1, 0),
+			fade(getElementById("myImg"), (dur * 7) / 100, 0, 1),
+			fade(getElementById("textDivSub"), (dur * 3) / 100, 1, 0),
 
-			fade(ele("textDiv"), (dur * 5) / 100, 0, 1),
-			fade(ele("githubSpin"), (dur * 2) / 100, 0, 1),
+			fade(getElementById("textDiv"), (dur * 5) / 100, 0, 1),
+			fade(getElementById("githubSpin"), (dur * 2) / 100, 0, 1),
 		]);
 	}
 	if (bool) {
 		do {
 			randomImageDelayLeft -= 1;
-			await delay((dur / 100) * 0.74);
+			await sleep((dur / 100) * 0.74);
 		} while (randomImageDelayLeft > 0);
-	} else await delay(100);
+	} else await sleep(100);
 	if (loop) randomImage(dur, true);
 }
 
 // Update text decoration
 function updateTextDecoration() {
-	updateClass(ele("githubSpin"), "outline", textNameColor);
+	updateClass(getElementById("githubSpin"), "outline", textNameColor);
 
 	const updateColor = (imageBackgroundBrightness > 128 ? 1 : -1) * 74;
-	const color = RGBToHex(...HexToRgb(textNameColor, updateColor, updateColor, updateColor));
+	const color = rgbToHex(...hexToRgb(textNameColor, updateColor, updateColor, updateColor));
 	const siz = (e) => (textSquareSize / (1941 * 2)) * e;
-	ele("textDiv").style.textShadow = `
+	getElementById("textDiv").style.textShadow = `
     ${-siz(1)}px ${siz(1)}px ${siz(1)}px ${color},
     ${-siz(3)}px ${siz(3)}px ${siz(3)}px ${color},
     ${-siz(6)}px ${siz(6)}px ${siz(6)}px ${color},
     ${-siz(10)}px ${siz(10)}px ${siz(10)}px ${color},
     ${-siz(15)}px ${siz(15)}px ${siz(15)}px ${color}
   `;
-	ele("textDiv").style.color = textNameColor;
+	getElementById("textDiv").style.color = textNameColor;
 }
 
 // Fade animation for element
@@ -180,7 +115,7 @@ export async function fade(element, duration, from, to, fps = 60, callafter = ()
 				return;
 			}
 			l += i;
-			await delay((1 / fps) * 1000);
+			await sleep((1 / fps) * 1000);
 		}
 		element.style.opacity = to;
 		callafter();
@@ -200,13 +135,8 @@ export async function dynamicTextSizer(name, nickname, hashtag) {
 		name.style.height = name.style.width = `${textSquareSize}px`;
 		name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
 
-		nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 20}px`;
+		nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 42}px`;
 		hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
-
-		if (isWindows) {
-			nickname.style.marginBottom = `-${textSquareSize / 74}px`;
-			hashtag.style.marginTop = `${textSquareSize / 100}px`;
-		}
 	} catch (error) {}
 }
 
@@ -214,13 +144,19 @@ export async function dynamicTextSizer(name, nickname, hashtag) {
 export function changeTextColor() {
 	const canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
 	const context = canvas.getContext("2d");
-	const canvaSize = Math.min(ele("myImg").width, ele("myImg").height) / 14;
+	const canvaSize = Math.min(getElementById("myImg").width, getElementById("myImg").height) / 14;
 	canvas.width = canvaSize * 11;
 	canvas.height = canvaSize * 4;
-	var x = (ele("myImg").width - canvas.width) / 2;
-	var y = (ele("myImg").height - canvas.height) / 2;
+	var x = (getElementById("myImg").width - canvas.width) / 2;
+	var y = (getElementById("myImg").height - canvas.height) / 2;
 
-	context.drawImage(ele("myImg"), -x, -y, ele("myImg").width, ele("myImg").height);
+	context.drawImage(
+		getElementById("myImg"),
+		-x,
+		-y,
+		getElementById("myImg").width,
+		getElementById("myImg").height
+	);
 	const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 	const data = imageData.data;
 
@@ -244,7 +180,7 @@ export function changeTextColor() {
 	const averageG = abs((brightness < 128 ? 270 : 180) - Math.floor(g / pixelCount));
 	const averageB = abs((brightness < 128 ? 270 : 180) - Math.floor(b / pixelCount));
 	imageBackgroundBrightness = brightness;
-	textNameColor = RGBToHex(averageR, averageG, averageB);
+	textNameColor = rgbToHex(averageR, averageG, averageB);
 	updateTextDecoration();
 }
 
@@ -260,12 +196,14 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-	getIdsHasSubString("name").forEach((obj) => (obj.textContent = myName));
-	getIdsHasSubString("nickName").forEach((obj) => (obj.textContent = myNickName));
-	getIdsHasSubString("myHashTag").forEach((obj) => (obj.textContent = "#" + hashTag));
+	getElementsWithSubstring("name").forEach((obj) => (obj.textContent = myName));
+	getElementsWithSubstring("nickName").forEach((obj) => (obj.textContent = myNickName));
+	getElementsWithSubstring("myHashTag").forEach(
+		(obj) => (obj.textContent = (hashTag !== "" ? "#" : "") + hashTag)
+	);
 
 	dynamicInvertal = setInterval(dynamicFunctions, dynamicDuration);
 	randomImage(randomImageDuration, true);
 	if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
-		ele("textDiv").style.color = "black";
+		getElementById("textDiv").style.color = "black";
 });
