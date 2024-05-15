@@ -4,7 +4,7 @@ import { CSS3DRenderer, CSS3DObject } from "CSS3DRenderer";
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
 	isMobile = /Mobile/i.test(navigator.userAgent),
-	VERTEX_SHADER = `
+	MY_VERTEX_SHADER = `
       varying vec2 vUv;
 			void main()
 			{
@@ -190,7 +190,7 @@ export class GLSLElement {
 			this.renderer = this.makeRenderer(() => new CSS3DRenderer(), backgroundColor);
 			this.mousePosition = new THREE.Vector4();
 
-			if (!isBody(this.originalElement)) {
+			if (!isBodyElement(this.originalElement)) {
 				var outerOuterDiv = document.createElement("div"),
 					outerDiv = document.createElement("div");
 
@@ -201,10 +201,13 @@ export class GLSLElement {
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
 				outerOuterDiv.appendChild(outerDiv);
-				if (isVideoEle(getElementById(element))) {
-					this.mainChannel = await this.initBuffer(false, new THREE.VideoTexture(getElementById(element)));
+				if (isVideoElement(getElementById(element))) {
+					this.mainChannel = await this.initBuffer(
+						false,
+						new THREE.VideoTexture(getElementById(element))
+					);
 					this.renderer.domElement.style.display = "none";
-				} else if (isImageEle(getElementById(element))) {
+				} else if (isImageElement(getElementById(element))) {
 					var mat = new THREE.Texture(getElementById(element));
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
@@ -305,11 +308,11 @@ class ElementBuffer {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
-			} else if (typeof input === "string" || input instanceof String || isDiv(input)) {
+			} else if (typeof input === "string" || input instanceof String || isDivElement(input)) {
 				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
 				(this.counter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				this.scene = new THREE.Scene();
-				if (!isDiv(input)) {
+				if (!isDivElement(input)) {
 					const commonFilePath = () => {
 						let arr = input.split("/");
 						arr[arr.length - 1] = "_common.frag";
@@ -318,8 +321,9 @@ class ElementBuffer {
 
 					this.material = new THREE.ShaderMaterial({
 						fragmentShader:
-							(await fetchFromURL(commonFilePath())) + ShaderToyToGLSL(await fetchFromURL(input)),
-						vertexShader: vertexShader,
+							(await fetchFromURL(commonFilePath())) +
+							convertShaderToyToGLSL(await fetchFromURL(input)),
+						vertexShader: MY_VERTEX_SHADER,
 						uniforms: this.uniforms,
 					});
 					this.isFragment = true;
@@ -341,7 +345,7 @@ class ElementBuffer {
 
 				// Setup camera
 				this.camera = new THREE.PerspectiveCamera(
-					isDiv(input) ? 100 : 1,
+					isDivElement(input) ? 100 : 1,
 					size.x / size.y,
 					0.1,
 					1000
