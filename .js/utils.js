@@ -19,7 +19,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 	abs = (value) => Math.abs(value),
 	floor = (value) => Math.floor(value),
 	getRandomInt = (max) => Math.floor(Math.random() * max),
-	delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+	sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 	rgbToHex = (r, g, b) =>
 		"#" +
 		(
@@ -81,7 +81,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 				.then(async (data) => {
 					const reader = new FileReader();
 					isImage ? reader.readAsDataURL(data) : reader.readAsText(data);
-					while (reader.readyState !== 2) await delay(100);
+					while (reader.readyState !== 2) await sleep(100);
 					resolve(reader.result);
 				})
 				.catch((error) => resolve(""));

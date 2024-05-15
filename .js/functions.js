@@ -1,6 +1,6 @@
 import {
 	getRandomInt,
-	delay,
+	sleep,
 	getElementsWithSubstring,
 	getElementById,
 	abs,
@@ -135,9 +135,9 @@ async function randomImage(dur, loop = false) {
 	if (bool) {
 		do {
 			randomImageDelayLeft -= 1;
-			await delay((dur / 100) * 0.74);
+			await sleep((dur / 100) * 0.74);
 		} while (randomImageDelayLeft > 0);
-	} else await delay(100);
+	} else await sleep(100);
 	if (loop) randomImage(dur, true);
 }
 
@@ -171,7 +171,7 @@ export async function fade(element, duration, from, to, fps = 60, callafter = ()
 				return;
 			}
 			l += i;
-			await delay((1 / fps) * 1000);
+			await sleep((1 / fps) * 1000);
 		}
 		element.style.opacity = to;
 		callafter();
