@@ -130,6 +130,24 @@ export function bannerTime() {
 // Website's content finished load trigger
 window.addEventListener("DOMContentLoaded", async () => {
 	textResize();
+
+	let luckyFont = [
+		"Peristiwa",
+		"Chromate",
+		"attena",
+		"TimberWolf",
+		"Gerlomi",
+		"Amoitar",
+		"Sigokae",
+		"Ginger",
+		"WylieVoigen",
+		"Magnificent",
+		"Karasha",
+		"sofia",
+	].random();
+	getElementById("name").classList.add(`font-['${luckyFont}']`);
+	getElementById("nameSub").classList.add(`font-['${luckyFont}']`);
+
 	fade(loadingPage, 1975, 1, 0, 144, () => {
 		loadingPage.classList.add("hidden");
 	});
