@@ -42,3 +42,8 @@
 	font-family: Consolas;
 	src: url(../.ttf/Consolas.ttf);
 }
+
+@font-face {
+	font-family: Hugolers;
+	src: url(../.otf/Hugolers.otf);
+}
