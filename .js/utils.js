@@ -236,8 +236,6 @@ export class GLSLElement {
 						this.innerInnerDiv
 					);
 				}
-
-				this.originalElement.style.zIndex = "-1";
 			} else {
 				resolve(this);
 				return;
