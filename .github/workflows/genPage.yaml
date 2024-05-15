@@ -35,7 +35,7 @@ jobs:
       - name: Remove Unnecessary
         run: |
           chmod +x ./.sh/lazyNameList.sh
-          ./.sh/lazyNameList.sh
+          bash ./.sh/lazyNameList.sh
           rm "Góc học tập" -fr
           rm ./.jpg/ -fr
       - uses: actions/upload-pages-artifact@main
