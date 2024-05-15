@@ -22,9 +22,10 @@
     },
     {
       "type": "msedge",
-      "name": "http://127.0.0.1:3000/index.html",
+      "name": "Debug HTML",
       "request": "launch",
-      "url": "http://127.0.0.1:3000/index.html"
+      "url": "http://127.0.0.1:3000/${relativeFile}",
+      "cwd": "${fileDirname}"
     }
   ]
 }
