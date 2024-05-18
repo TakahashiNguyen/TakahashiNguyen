@@ -3,6 +3,6 @@
 .vs
 _screenshots*
 Ý tưởng
-test.*
+*test*
 .webp/*
 .js/imgUrl.js

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CSS3DRenderer, CSS3DObject } from "CSS3DRenderer";
+import "html2canvas";
 
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
@@ -134,8 +134,8 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 			"data:image/svg+xml;base64," +
 			btoa(`
 				<svg xmlns='http://www.w3.org/2000/svg' 
-					width='${(width || origElem.clientWidth) + left}'
-					height='${(height || origElem.clientHeight) + top}'
+					width='${(width || originalElement.clientWidth) + left}'
+					height='${(height || originalElement.clientHeight) + top}'
 				>
 					<foreignObject width='100%' height='100%' x='${left}' y='${top}'>	
 						${new XMLSerializer().serializeToString(outerDiv)}
@@ -143,22 +143,13 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 				</svg>
 			`);
 
-		return new Promise((resolve, reject) => {
-			const image = new Image();
-			image.addEventListener("load", () => resolve(image));
-			image.addEventListener("error", () => reject(new Error("Failed to load image")));
-			image.src = dataUri;
-		});
+		return dataUri;
 	};
 
 export class GLSLElement {
 	async setDOMSize() {
 		const { clientWidth, clientHeight } = this.referenceSizeElement;
 		this.size.set(clientWidth, clientHeight, window.devicePixelRatio);
-		if (this.referenceSizeElement !== this.originalElement) {
-			this.innerInnerDiv.style.width = `${clientWidth}px`;
-			this.innerInnerDiv.style.height = `${clientHeight}px`;
-		}
 	}
 
 	makeRenderer(make, backgroundColor) {
@@ -172,13 +163,15 @@ export class GLSLElement {
 
 	constructor(
 		element,
-		setupBuffer = async () => {},
+		setupBuffer = async (t) => {
+			t.bufferDebug = await t.initBuffer(true, "../.frag/debug.frag");
+		},
 		setupChannel = async () => {},
 		backgroundColor = "transparent"
 	) {
 		this.setupBuffer = setupBuffer;
 		this.setupChannel = setupChannel;
-		return new Promise(async (resolve) => {
+		return new Promise(async (resolve, reject) => {
 			this.originalElement = getElementById(element);
 
 			// Init GLSL
@@ -188,57 +181,33 @@ export class GLSLElement {
 				() => new THREE.WebGLRenderer({ preserveDrawingBuffer: true }),
 				backgroundColor
 			);
-			this.renderer = this.makeRenderer(() => new CSS3DRenderer(), backgroundColor);
 			this.mousePosition = new THREE.Vector4();
 
 			if (!isBodyElement(this.originalElement)) {
 				var outerOuterDiv = document.createElement("div"),
 					outerDiv = document.createElement("div");
 
-				outerDiv.append(this.renderer.domElement, this.rendererGL.domElement);
-				(this.rendererGL.domElement.style.zIndex = 1), (this.renderer.domElement.style.zIndex = 2);
+				outerDiv.append(this.rendererGL.domElement);
 				(outerDiv.style.position = "relative"), (outerDiv.style.display = "flex");
 				(outerOuterDiv.style.position = "relative"), (outerOuterDiv.style.display = "contents");
 
 				this.originalElement.parentNode.insertBefore(outerOuterDiv, this.originalElement);
+				this.originalElement.style.zIndex = "-1";
 				outerOuterDiv.appendChild(outerDiv);
 				if (isVideoElement(getElementById(element))) {
 					this.mainChannel = await this.initBuffer(
 						false,
 						new THREE.VideoTexture(getElementById(element))
 					);
-					this.renderer.domElement.style.display = "none";
 				} else if (isImageElement(getElementById(element))) {
 					var mat = new THREE.Texture(getElementById(element));
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
-					this.renderer.domElement.style.display = "none";
-				} else {
-					this.innerInnerDiv = document.createElement("div");
-					this.referenceSizeElement = outerDiv;
-
-					// this.canvas = document.createElement("canvas");
-					// this.canvasCTX = this.canvas.getContext("2d");
-
-					this.innerInnerDiv.append(...this.originalElement.children);
-					for (var property in this.originalElement.style) {
-						if (property.toLowerCase().includes("color")) {
-							this.innerInnerDiv.style[property] = this.originalElement.style[property];
-							this.originalElement.style[property] = "";
-						}
-					}
-
-					this.originalElement.appendChild(outerOuterDiv);
-					outerDiv.style.width = outerDiv.style.height = "100%";
-
-					this.mainChannel = await this.initBuffer(
-						true,
-						//new CanvasBuffer(this.canvas, this.canvasCTX, this.originalElement)
-						this.innerInnerDiv
-					);
+				} else if (isDivElement(getElementById(element))) {
+					this.mainChannel = await this.initBuffer(false, this.originalElement);
 				}
 			} else {
-				resolve(this);
+				reject(new Error("Please use an element that is not a body element"));
 				return;
 			}
 
@@ -271,7 +240,7 @@ export class GLSLElement {
 	}
 
 	async initBuffer(isMainCamera, input) {
-		return new ElementBuffer(isMainCamera, input, this.renderer, this.rendererGL, this.size, {
+		return new ElementBuffer(isMainCamera, input, this.rendererGL, this.size, {
 			iFrame: { value: 0 },
 			iResolution: { value: this.size },
 			iChannelResolution: {
@@ -302,40 +271,29 @@ export class GLSLElement {
 }
 
 class ElementBuffer {
-	constructor(isMainCamera, input, renderer, rendererGL, size, uniforms = {}) {
+	constructor(isMainCamera, input, rendererGL, size, uniforms = {}) {
 		return new Promise(async (resolve) => {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
 			} else if (typeof input === "string" || input instanceof String || isDivElement(input)) {
-				(this.renderer = renderer), (this.rendererGL = rendererGL), (this.size = size);
+				(this.rendererGL = rendererGL), (this.size = size);
 				(this.frameCounter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				this.scene = new THREE.Scene();
-				if (!isDivElement(input)) {
-					const commonFilePath = () => {
-						let arr = input.split("/");
-						arr[arr.length - 1] = "_common.frag";
-						return arr.join("/");
-					};
+				const commonFilePath = () => {
+					let arr = input.split("/");
+					arr[arr.length - 1] = "_common.frag";
+					return arr.join("/");
+				};
 
-					this.material = new THREE.ShaderMaterial({
-						fragmentShader:
-							(await fetchFromURL(commonFilePath())) +
-							convertShaderToyToGLSL(await fetchFromURL(input)),
-						vertexShader: MY_VERTEX_SHADER,
-						uniforms: this.uniforms,
-					});
-					this.isFragment = true;
-				} else {
-					const object = new CSS3DObject(input);
-					object.scale.set(1.19125, 1.19125, 1);
-
-					this.scene.add(object);
-
-					this.material = new THREE.MeshBasicMaterial({
-						color: new THREE.Color("green"),
-					});
-				}
+				this.material = new THREE.ShaderMaterial({
+					fragmentShader:
+						(await fetchFromURL(commonFilePath())) +
+						convertShaderToyToGLSL(await fetchFromURL(input)),
+					vertexShader: MY_VERTEX_SHADER,
+					uniforms: this.uniforms,
+				});
+				this.isFragment = true;
 
 				this.geometry = new THREE.PlaneGeometry(size.x, size.y);
 				(this.plane = new THREE.Mesh(this.geometry, this.material)),
@@ -344,12 +302,7 @@ class ElementBuffer {
 				this.scene.add(this.plane);
 
 				// Setup camera
-				this.camera = new THREE.PerspectiveCamera(
-					isDivElement(input) ? 100 : 1,
-					size.x / size.y,
-					0.1,
-					1000
-				);
+				this.camera = new THREE.PerspectiveCamera(1, size.x / size.y, 0.1, 1000);
 				(this.camera.position.x = this.camera.position.y = 0), (this.camera.position.z = 100);
 
 				// Buffer section
@@ -377,8 +330,6 @@ class ElementBuffer {
 	async render() {
 		if (this.isMainCamera) {
 			this.camera.lookAt(this.scene.position);
-			this.renderer.render(this.scene, this.camera);
-			this.renderer.setSize(this.size.x, this.size.y);
 			this.rendererGL.render(this.scene, this.camera);
 			this.rendererGL.setSize(this.size.x, this.size.y);
 			this.camera.aspect = this.size.x / this.size.y;
@@ -388,16 +339,13 @@ class ElementBuffer {
 			this.rendererGL.setRenderTarget(this.writeBuffer);
 			this.rendererGL.clear();
 			this.rendererGL.render(this.scene, this.camera);
-			this.renderer.render(this.scene, this.camera);
-			this.renderer.setSize(this.size.x, this.size.y);
 			this.rendererGL.setRenderTarget(null);
 			this.swap();
 
 			// Update uniforms data
 			this.uniforms.iTime.value += this.clock.getDelta();
 			this.uniforms.iFrame.value = this.frameCounter++;
-		} else if (this.isTexture && this.readBuffer.texture instanceof CanvasBuffer)
-			this.readBuffer.texture.render();
+		}
 	}
 }
 class CanvasBuffer extends THREE.CanvasTexture {
