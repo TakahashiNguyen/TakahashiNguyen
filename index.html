@@ -5,6 +5,8 @@
 		<meta charset="utf-8" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script type="importmap">
@@ -159,8 +161,10 @@
 
 			<div class="absolute tr-8 z-50 cursor-grabbing" id="githubButton">
 				<div class="relative h-9 w-9">
-					<img src="./.svg/github-mark-white.svg" class="dObject-dark absolute" alt="Github" />
-					<img src="./.svg/github-mark.svg" class="dObject z-50 absolute" alt="Github" />
+					<picture class="flex middle-div full absolute"
+						><source media="(prefers-color-scheme: dark)" srcset="./.svg/github-mark-white.svg" />
+						<img alt="" src="./.svg/github-mark.svg" class="middle-div"
+					/></picture>
 					<div class="absolute -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
 						<div
 							class="h-9 w-9 rounded-full outline-dashed outline-2 outline-offset-2 ll"
@@ -264,7 +268,7 @@
 				</div>
 			</div>
 
-			<div class="absolute br-8 z-50 cursor-grabbing">
+			<div class="absolute br-8 z-50 cursor-zoom-in origin-bottom-right sm:translate-x-0 sm:translate-y-0 sm:rotate-0 translate-y-[-112px] rotate-[-90deg]" onclick="startupSound.play();">
 				<picture>
 					<source
 						media="(prefers-color-scheme: dark)"
