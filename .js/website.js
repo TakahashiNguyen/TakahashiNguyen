@@ -1,5 +1,7 @@
 import { abs, getElementById, getRandomInt, fetchFromURL } from "./utils.js";
 import { dynamicTextSizer, fade } from "./functions.js";
+import "howler";
+import { wavURLs } from "./wavUrl.js";
 
 // Export variables
 window.textSquareSize = 0;
@@ -148,9 +150,24 @@ window.addEventListener("DOMContentLoaded", async () => {
 	getElementById("name").classList.add(`font-['${luckyFont}']`);
 	getElementById("nameSub").classList.add(`font-['${luckyFont}']`);
 
-	fade(loadingPage, 1975, 1, 0, 144, () => {
-		loadingPage.classList.add("hidden");
+	window.isStartupSoundStarted = 0;
+	window.startupSound = new Howl({
+		src: wavURLs.map((name) => `./.wav/${name}.wav`).random(),
+		volume: getRandomInt(100) % 50 ? 1 : 100,
+		onplay: () => {
+			fade(loadingPage, 1975, 1, 0, 144, () => {
+				loadingPage.classList.add("hidden");
+			});
+		},
+		onplayerror: function () {
+			startupSound.once("unlock", function () {
+				startupSound.play();
+			});
+		},
+		autoplay: true,
 	});
+
+	window.startupSound.play();
 });
 
 // Website's window resize trigger

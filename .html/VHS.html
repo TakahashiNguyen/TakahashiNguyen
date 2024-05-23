@@ -7,8 +7,8 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "https://cdn.jsdelivr.net/gh/mrdoob/three.js/src/Three.js",
-					"CSS3DRenderer": "https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/jsm/renderers/CSS3DRenderer.js"
+					"three": "https://cdn.jsdelivr.net/gh/mrdoob/three.js/build/three.module.js",
+					"html2canvas": "https://takahashinguyen.github.io/html2canvas/dist/html2canvas.js"
 				}
 			}
 		</script>
@@ -75,9 +75,9 @@
 			}
 
 			document.addEventListener("DOMContentLoaded", async () => {
-				new GLSLElement("debugChannel");
-				new App("videoChannel", "black");
-				new App2("imageChannel", "#370037");
+				new App("debugChannel");
+				//new App("videoChannel", "black");
+				//new App2("imageChannel", "#370037");
 			});
 		</script>
 
