@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import "html2canvas";
+import * as html2canvas from "html2canvas";
 
 export const isWindows = /Windows/i.test(navigator.userAgent),
 	isLinux = /Linux/i.test(navigator.userAgent),
@@ -130,7 +130,7 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 		outerDiv.appendChild(elem);
 		elem.style.opacity = "1";
 
-		const dataUri =
+		return (
 			"data:image/svg+xml;base64," +
 			btoa(`
 				<svg xmlns='http://www.w3.org/2000/svg' 
@@ -141,9 +141,8 @@ export const isWindows = /Windows/i.test(navigator.userAgent),
 						${new XMLSerializer().serializeToString(outerDiv)}
 					</foreignObject>
 				</svg>
-			`);
-
-		return dataUri;
+			`)
+		);
 	};
 
 export class GLSLElement {
@@ -173,6 +172,7 @@ export class GLSLElement {
 		this.setupChannel = setupChannel;
 		return new Promise(async (resolve, reject) => {
 			this.originalElement = getElementById(element);
+			this.originalElement.style.zIndex = -1;
 
 			// Init GLSL
 			this.referenceSizeElement = this.originalElement;
@@ -182,6 +182,8 @@ export class GLSLElement {
 				backgroundColor
 			);
 			this.mousePosition = new THREE.Vector4();
+
+			this.setDOMSize();
 
 			if (!isBodyElement(this.originalElement)) {
 				var outerOuterDiv = document.createElement("div"),
@@ -204,14 +206,19 @@ export class GLSLElement {
 					mat.needsUpdate = true;
 					this.mainChannel = await this.initBuffer(false, mat);
 				} else if (isDivElement(getElementById(element))) {
-					this.mainChannel = await this.initBuffer(false, this.originalElement);
+					this.canvas = document.createElement("canvas");
+					document.body.append(this.canvas);
+					this.canvasBuffer = await new CanvasBuffer(this.canvas, this.originalElement, this.size);
+					this.mainChannel = await this.initBuffer(
+						false,
+						// new THREE.TextureLoader().load(DOMtoImg(this.originalElement))
+						this.canvasBuffer
+					);
 				}
 			} else {
 				reject(new Error("Please use an element that is not a body element"));
 				return;
 			}
-
-			this.setDOMSize();
 
 			// Setup events
 			outerDiv.addEventListener("mousedown", () => this.mousePosition.setZ(1));
@@ -276,7 +283,7 @@ class ElementBuffer {
 			this.isMainCamera = isMainCamera;
 			if (input instanceof THREE.Texture) {
 				(this.isTexture = true), (this.readBuffer = { texture: input });
-			} else if (typeof input === "string" || input instanceof String || isDivElement(input)) {
+			} else if (typeof input === "string" || input instanceof String) {
 				(this.rendererGL = rendererGL), (this.size = size);
 				(this.frameCounter = 0), (this.uniforms = uniforms), (this.clock = new THREE.Clock());
 				this.scene = new THREE.Scene();
@@ -349,21 +356,28 @@ class ElementBuffer {
 	}
 }
 class CanvasBuffer extends THREE.CanvasTexture {
-	constructor(canvas, ctx, element) {
+	constructor(canvas, element, size) {
 		super(canvas);
-		this.element = element;
-		this.canvas = canvas;
-		this.ctx = ctx;
+		return new Promise(async (resolve) => {
+			this.canvas = canvas;
+			this.element = element;
+			this.size = size;
+
+			// capture full window
+			this.renderer = await html2canvas.HTML2CanvasClass.init(element, {
+				removeContainer: false,
+				canvas: this.canvas,
+				foreignObjectRendering: false,
+				size: this.size,
+			});
+			this.renderer.render();
+			resolve(this);
+		});
 	}
 
 	async render() {
-		try {
-			await DOMtoImg(this.element).then((img) => {
-				(this.canvas.width = img.width), (this.canvas.height = img.height);
-				this.ctx.drawImage(img, 0, 0);
-			});
-		} catch (error) {}
-
+		// (this.canvas.width = this.size.x), (this.canvas.height = this.size.y);
+		this.renderer.render();
 		this.dispose();
 	}
 }
