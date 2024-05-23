@@ -34,8 +34,8 @@ jobs:
       - uses: actions/configure-pages@main
       - name: Remove Unnecessary
         run: |
-          chmod +x ./.sh/lazyNameList.sh
-          bash ./.sh/lazyNameList.sh
+          chmod +x ./.sh/lazyImgNameList.sh ./.sh/lazyWavNameList.sh
+          bash ./.sh/lazyImgNameList.sh && bash ./.sh/lazyWavNameList.sh
           rm "Góc học tập" -fr
           rm ./.jpg/ -fr
       - uses: actions/upload-pages-artifact@main

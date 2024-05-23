@@ -6,3 +6,4 @@ _screenshots*
 *test*
 .webp/*
 .js/imgUrl.js
+.js/wavUrl.js
