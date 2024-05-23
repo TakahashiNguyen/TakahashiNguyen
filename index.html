@@ -12,7 +12,9 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "https://threejs.org/build/three.module.js"
+					"three": "https://threejs.org/build/three.module.js",
+					"howler": "https://cdn.jsdelivr.net/gh/goldfire/howler.js/dist/howler.js",
+					"html2canvas": "https://takahashinguyen.github.io/html2canvas/dist/html2canvas.js"
 				}
 			}
 		</script>
@@ -130,10 +132,24 @@
 	</head>
 	<body class="bg-white dark:bg-black select-none subpixel-antialiased overflow-hidden">
 		<div
-			class="absolute z-[100] h-dvh w-full cursor-zoom-in bg-white dark:bg-black"
+			class="absolute z-[100] h-dvh w-full bg-white dark:bg-black cursor-pointer flex middle-div pointer-events-none"
 			id="loadingPage"
 			style="opacity: 1"
-		></div>
+		>
+			<picture class="flex middle-div full"
+				><source
+					media="(prefers-color-scheme: dark)"
+					srcset="
+						https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png
+					" />
+				<img
+					alt=""
+					src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png"
+					width="18%"
+					height="18%"
+					class="middle-div"
+			/></picture>
+		</div>
 
 		<div class="absolute flex full middle-div" id="thePage">
 			<div

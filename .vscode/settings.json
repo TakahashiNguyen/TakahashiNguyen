@@ -6,5 +6,6 @@
     "liquid.format.enable": true,
     "svg.preview.background": "editor",
     "python.analysis.typeCheckingMode": "basic",
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "livePreview.defaultPreviewPath": "/index.html"
 }
