@@ -152,8 +152,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	window.isStartupSoundStarted = 0;
 	window.startupSound = new Howl({
-		src: wavURLs.map((name) => `./.wav/${name}.wav`).random(),
-		volume: getRandomInt(100) % 50 ? 1 : 100,
+		src: wavURLs.map((name) => `./.ogg/${name}.ogg`).random(),
+		volume: 1,
 		onplay: () => {
 			fade(loadingPage, 1975, 1, 0, 144, () => {
 				loadingPage.classList.add("hidden");
@@ -165,6 +165,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 			});
 		},
 		autoplay: true,
+		html5: true,
 	});
 
 	window.startupSound.play();

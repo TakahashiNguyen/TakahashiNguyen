@@ -136,19 +136,23 @@
 			id="loadingPage"
 			style="opacity: 1"
 		>
-			<picture class="flex middle-div full"
-				><source
-					media="(prefers-color-scheme: dark)"
-					srcset="
+			<picture class="flex middle-div full">
+				<img
+					src="
 						https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Penguin.png
-					" />
+					"
+					width="18%"
+					height="18%"
+					class="middle-div dObject-dark"
+				/>
 				<img
 					alt=""
 					src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png"
 					width="18%"
 					height="18%"
-					class="middle-div"
-			/></picture>
+					class="middle-div dObject"
+				/>
+			</picture>
 		</div>
 
 		<div class="absolute flex full middle-div" id="thePage">
@@ -177,10 +181,10 @@
 
 			<div class="absolute tr-8 z-50 cursor-grabbing" id="githubButton">
 				<div class="relative h-9 w-9">
-					<picture class="flex middle-div full absolute"
-						><source media="(prefers-color-scheme: dark)" srcset="./.svg/github-mark-white.svg" />
-						<img alt="" src="./.svg/github-mark.svg" class="middle-div"
-					/></picture>
+					<div>
+						<img src="./.svg/github-mark-white.svg" class="dObject-dark absolute" alt="Github" />
+						<img src="./.svg/github-mark.svg" class="dObject z-50 absolute" alt="Github" />
+					</div>
 					<div class="absolute -z-50 animate-[spin_6s_linear_infinite] rounded-full blurBackground">
 						<div
 							class="h-9 w-9 rounded-full outline-dashed outline-2 outline-offset-2 ll"
@@ -259,7 +263,9 @@
 						<rect class="dark:fill-white fill-black full" style="mask: url(#bottomAdvisoryText)" />
 					</svg>
 				</div>
-				<div>
+				<div
+					class="scale-75 translate-x-[-12.5%] translate-y-[12.5%] sm:scale-100 sm:translate-x-0 sm:translate-y-0"
+				>
 					<div
 						class="relative flex justify-center overflow-hidden bg-transparent duration-[2000ms] max-sm:h-0 max-sm:w-full max-sm:items-start max-sm:group-hover/advisory:h-10 sm:h-full sm:w-0 sm:items-center sm:justify-end sm:group-hover/advisory:w-full"
 					>
@@ -274,8 +280,9 @@
 						<svg class="absolute -z-50 bg-transparent full" xmlns="http://www.w3.org/2000/svg">
 							<foreignObject width="100%" height="100%">
 								<iframe
+									title="binaryBackground"
 									src=".html/binaryBackground.html"
-									class="full blurBackground"
+									class="full bg-white/[.32]"
 									frameborder="0"
 								></iframe>
 							</foreignObject>
@@ -284,17 +291,22 @@
 				</div>
 			</div>
 
-			<div class="absolute br-8 z-50 cursor-zoom-in origin-bottom-right sm:translate-x-0 sm:translate-y-0 sm:rotate-0 translate-y-[-112px] rotate-[-90deg]" onclick="startupSound.play();">
+			<div
+				class="absolute br-8 z-50 cursor-zoom-in origin-bottom-right sm:translate-x-0 sm:translate-y-0 sm:rotate-0 translate-y-[-112px] rotate-[-90deg]"
+				onclick="startupSound.play();"
+			>
 				<picture>
-					<source
-						media="(prefers-color-scheme: dark)"
-						srcset="
+					<img
+						src="
 							https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m&labelColor=080808&color=f05237
 						"
+						alt=""
+						class="dObject-dark"
 					/>
 					<img
-						alt=""
 						src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m&labelColor=f05237&color=f7f7f7"
+						alt=""
+						class="dObject"
 					/>
 				</picture>
 			</div>
