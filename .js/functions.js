@@ -136,6 +136,7 @@ export async function dynamicTextSizer(name, nickname, hashtag) {
 		name.style.lineHeight = name.style.fontSize = `${textSquareSize / 18}px`;
 
 		nickname.style.lineHeight = nickname.style.fontSize = `${textSquareSize / 42}px`;
+		nickname.style.marginBottom = hashtag.style.marginTop = `${textSquareSize / 240}px`;
 		hashtag.style.lineHeight = hashtag.style.fontSize = `${textSquareSize / 64}px`;
 	} catch (error) {}
 }
