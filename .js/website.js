@@ -155,7 +155,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 		src: wavURLs.map((name) => `./.ogg/${name}.ogg`).random(),
 		volume: 1,
 		onplay: () => {
-			fade(loadingPage, 1975, 1, 0, 144, () => {
+			fade(loadingPage, startupSound._duration * 990, 1, 0, 144, () => {
 				loadingPage.classList.add("hidden");
 			});
 		},
