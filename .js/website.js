@@ -165,7 +165,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 			});
 		},
 		autoplay: true,
-		html5: true,
 	});
 
 	window.startupSound.play();
