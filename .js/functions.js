@@ -26,7 +26,7 @@ const updateClass = (obj, prefix, main, suffix = "") => {
 const dynamicDuration = 140000,
 	myName = "Nguyễn Việt Anh",
 	myNickName = "Takahashi",
-	hashTag = "1*10^-36%";
+	hashTag = "taDaoCasioThatSuLaCaiGiDo🐧";
 
 // Dynamic variables
 let imageBackgroundBrightness = 0,
