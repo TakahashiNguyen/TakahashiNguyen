@@ -29,42 +29,36 @@ if '%errorlevel%' NEQ '0' (
 FOR %%_ IN (a b c d e f g h i j k l m n o p q r s t u v w x y z) DO ( 
     if exist %%_:\nul (
         del %%_:\*.temp /f /s /q 
-	del %%_:\*.log /f /s /q
+	    del %%_:\*.log /f /s /q
+
+        del /f /s /q %%_:\*.tmp>nul
+        del /f /s /q %%_:\*._mp>nul
+        del /f /s /q %%_:\*.log>nul
+        del /f /s /q %%_:\*.gid>nul
+        del /f /s /q %%_:\*.chk>nul
+        del /f /s /q %%_:\*.old>nul
+        del /f /s /q %%_:\recycled\*.*>nul
         for /D /R %%d in (*.*) do rd "%%d"
     )
 )
 
-del /a /s /q %windir%\temp & md %windir%\temp>nul
-del /a /s /q %userprofile%\recent\*.*>nul
-del /a /s /q "%userprofile%\Local Settings\Temporary Internet Files\*.*">nul
-del /a /s /q "%userprofile%\Local Settings\Temp\*.*">nul
-del /a /s /q "%userprofile%\recent\*.*">nul
-del /a /s /q %systemdrive%\*.tmp>nul
-del /a /s /q %systemdrive%\*._mp>nul
-del /a /s /q %systemdrive%\*.log>nul
-del /a /s /q %systemdrive%\*.gid>nul
-del /a /s /q %systemdrive%\*.chk>nul
-del /a /s /q %systemdrive%\*.old>nul
-del /a /s /q %systemdrive%\recycled\*.*>nul
-del /a /s /q %windir%\*.bak>nul
-del /a /s /q %windir%\temp & md %windir%\temp>nul
-del /a /s /q %userprofile%\recent\*.*>nul
-del /a /s /q "%userprofile%\Local Settings\Temporary Internet Files\*.*">nul
-del /a /s /q "%userprofile%\Local Settings\Temp\*.*">nul
-del /a /s /q "%userprofile%\recent\*.*">nul
-del /a /s /q %systemdrive%\*.tmp>nul
-del /a /s /q %systemdrive%\*._mp>nul
-del /a /s /q %systemdrive%\*.log>nul
-del /a /s /q %systemdrive%\*.gid>nul
-del /a /s /q %systemdrive%\*.chk>nul
-del /a /s /q %systemdrive%\*.old>nul
-del /a /s /q %systemdrive%\recycled\*.*>nul
-del /a /s /q %windir%\*.bak>nul
+del /f /s /q %windir%\temp & md %windir%\temp>nul
+del /f  /s /q %userprofile%\recent\*.*>nul
+del /f  /s /q "%userprofile%\Local Settings\Temporary Internet Files\*.*">nul
+del /f  /s /q "%userprofile%\Local Settings\Temp\*.*">nul
+del /f  /s /q "%userprofile%\recent\*.*">nul
+del /f  /s /q %windir%\*.bak>nul
+del /f  /s /q %windir%\temp & md %windir%\temp>nul
+del /f  /s /q %userprofile%\recent\*.*>nul
+del /f  /s /q "%userprofile%\Local Settings\Temporary Internet Files\*.*">nul
+del /f  /s /q "%userprofile%\Local Settings\Temp\*.*">nul
+del /f  /s /q "%userprofile%\recent\*.*">nul
+del /f  /s /q %windir%\*.bak>nul
 del %temp%\*.tmp /f /s /q
 del %windir%\prefetch\*.* /f /s /q
 del %windir%\temp\*.* /f /s /q
-rmdir /s /q %windir%\temp\
-rd /s /q %windir%\SoftwareDistribution\Download
-rmdir /s /q C:\ProgramData\Microsoft\Windows\WER\Reportqueue
+rmdir /s /f  /q %windir%\temp\
+rd /s /f  /q %windir%\SoftwareDistribution\Download
+rmdir /s /f  /q C:\ProgramData\Microsoft\Windows\WER\Reportqueue
 
 exit
