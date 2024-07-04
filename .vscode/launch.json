@@ -5,6 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "PowerShell Launch Current File",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${file}",
+      "cwd": "${cwd}"
+    },
+     
+    {
       "type": "bashdb",
       "request": "launch",
       "name": "Bash-Debug (select script from list of sh files)",
