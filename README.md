@@ -21,22 +21,8 @@
   <img alt="" src="https://skillicons.dev/icons?i=github,vscode,docker,cloudflare,py,vim,cpp,nestjs,nodejs,androidstudio,linux,windows,mysql&theme=light" width="900" height="50">
 </picture>
 
-> [!TIP]
-> Tôi đang tập trung ôn thi Tốt nghiệp Trung học Phổ Thông Quốc gia và cố gắng đậu 7480201_DKD@QST 🥰
-
-## Nghe cùng với tôi nè <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Musical%20Notes.png" alt="Musical Notes" width="24" height="24" /></picture>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://data-card-for-spotify.herokuapp.com/api/card?user_id=31y4j5i6zru4mnmqsvx5cqqgmp3a&hide_title=true">
-  <img alt="" src="https://raw.githubusercontent.com/TakahashiNguyen/TakahashiNguyen/output/musicstats.svg">
-</picture>
-
 ## <picture><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Eyes.png" alt="Eyes" width="25" height="25" /></picture>
 
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m&labelColor=080808&color=f05237"><img alt="" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FTakahashiNguyen%2FTakahashiNguyen.json&style=flat&label=S%E1%BB%91%20l%C6%B0%E1%BB%A3t%20th%C4%83m&labelColor=f05237&color=f7f7f7">
 </picture>
-
-<!---
-  Tập trung thi Tốt Nghiệp THPT Quốc Gia.
--->
