@@ -1,0 +1,3 @@
+[submodule "dependencies/TemplateBackend"]
+	path = dependencies/TemplateBackend
+	url = https://github.com/TakahashiNguyen/TemplateBackend.git
