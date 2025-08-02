@@ -1,0 +1,8 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "$(capture).spec.ts, $(capture).spec.util.ts",
+    "package.json": "LICENSE*,*.md,.git*,.env*,.*rc,*.config.js,*.config.ts,*.config.json,*.config.mjs,*.config.cjs,*.config.yaml,*.config.yml,*lock.yaml",
+    "tsconfig.json": "tsconfig.*.json"
+  }
+}

@@ -1,6 +1,8 @@
 {
   "recommendations": [
     "Vue.volar",
-    "pkief.material-icon-theme"
+    "pkief.material-icon-theme",
+    "bradlc.vscode-tailwindcss",
+    "vscodevim.vim"
   ]
 }
